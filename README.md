@@ -4,7 +4,7 @@ O trabalho em questão é da disciplina de *Desenvolvimento Web*, do curso de gr
 
 ### Informações gerais
 - **Autores**: [Harã Heique](https://github.com/HaraHeique) e [Larissa Motta](https://github.com/LarissaMotta)
-- **Tecnologias**: Angular (Versão 7.2.15+)
+- **Tecnologia**: AngularJS (Versão 7.2.15+)
 - **Ambiente de desenvolvimento**: Visual Studio Code (versão 1.35.1+)
 
 ### 1. Descrição
