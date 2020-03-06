@@ -30,4 +30,6 @@ Abaixo está a imagem demonstrando o [PMC](https://robsoncamargo.com.br/blog/pro
 </figure>
 
 ### Informações adicionais
-Todo o código fonte está hospedado no [GitHub](https://github.com/LarissaMotta/devweb-front-end).
+Todo o código fonte está hospedado no:
+- [Front-end](https://github.com/LarissaMotta/devweb-front-end). 
+- [Back-end](https://github.com/LarissaMotta/devweb-back-end).
