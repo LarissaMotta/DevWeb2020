@@ -16,5 +16,5 @@ O trabalho em questão é da disciplina de *Desenvolvimento Web*, do curso de gr
 Abaixo está a imagem demonstrando o [PMC](https://robsoncamargo.com.br/blog/projec-model-canvas-para-gerenciamento-de-projetos), uma metodologia robusta, porém simples, de planejamento de projetos muito utilizada atualmente.
 
 <figure>
-    <img src="xD" alt="PMC-project" title="Project Model Canvas do projeto Beauty Control" />
+    <img src="https://github.com/LarissaMotta/devweb-front-end/blob/master/documentation/images/Project_Model_Canvas-PMC.jpg" alt="PMC-project" title="Project Model Canvas do projeto Beauty Control" />
 </figure>
