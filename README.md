@@ -28,3 +28,6 @@ Abaixo está a imagem demonstrando o [PMC](https://robsoncamargo.com.br/blog/pro
 <figure>
     <img src="https://github.com/LarissaMotta/devweb-front-end/blob/master/documentation/images/Project_Model_Canvas-PMC.jpg" alt="PMC-project" title="Project Model Canvas do projeto Beauty Control" />
 </figure>
+
+### Informações adicionais
+Todo o código fonte está hospedado no [GitHub](https://github.com/LarissaMotta/devweb-front-end).
