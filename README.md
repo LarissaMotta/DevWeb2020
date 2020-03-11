@@ -4,7 +4,7 @@ O trabalho em questão é da disciplina de *Desenvolvimento Web*, do curso de gr
 
 ### Informações gerais
 - **Autores**: [Harã Heique](https://github.com/HaraHeique) e [Larissa Motta](https://github.com/LarissaMotta)
-- **Tecnologia**: AngularJS (Versão 7.2.15+)
+- **Tecnologia**: Angular (Versão 7.2.15+)
 - **Ambiente de desenvolvimento**: Visual Studio Code (versão 1.35.1+)
 
 ### 1. Descrição
@@ -27,6 +27,14 @@ Abaixo está a imagem demonstrando o [PMC](https://robsoncamargo.com.br/blog/pro
 
 <figure>
     <img src="https://github.com/LarissaMotta/devweb-front-end/blob/master/documentation/images/Project_Model_Canvas-PMC.jpg" alt="PMC-project" title="Project Model Canvas do projeto Beauty Control" />
+</figure>
+
+### 3. Protótipo
+
+Abaixo está a página inicial do protótipo do sistema.
+
+<figure>
+    <img src="" alt="Protótipo" title="Protótipo da página inicial da Beauty Control"/>
 </figure>
 
 ### Informações adicionais
