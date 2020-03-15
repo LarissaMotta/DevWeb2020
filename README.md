@@ -31,10 +31,10 @@ Abaixo está a imagem demonstrando o [PMC](https://robsoncamargo.com.br/blog/pro
 
 ### 3. Protótipo
 
-Abaixo está a página inicial do protótipo do sistema.
+Abaixo está a página inicial do [protótipo](https://github.com/LarissaMotta/devweb-front-end/blob/master/documentation/prototype/Prot%C3%B3tipo.pdf) do sistema.
 
 <figure>
-    <img src="" alt="Protótipo" title="Protótipo da página inicial da Beauty Control"/>
+    <img src="https://github.com/LarissaMotta/devweb-front-end/blob/master/documentation/images/Tela%20inicial.png" alt="Protótipo" title="Protótipo da página inicial da Beauty Control"/>
 </figure>
 
 ### Informações adicionais
