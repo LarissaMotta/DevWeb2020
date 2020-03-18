@@ -5,7 +5,7 @@ O trabalho em questão é da disciplina de *Desenvolvimento Web*, do curso de gr
 ### Informações Gerais
 - **Equipe**: [Harã Heique](https://github.com/HaraHeique), [Joel Will](https://github.com/joelwb), [Larissa Motta](https://github.com/LarissaMotta) e [Nicolas Sampaio](https://github.com/NicolasSampaio)
 - **Principais responsáveis**: [Harã Heique](https://github.com/HaraHeique) e [Larissa Motta](https://github.com/LarissaMotta)
-- **Tecnologia**: Angular (Versão 8.2.15+)
+- **Tecnologia**: Angular (Versão 9.0.6+)
 - **Ambiente de desenvolvimento**: Visual Studio Code (versão 1.35.1+)
 
 ### 1. Descrição
