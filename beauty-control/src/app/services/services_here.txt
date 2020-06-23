@@ -1,0 +1,1 @@
+serviços genéricos e específicos aqui para guardar lógicas de negócio e comunicações com o back-end
