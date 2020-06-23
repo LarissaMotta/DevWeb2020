@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "beauty-control"
+  "defaultProject": "beauty-control",
+  "cli": {
+    "analytics": "be9851f0-6e3b-450e-bb92-7fcdc7b33118"
+  }
 }
