@@ -7,6 +7,7 @@ O trabalho em questão é da disciplina de *Desenvolvimento Web*, do curso de gr
 - **Principais responsáveis**: [Harã Heique](https://github.com/HaraHeique) e [Larissa Motta](https://github.com/LarissaMotta)
 - **Tecnologia**: Angular (Versão 9.0.6+)
 - **Ambiente de desenvolvimento**: Visual Studio Code (versão 1.35.1+)
+- **Hospedagem da aplicação**: https://larissamotta.github.io/devweb-front-end
 
 ### 1. Descrição
 
