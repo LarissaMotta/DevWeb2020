@@ -1,13 +1,18 @@
 {
   "name": "beauty-control",
   "version": "0.0.0",
+  "engines": {
+    "node": "~12.16.1",
+    "npm": "~6.14.5"
+  },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "postinstall": "ng build --ast --prod",
     "deploy": "ng build --prod --base-href https://LarissaMotta.github.io/devweb-front-end/ && angular-cli-ghpages --branch gh-pages"
   },
   "private": true,
