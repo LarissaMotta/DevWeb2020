@@ -6,7 +6,7 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./header.component.scss"],
 })
 export class HeaderComponent implements OnInit {
-  logoSrc: string = "assets/logos/inicial-fundo-transparente-horizontal.png";
+  logoSrc: string = "assets/logos/icon-beautycontrol-white.png";
 
   constructor() {}
 
