@@ -1,19 +1,10 @@
-<!-- Compiled and minified CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-/>
-
-<!-- Compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
 <div class="navbar-fixed">
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">
         <img class="responsive-img" [src]="logoSrc" alt="Logo" />
       </a>
-      <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+      <a href="#" data-target="side-navbar" class="sidenav-trigger">
         <i class="material-icons">menu</i>
       </a>
       <ul class="right hide-on-med-and-down">
@@ -23,11 +14,10 @@
       </ul>
     </div>
   </nav>
-
-  <ul class="sidenav" id="mobile-demo">
-    <li><a href="sass.html">Sass</a></li>
-    <li><a href="badges.html">Components</a></li>
-    <li><a href="collapsible.html">Javascript</a></li>
-    <li><a href="mobile.html">Mobile</a></li>
-  </ul>
 </div>
+
+<ul class="sidenav" id="side-navbar">
+  <li><a href="#" routerLinkActive="active">Produtos</a></li>
+  <li><a href="#" routerLinkActive="active">Fornecedores</a></li>
+  <li><a href="#" routerLinkActive="active">Relatórios</a></li>
+</ul>
