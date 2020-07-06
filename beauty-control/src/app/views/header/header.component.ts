@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
+import { commonFunctions } from "./header.jquery.js";
 
 @Component({
   selector: "app-header",
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    commonFunctions.initSideNav(this.sidenavElem.nativeElement.id);
     console.log(this.sidenavElem.nativeElement.id);
     console.log(this.dropdownElem.nativeElement.id);
   }
