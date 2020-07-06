@@ -1,5 +1,4 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
-import * as M from 'materialize-css';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
 
 @Component({
   selector: "app-header",
@@ -9,15 +8,16 @@ import * as M from 'materialize-css';
 export class HeaderComponent implements OnInit, AfterViewInit {
   logoSrc: string = "assets/logos/icon-beautycontrol-white.png";
 
+  @ViewChild('sidenav') sidenavElem: ElementRef;
+  @ViewChild('dropdown') dropdownElem: ElementRef;
+
   constructor() {}
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(function () {
-      const elem: Element = document.getElementById("side-navbar");
-      M.Sidenav.init(elem);
-    }, 0);
+    console.log(this.sidenavElem.nativeElement.id);
+    console.log(this.dropdownElem.nativeElement.id);
   }
 }

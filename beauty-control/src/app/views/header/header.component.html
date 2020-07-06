@@ -12,16 +12,23 @@
         <li><a href="#" routerLinkActive="active">Fornecedores</a></li>
         <li><a href="#" routerLinkActive="active">Relatórios</a></li>
         <li>
-          <a href="#" title="Colocar informações do usuário">
+          <a id="dropdown-user" data-activates="dropdown-user" href="#" title="Colocar informações do usuário" #dropdown>
             <i class="material-icons">account_circle</i>
           </a>
         </li>
       </ul>
     </div>
   </nav>
+
+  <ul id="dropdown-user" class="dropdown-content">
+    <li><a href="#!">one</a></li>
+    <li><a href="#!">two</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">three</a></li>
+  </ul>
 </div>
 
-<ul class="sidenav sidenav-close" id="side-navbar">
+<ul id="side-navbar" class="sidenav sidenav-close" #sidenav>
   <li><a href="#!" routerLinkActive="active">Produtos</a></li>
   <li><a href="#!" routerLinkActive="active">Fornecedores</a></li>
   <li><a href="#!" routerLinkActive="active">Relatórios</a></li>
