@@ -4,7 +4,7 @@
       <a href="#" class="brand-logo">
         <img class="responsive-img" [src]="logoSrc" alt="Logo" />
       </a>
-      <a href="#" data-target="side-navbar" class="sidenav-trigger">
+      <a href="#" data-target="sidenav-options" class="sidenav-trigger">
         <i class="material-icons">menu</i>
       </a>
       <ul class="right hide-on-med-and-down">
@@ -12,7 +12,13 @@
         <li><a href="#" routerLinkActive="active">Fornecedores</a></li>
         <li><a href="#" routerLinkActive="active">Relatórios</a></li>
         <li>
-          <a id="dropdown-user" data-activates="dropdown-user" href="#" title="Colocar informações do usuário" #dropdown>
+          <a
+            data-target="dropdown-user"
+            href="#"
+            class="dropdown-trigger"
+            title="Colocar informações do usuário"
+            #dropdown
+          >
             <i class="material-icons">account_circle</i>
           </a>
         </li>
@@ -23,12 +29,12 @@
   <ul id="dropdown-user" class="dropdown-content">
     <li><a href="#!">one</a></li>
     <li><a href="#!">two</a></li>
-    <li class="divider"></li>
+    <li class="divider" tabindex="-1"></li>
     <li><a href="#!">three</a></li>
   </ul>
 </div>
 
-<ul id="side-navbar" class="sidenav sidenav-close" #sidenav>
+<ul id="sidenav-options" class="sidenav sidenav-close" #sidenav>
   <li><a href="#!" routerLinkActive="active">Produtos</a></li>
   <li><a href="#!" routerLinkActive="active">Fornecedores</a></li>
   <li><a href="#!" routerLinkActive="active">Relatórios</a></li>

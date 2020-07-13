@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from "@angular/core";
-import { commonFunctions } from "./header.jquery.js";
+import * as M from "materialize-css";
 
 @Component({
   selector: "app-header",
@@ -18,8 +18,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    commonFunctions.initSideNav(this.sidenavElem.nativeElement.id);
-    console.log(this.sidenavElem.nativeElement.id);
-    console.log(this.dropdownElem.nativeElement.id);
+    //new M.Sidenav(this.sidenavElem.nativeElement, {});
+    M.Sidenav.init(this.sidenavElem.nativeElement, {});
+    M.Dropdown.init(this.dropdownElem.nativeElement, {});
   }
 }
