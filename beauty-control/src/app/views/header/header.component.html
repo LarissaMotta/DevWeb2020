@@ -19,23 +19,47 @@
             title="Colocar informações do usuário"
             #dropdown
           >
-            <i class="material-icons">account_circle</i>
+            <img
+              src="http://materializecss.com/images/yuna.jpg"
+              alt=""
+              class="circle"
+            />
           </a>
+        </li>
+        <li>
+          <a title="Sair" href="#!"
+            ><i class="material-icons">exit_to_app</i></a
+          >
         </li>
       </ul>
     </div>
   </nav>
-
-  <ul id="dropdown-user" class="dropdown-content">
-    <li><a href="#!">one</a></li>
-    <li><a href="#!">two</a></li>
-    <li class="divider" tabindex="-1"></li>
-    <li><a href="#!">three</a></li>
-  </ul>
 </div>
 
 <ul id="sidenav-options" class="sidenav sidenav-close" #sidenav>
-  <li><a href="#!" routerLinkActive="active">Produtos</a></li>
-  <li><a href="#!" routerLinkActive="active">Fornecedores</a></li>
-  <li><a href="#!" routerLinkActive="active">Relatórios</a></li>
+  <li>
+    <div class="user-view">
+      <div class="background">
+        <img
+          src="https://i.pinimg.com/originals/f5/b9/b0/f5b9b079eca68922ecdcfb2c6f26965e.jpg"
+        />
+      </div>
+      <a href="#user"
+        ><img class="circle" src="http://materializecss.com/images/yuna.jpg"
+      /></a>
+      <a href="#name"><span class="white-text name">John Doe</span></a>
+      <a href="#email">
+        <span class="white-text email">jdandturk@gmail.com</span>
+      </a>
+    </div>
+  </li>
+  <li>
+    <a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a>
+  </li>
+  <li><a href="#!">Second Link</a></li>
+  <li><div class="divider"></div></li>
+  <li><a class="subheader">Opções</a></li>
+  <li><a class="waves-effect" href="#" routerLinkActive="active">Produtos</a></li>
+  <li><a class="waves-effect" href="#" routerLinkActive="active">Fornecedores</a></li>
+  <li><a class="waves-effect" href="#" routerLinkActive="active">Relatórios</a></li>
 </ul>
