@@ -8,4 +8,16 @@ nav {
     height: 50px;
     padding-top: 10px;
   }
+
+  ul{
+    height: 100%;
+
+    li{
+      height: 100%;
+
+      a{
+        height: 100% !important;
+      }
+    }
+  }
 }
