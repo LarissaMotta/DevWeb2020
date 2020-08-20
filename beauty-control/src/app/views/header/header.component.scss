@@ -9,13 +9,13 @@ nav {
     padding-top: 10px;
   }
 
-  ul{
+  ul {
     height: 100%;
 
-    li{
+    li {
       height: 100%;
 
-      a{
+      a {
         height: 100% !important;
       }
     }
@@ -23,12 +23,18 @@ nav {
 }
 
 
-ul.sidenav{
+ul.sidenav {
   background-color: #191616b3;
   width: 200px;
 
-  .user-view .background{
-    background-color: #cc285cc9;
+  .user-view {
+    .background {
+      background-color: #cc285cc9;
+    }
+
+    .auto-margin {
+      margin: auto;
+    }
   }
 
   li > a {
