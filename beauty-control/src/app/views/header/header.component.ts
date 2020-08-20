@@ -16,7 +16,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   logoSrc: string = "assets/logos/icon-beautycontrol-white.png";
 
   @ViewChild("sidenav") sidenavElem: ElementRef;
-  @ViewChild("dropdown") dropdownElem: ElementRef;
 
   constructor() {}
 
