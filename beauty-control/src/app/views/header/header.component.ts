@@ -23,7 +23,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    //new M.Sidenav(this.sidenavElem.nativeElement, {});
     M.Sidenav.init(this.sidenavElem.nativeElement, {});
   }
 }
