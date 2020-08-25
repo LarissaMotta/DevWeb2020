@@ -4,3 +4,17 @@ $default-color: red;
     color: $default-color;
     font-weight: bold;
 }
+
+#page-container {
+    position: relative;
+    min-height: 95vh;
+
+    .body-card {
+        width: 90%;
+        margin: 2.5% 5% 0% 5%;
+        border-radius: 4px;
+        height: auto;
+        background-color: white;
+        padding-bottom: 3rem;
+    }
+}
