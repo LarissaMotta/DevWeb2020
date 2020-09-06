@@ -78,5 +78,14 @@
       "id": 17
     }
   ],
-  "fornecedor": []
+  "fornecedor": [],
+  "usuario": [
+    {
+      "id": 1,
+      "email": "email@email.com",
+      "role": "dev",
+      "name": "Pessoa Um",
+      "password": "123456"
+    }
+  ]
 }

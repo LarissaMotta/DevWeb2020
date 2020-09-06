@@ -1,6 +1,6 @@
 <div id="page-container">
   <app-header></app-header>
-  <div class="body-card">
+  <div [ngClass]="{'body-card': isLoggedIn$ | async}">
     <router-outlet></router-outlet>
   </div>
 </div>

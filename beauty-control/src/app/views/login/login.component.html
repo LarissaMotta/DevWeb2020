@@ -1,0 +1,36 @@
+<div class="bottom-grid">
+  <div class="logo">
+    <img [src]="urlImg">
+  </div>
+</div>
+<div class="content-w3ls">
+
+  <div class="content-bottom form-group">
+    <form [formGroup]="formLogin" (ngSubmit)="submitAuth()" novalidate>
+      <div class="field-group form-group">
+        <i class="material-icons">person</i>
+        <div class="wthree-field">
+          <input class="form-control" formControlName="email" id="text1" type="email" value="" placeholder="Email"
+            autocomplete="off" required>
+        </div>
+      </div>
+      <small *ngIf="isFormFieldInvalid('email')">Email inválido</small>
+      <div class="field-group form-group">
+        <i class="material-icons">lock_outline</i>
+        <div class="wthree-field">
+          <input class="form-control" formControlName="password" id="myInput" type="password" placeholder="Senha">
+        </div>
+      </div>
+      <small *ngIf="isFormFieldInvalid('password')">Senha inválida</small>
+      <div class="wthree-field">
+        <button type="submit" class="btn">Entrar</button>
+      </div>
+      <ul class="list-login left-align">
+        <li>
+          <a href="#" class="text-right">Esqueceu sua senha?</a>
+        </li>
+        <li class="clearfix"></li>
+      </ul>
+    </form>
+  </div>
+</div>
