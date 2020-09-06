@@ -1,5 +1,5 @@
-<header></header>
-<div class="navbar-fixed">
+<header *ngIf="isLoggedIn$ | async"></header>
+<div class="navbar-fixed" *ngIf="isLoggedIn$ | async">
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">
@@ -19,7 +19,7 @@
           </a>
         </li>
         <li>
-          <a title="Sair" href="#!"><i class="material-icons">exit_to_app</i></a>
+          <a title="Sair" (click)="onLogout()"><i class="material-icons">exit_to_app</i></a>
         </li>
       </ul>
     </div>
@@ -41,5 +41,5 @@
   <li><a class="waves-effect" href="#" routerLinkActive="active">Produtos</a></li>
   <li><a class="waves-effect" href="#" routerLinkActive="active">Fornecedores</a></li>
   <li><a class="waves-effect" href="#" routerLinkActive="active">Relatórios</a></li>
-  <li><a class="waves-effect" href="#" routerLinkActive="active">Sair</a></li>
+  <li><a class="waves-effect" (click)="onLogout()" routerLinkActive="active">Sair</a></li>
 </ul>

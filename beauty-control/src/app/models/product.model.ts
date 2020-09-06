@@ -8,9 +8,9 @@ export default class Product {
   category: Category;
 
   constructor() {
-    (this.name = ""),
-      (this.description = ""),
-      (this.quantity = 0),
-      (this.category = Category.FACE);
+    this.name = "";
+    this.description = "";
+    this.quantity = 0;
+    this.category = Category.FACE;
   }
 }
