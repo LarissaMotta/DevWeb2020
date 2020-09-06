@@ -1,5 +1,39 @@
 {
-  "produtos": [
-    
+  "produto": [
+    {
+      "id": 1,
+      "name": "produto 1",
+      "description": "Descrição do produto 1",
+      "category": "Face",
+      "quantity": 300
+    },
+    {
+      "id": 2,
+      "name": "produto 2",
+      "description": "Descrição do produto 2",
+      "category": "Skin",
+      "quantity": 250
+    },
+    {
+      "id": 3,
+      "name": "produto 3",
+      "description": "Descrição do produto 3",
+      "category": "Hair",
+      "quantity": 100
+    },
+    {
+      "id": 4,
+      "name": "produto 4",
+      "description": "Descrição do produto 4",
+      "category": "Nail",
+      "quantity": 159
+    },
+    {
+      "id": 5,
+      "name": "produto 5",
+      "description": "Descrição do produto 5",
+      "category": "Face",
+      "quantity": 43
+    }
   ]
 }
