@@ -1,20 +1,20 @@
 $default-color: red;
 
 .alert {
-    color: $default-color;
-    font-weight: bold;
+  color: $default-color;
+  font-weight: bold;
 }
 
 #page-container {
-    position: relative;
-    min-height: 95vh;
+  position: relative;
+  min-height: 95vh;
 
-    .body-card {
-        width: 90%;
-        margin: 2.5% 5% 0% 5%;
-        border-radius: 4px;
-        height: auto;
-        background-color: white;
-        padding-bottom: 3rem;
-    }
+  .body-card {
+    width: 90%;
+    margin: 2.5% 5% 0% 5%;
+    border-radius: 4px;
+    height: auto;
+    background-color: #fff;
+    padding-bottom: 0rem;
+  }
 }
