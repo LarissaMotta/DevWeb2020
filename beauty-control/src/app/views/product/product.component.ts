@@ -1,18 +1,19 @@
+import { Component, OnInit } from '@angular/core';
+import { ProductService } from 'src/app/services/product.service';
+import { Category } from 'src/app/enums/category.enum';
+import { HttpErrorResponse } from '@angular/common/http';
 import { ConfirmationService } from "primeng/api";
-import { Category } from "./../../enums/category.enum";
-import { Component, OnInit } from "@angular/core";
-import { ProductService } from "./../../services/product.service";
-import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
-import Product from "src/app/models/product.model";
-import { HttpErrorResponse } from "@angular/common/http";
-import { ToastMessageService } from "src/app/services/toast-message.service";
+import { ToastMessageService } from 'src/app/services/toast-message.service';
+import { normalizeFormLayout } from 'src/app/utils/form-normalized.util';
+import Product from 'src/app/models/product.model';
 
 @Component({
-  selector: "app-product",
-  templateUrl: "./product.component.html",
-  styleUrls: ["./product.component.scss"],
+  selector: 'app-product',
+  templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
+  srcImage: string = "assets/produto/produto-sem-imagem.png";
   products: Product[];
   selectedProduct: Product;
   handleProduct: Product;
@@ -24,7 +25,7 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private toastMessageService: ToastMessageService,
     private confirmationService: ConfirmationService
-  ) {}
+  ) { }
 
   get category() {
     return Category;
@@ -39,8 +40,8 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  onRowSelect(): void {
-    this.handleProduct = { ...this.selectedProduct };
+  onProductSelect(product: Product): void {
+    this.handleProduct = { ...product };
     this.isNewProduct = false;
     this.showProductDialog = true;
     normalizeFormLayout();
@@ -61,8 +62,10 @@ export class ProductComponent implements OnInit {
 
   onClickBtnDelete(product: Product): void {
     this.confirmationService.confirm({
-      message: `Tem certeza que deseja deletar o produto ${product.name}?`,
       header: "Atenção",
+      message: `Tem certeza que deseja deletar o produto ${product.name}?`,
+      acceptLabel: "Sim",
+      rejectLabel: "Não",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
         this.deleteProduct(product);
@@ -126,7 +129,7 @@ export class ProductComponent implements OnInit {
     this.productService
       .delete(product.id)
       .then(() => {
-				this.products = this.products.filter((val) => val.id !== product.id);
+        this.products = this.products.filter((val) => val.id !== product.id);
         this.handleProduct = new Product();
         this.toastMessageService.showToastSuccess(
           "Produto deletado com sucesso."
