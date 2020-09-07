@@ -50,7 +50,7 @@
       "id": 13
     },
     {
-      "name": "aaaaaaaaaaa",
+      "name": "bbbbbbbbbbbbbb",
       "description": "",
       "quantity": 500,
       "category": "Rosto",
@@ -78,7 +78,38 @@
       "id": 17
     }
   ],
-  "fornecedor": [],
+  "supplier": [
+    {
+      "id": 1,
+      "name": "Casas Bahia da Beleza",
+      "observation": "Legal para comprar os produtos de beleza.",
+      "rating": 5,
+      "telephone": "(27) 33292-3123",
+      "categories": [
+        "Rosto",
+        "Pele",
+        "Unhas"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Ricardo Eletrobeleza",
+      "observation": "Eletrizante produtos de beleza.",
+      "rating": 4,
+      "telephone": "(27) 43442-3342",
+      "categories": [
+        "Cabelo"
+      ]
+    },
+    {
+      "name": "Cabeleleira Leila",
+      "telephone": "(27) 33223-1232",
+      "observation": "Meme bosta.",
+      "rating": 2,
+      "categories": [],
+      "id": 3
+    }
+  ],
   "usuario": [
     {
       "id": 1,
