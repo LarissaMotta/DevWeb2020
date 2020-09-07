@@ -29,10 +29,10 @@
       "id": 7
     },
     {
-      "name": "Produto 8",
-      "description": "Descrição ",
-      "quantity": 3,
-      "category": "Unhas",
+      "name": "Produto 87",
+      "description": "Descrição haha",
+      "quantity": 4320,
+      "category": "Pele",
       "id": 8
     },
     {
@@ -52,7 +52,7 @@
     {
       "name": "Produto",
       "description": "Descrição ",
-      "quantity": 500,
+      "quantity": 505,
       "category": "Rosto",
       "id": 14
     },
@@ -89,16 +89,16 @@
       "name": "Ricardo Eletrobeleza",
       "observation": "Eletrizante produtos de beleza.",
       "rating": 4,
-      "telephone": "(27) 43442-3342",
+      "telephone": "(27) 43442-3397",
       "categories": [
         "Cabelo"
       ]
     },
     {
       "name": "Cabeleleira Leila",
-      "telephone": "(27) 33223-1232",
+      "telephone": "(27) 33223-1676",
       "observation": "Meme bosta.",
-      "rating": 2,
+      "rating": 0,
       "categories": [],
       "id": 3
     }
