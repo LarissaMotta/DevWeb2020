@@ -4,6 +4,7 @@ import { TableModule } from "primeng/table";
 import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextareaModule } from "primeng/inputtextarea";
+import { InputMaskModule } from "primeng/inputmask";
 import { DropdownModule } from "primeng/dropdown";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { ButtonModule } from "primeng/button";
@@ -13,6 +14,7 @@ import { MessagesModule } from "primeng/messages";
 import { MessageModule } from "primeng/message";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
+import { RatingModule } from "primeng/rating";
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
@@ -24,6 +26,7 @@ import { ConfirmationService } from "primeng/api";
     InputTextModule,
     InputNumberModule,
     InputTextareaModule,
+    InputMaskModule,
     DropdownModule,
     RadioButtonModule,
     ButtonModule,
@@ -32,8 +35,9 @@ import { ConfirmationService } from "primeng/api";
     MessagesModule,
     MessageModule,
     ConfirmDialogModule,
-    DialogModule
+    DialogModule,
+    RatingModule
   ],
-  providers: [MessageService, ConfirmationService]
+  providers: [MessageService, ConfirmationService],
 })
 export class PrimengModule {}

@@ -11,6 +11,7 @@ import { HeaderComponent } from "./views/header/header.component";
 import { FooterComponent } from "./views/footer/footer.component";
 import { LoginComponent } from './views/login/login.component';
 import { ProductComponent } from './views/product/product.component';
+import { SupplierComponent } from './views/supplier/supplier.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ProductComponent } from './views/product/product.component';
     HeaderComponent, 
     FooterComponent,
     LoginComponent,
-    ProductComponent
+    ProductComponent,
+    SupplierComponent
   ],
   imports: [
     BrowserModule, 
