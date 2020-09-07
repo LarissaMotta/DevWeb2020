@@ -13,6 +13,7 @@ import { MessagesModule } from "primeng/messages";
 import { MessageModule } from "primeng/message";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
+import { DataViewModule } from 'primeng/dataview';
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
@@ -32,7 +33,8 @@ import { ConfirmationService } from "primeng/api";
     MessagesModule,
     MessageModule,
     ConfirmDialogModule,
-    DialogModule
+    DialogModule,
+    DataViewModule
   ],
   providers: [MessageService, ConfirmationService]
 })
