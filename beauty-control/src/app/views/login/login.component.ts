@@ -12,7 +12,6 @@ export class LoginComponent implements OnInit {
   formLogin: FormGroup;
   formSubmitted: boolean;
 
-
   constructor(private authService: AuthService) {
     this.formLogin = this.createForm();
     this.formSubmitted = false;
@@ -25,7 +24,7 @@ export class LoginComponent implements OnInit {
     return this.formLogin.controls;
   }
 
-  isFormFieldInvalid(field: string) {
+  isFormFieldInvalid(field: string): boolean {
     return (
       (!this.formLogin.get(field).valid && this.formLogin.get(field).touched) ||
       (this.formLogin.get(field).untouched && this.formSubmitted)
