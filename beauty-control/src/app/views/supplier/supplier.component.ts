@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { SupplierService } from 'src/app/services/supplier.service';
-import { ToastMessageService } from 'src/app/services/toast-message.service';
-import { ConfirmationService } from 'primeng/api';
-import { HttpErrorResponse } from '@angular/common/http';
-import { normalizeFormLayout } from 'src/app/utils/form-normalized.util';
-import Supplier from 'src/app/models/supplier.model';
+import { SupplierService } from "src/app/services/supplier.service";
+import { ToastMessageService } from "src/app/services/toast-message.service";
+import { ConfirmationService } from "primeng/api";
+import { HttpErrorResponse } from "@angular/common/http";
+import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
+import Supplier from "src/app/models/supplier.model";
 
 @Component({
   selector: "app-supplier",
@@ -26,12 +26,11 @@ export class SupplierComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.supplierService
-      .getAll()
-      .then((data: Supplier[]) => (this.suppliers = data))
-      .catch((error: HttpErrorResponse) => {
-        this.toastMessageService.showToastError(error.message);
-      });
+    this.supplierService.getAll().subscribe({
+      next: (data: Supplier[]) => (this.suppliers = data),
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.message),
+    });
   }
 
   onRowSelect(): void {
@@ -85,24 +84,22 @@ export class SupplierComponent implements OnInit {
   }
 
   createSupplier(supplier: Supplier): void {
-    this.supplierService
-      .create(supplier)
-      .then((supplierCreated: Supplier) => {
+    this.supplierService.create(supplier).subscribe({
+      next: (supplierCreated: Supplier) => {
         this.suppliers.push(supplierCreated);
         this.suppliers = [...this.suppliers];
         this.toastMessageService.showToastSuccess(
           "Fornecedor criado com sucesso."
         );
-      })
-      .catch((error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message)
-      );
+      },
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.message),
+    });
   }
 
   updateSupplier(supplier: Supplier): void {
-    this.supplierService
-      .update(supplier)
-      .then((supplierUpdated: Supplier) => {
+    this.supplierService.update(supplier, supplier.id).subscribe({
+      next: (supplierUpdated: Supplier) => {
         let supplierIndex: number = this.suppliers.findIndex(
           (val: Supplier, i: number) => val.id == supplier.id
         );
@@ -111,25 +108,24 @@ export class SupplierComponent implements OnInit {
         this.toastMessageService.showToastSuccess(
           "Fornecedor atualizado com sucesso."
         );
-      })
-      .catch((error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message)
-      );
+      },
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.message),
+    });
   }
 
   deleteProduct(supplier: Supplier): void {
-    this.supplierService
-      .delete(supplier.id)
-      .then(() => {
+    this.supplierService.delete(supplier.id).subscribe({
+      next: () => {
         this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
         this.handleSupplier = new Supplier();
         this.toastMessageService.showToastSuccess(
           "Fornecedor deletado com sucesso."
         );
-      })
-      .catch((error: HttpErrorResponse) => {
-        this.toastMessageService.showToastError(error.message);
-      });
+      },
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.message),
+    });
   }
 
   normalizeNumberFields(): void {

@@ -1,3 +1,4 @@
+import { baseUrl } from './../routes/base.route';
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { endpoints } from "../routes/auth.route";
@@ -9,21 +10,21 @@ import User from "../models/user.model";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends ApiService {
+export class AuthService extends ApiService<User> {
   private loggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private http: HttpClient,
+    protected http: HttpClient,
     private router: Router
   ) {
-    super();
+    super(http, baseUrl);
   }
 
   get isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
 
-  async getAll(): Promise<User[]> {
+  async getAlll(): Promise<User[]> {
     const url: string = endpoints.login;
 
     return await this.http

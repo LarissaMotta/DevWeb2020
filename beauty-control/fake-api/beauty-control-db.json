@@ -1,5 +1,5 @@
 {
-  "produto": [
+  "products": [
     {
       "id": 4,
       "name": "Produto 4",
@@ -71,7 +71,7 @@
       "id": 16
     }
   ],
-  "supplier": [
+  "suppliers": [
     {
       "id": 1,
       "name": "Casas Bahia da Beleza",
@@ -98,12 +98,20 @@
       "name": "Cabeleleira Leila",
       "telephone": "(27) 33223-1676",
       "observation": "Meme bosta.",
-      "rating": 0,
+      "rating": 1,
       "categories": [],
       "id": 3
+    },
+    {
+      "name": "Kabum da beleza",
+      "telephone": "",
+      "observation": "Entregas rápidas (haha)",
+      "rating": 4,
+      "categories": [],
+      "id": 4
     }
   ],
-  "usuario": [
+  "users": [
     {
       "id": 1,
       "email": "email@email.com",
