@@ -8,11 +8,12 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  urlImg: string = "../../../assets/logos/icon-white-fundo-transparente.png";
+  urlImg: string;
   formLogin: FormGroup;
   formSubmitted: boolean;
 
   constructor(private authService: AuthService) {
+    this.urlImg = "../../../assets/logos/icon-white-fundo-transparente.png";
     this.formLogin = this.createForm();
     this.formSubmitted = false;
   }

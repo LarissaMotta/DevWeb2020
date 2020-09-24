@@ -1,67 +1,64 @@
-import { baseUrl } from './../routes/base.route';
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { endpoints } from "../routes/auth.route";
-import { ApiService } from "./api.service";
-import { Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import User from "../models/user.model";
+import { environment } from "../../environments/environment";
+import { Router } from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
-export class AuthService extends ApiService<User> {
-  private loggedIn = new BehaviorSubject<boolean>(false);
+export class AuthService {
+  private loggedIn: BehaviorSubject<boolean>;
+  private httpOptions: any = {};
 
-  constructor(
-    protected http: HttpClient,
-    private router: Router
-  ) {
-    super(http, baseUrl);
+  constructor(protected http: HttpClient, private router: Router) {
+		this.loggedIn = new BehaviorSubject<boolean>(false);
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json; charset=utf-8",
+      }),
+    };
   }
 
   get isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
   }
 
-  async getAlll(): Promise<User[]> {
-    const url: string = endpoints.login;
+  authenticate(): boolean {
+    let isLoggedIn: boolean = this.loggedIn.value;
 
-    return await this.http
-      .get<User[]>(url, super.httpOptions)
-      .toPromise()
-      .then((response: User[]) => response);
+    if (!isLoggedIn) {
+      const tokenId: string = localStorage.getItem(environment.tokenKey);
+
+      if (tokenId) {
+        isLoggedIn = true;
+      } else {
+        isLoggedIn = false;
+        this.logout();
+      }
+
+      this.loggedIn.next(isLoggedIn);
+    }
+
+    return isLoggedIn;
   }
 
-  async getUser(email: string): Promise<User> {
-    const url: string = endpoints.getUser
-      .replace("{email}", email);
-
-    return await this.http
-      .get<User[]>(url, super.httpOptions)
-      .toPromise()
-      .then((response: User[]) => response.shift());
-  }
-
-  // TODO modificar codigo com guard quando integrar com o backend
-  async login(email: string, password: string): Promise<boolean> {
-    return this.getUser(email)
-      .then((user: User) => {
-        let authenticated: boolean = user && user.password === password;
-
-        if (authenticated) {
-          this.loggedIn.next(true);
+  login(email: string, password: string): Observable<any> {
+    return this.http
+      .post<any>(endpoints.login, { email, password }, this.httpOptions)
+      .pipe(
+        map((response: any) => {
+          localStorage.setItem(environment.tokenKey, response.access_token);
           this.router.navigate(["/home"]);
-        } else {
-          console.error("Usuario nao autenticado");
-        }
-        
-        return authenticated;
-      });
+        })
+      );
   }
 
-  async logout(): Promise<void> {
+  logout(): void {
+    localStorage.setItem(environment.tokenKey, null);
     this.loggedIn.next(false);
-    this.router.navigate(["/"]);
+    this.router.navigate(["/login"]);
   }
 }

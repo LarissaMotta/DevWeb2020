@@ -1,6 +1,5 @@
 import { baseUrl } from './base.route.js';
 
 export const endpoints = {
-  login: `${baseUrl}/login`,
-  getUser: `${baseUrl}/users?email={email}`,
+  login: `${baseUrl}/auth/login`
 }
