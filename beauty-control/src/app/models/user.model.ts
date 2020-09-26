@@ -1,8 +1,8 @@
-import { Role } from '../enums/role.enum';
+import { Role } from "../enums/role.enum";
 
 export default class User {
-  email: string;
+  id: number;
   name: string;
+  email: string;
   role: Role;
-  password: string;
 }
