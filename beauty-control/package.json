@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "qas-deploy": "ng build --prod --base-href https://LarissaMotta.github.io/devweb-front-end/ && angular-cli-ghpages --branch gh-pages",
-    "prd-deploy": "sudo firebase init && sudo firebase deploy && sudo firebase open hosting:site"
+    "prd-deploy": "ng build --prod && sudo firebase init && sudo firebase deploy && sudo firebase open hosting:site"
   },
   "private": true,
   "dependencies": {

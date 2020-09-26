@@ -1,1 +1,0 @@
-Guardar as proteções de rotas aqui (autenticação)

@@ -13,7 +13,7 @@ import Product from "src/app/models/product.model";
   styleUrls: ["./product.component.scss"],
 })
 export class ProductComponent implements OnInit {
-  srcImage: string = "assets/produto/produto-sem-imagem.png";
+  srcImage: string;
   products: Product[];
   selectedProduct: Product;
   handleProduct: Product;
@@ -25,7 +25,9 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private toastMessageService: ToastMessageService,
     private confirmationService: ConfirmationService
-  ) {}
+  ) {
+    this.srcImage = "assets/produto/produto-sem-imagem.png";
+  }
 
   get category() {
     return Category;
@@ -35,7 +37,7 @@ export class ProductComponent implements OnInit {
     this.productService.getAll().subscribe({
       next: (data: Product[]) => (this.products = data),
       error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message)
+        this.toastMessageService.showToastError(error.message),
     });
   }
 
@@ -132,7 +134,7 @@ export class ProductComponent implements OnInit {
         );
       },
       error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message)
+        this.toastMessageService.showToastError(error.message),
     });
   }
 

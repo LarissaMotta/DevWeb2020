@@ -59,7 +59,7 @@ export class SupplierComponent implements OnInit {
       header: "Atenção",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
-        this.deleteProduct(supplier);
+        this.deleteSupplier(supplier);
       },
     });
   }
@@ -114,7 +114,7 @@ export class SupplierComponent implements OnInit {
     });
   }
 
-  deleteProduct(supplier: Supplier): void {
+  deleteSupplier(supplier: Supplier): void {
     this.supplierService.delete(supplier.id).subscribe({
       next: () => {
         this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
