@@ -1,6 +1,6 @@
 export enum Category {
-  FACE = "Rosto",
-  SKIN = "Pele",
-  HAIR = "Cabelo",
-  NAIL = "Unhas"
+  FACE = "face",
+  SKIN = "skin",
+  HAIR = "hair",
+  NAIL = "nail",
 }
