@@ -20,18 +20,42 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        // 401 Unauthorized
-        // 403 Forbidden
-        const statusErrors: number[] = [401, 403];
-
-        if (statusErrors.includes(error.status)) {
-          this.authService.logout();
-        }
-
-        const errorMessage: string = error.message || error.statusText;
-
-        return throwError(errorMessage);
+        return throwError(this.handleError(error));
       })
     );
+  }
+
+  private handleError(error: HttpErrorResponse): HttpErrorResponse {
+		this.buildErrorMessage(error);
+		this.handleErrorsByStatus(error);
+
+    return error;
+  }
+
+  private buildErrorMessage(error: HttpErrorResponse): void {
+    if (!error.error.message) {
+      error.error.message =
+        "Um erro ocorreu no sistema. Favor contatar a equipe de desenvolvimento";
+    }
+  }
+
+  private handleErrorsByStatus(error: HttpErrorResponse): void {
+    // 401 Unauthorized
+    // 403 Forbidden
+    const statusErrors: number[] = [401, 403];
+
+    if (statusErrors.includes(error.status)) {
+      this.authService.logout();
+    }
+	}
+	
+	private buildConsoleErrorMessage(error: HttpErrorResponse): void {
+    if (error.error instanceof ErrorEvent) {
+      console.error("An error occurred:", error.error.message);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
+      );
+    }
   }
 }

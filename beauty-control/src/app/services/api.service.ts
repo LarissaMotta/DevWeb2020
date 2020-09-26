@@ -19,11 +19,11 @@ export abstract class ApiService<T> {
   }
 
   create(t: T): Observable<T> {
-    return this.http.post<T>(this.baseUrl, t, this.httpOptions);
+    return this.http.post<T>(this.baseUrl, JSON.stringify(t), this.httpOptions);
   }
 
   update(t: T, id: number): Observable<T> {
-    return this.http.put<T>(`${this.baseUrl}/${id}`, t, this.httpOptions);
+    return this.http.put<T>(`${this.baseUrl}/${id}`, JSON.stringify(t), this.httpOptions);
   }
 
   delete(id: number): Observable<T> {
