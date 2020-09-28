@@ -53,6 +53,10 @@
     .product-list-action {
       display: flex;
       flex-direction: column;
+
+      div {
+        padding-bottom: 95%;
+      }
     }
 
     .p-button {
@@ -109,6 +113,10 @@
     .product-list-action {
       display: flex;
       flex-direction: column;
+
+      div {
+        padding-bottom: 0;
+      }
     }
 
     .product-list-action {
