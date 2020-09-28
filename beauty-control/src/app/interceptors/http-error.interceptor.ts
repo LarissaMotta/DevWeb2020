@@ -26,8 +26,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   }
 
   private handleError(error: HttpErrorResponse): HttpErrorResponse {
-		this.buildErrorMessage(error);
-		this.handleErrorsByStatus(error);
+    this.buildErrorMessage(error);
+    this.handleErrorsByStatus(error);
 
     return error;
   }
@@ -35,7 +35,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   private buildErrorMessage(error: HttpErrorResponse): void {
     if (!error.error.message) {
       error.error.message =
-        "Um erro ocorreu no sistema. Favor contatar a equipe de desenvolvimento";
+        "Um erro ocorreu no sistema. Favor contatar a equipe de desenvolvimento.";
     }
   }
 
@@ -47,9 +47,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     if (statusErrors.includes(error.status)) {
       this.authService.logout();
     }
-	}
-	
-	private buildConsoleErrorMessage(error: HttpErrorResponse): void {
+  }
+
+  private buildConsoleErrorMessage(error: HttpErrorResponse): void {
     if (error.error instanceof ErrorEvent) {
       console.error("An error occurred:", error.error.message);
     } else {

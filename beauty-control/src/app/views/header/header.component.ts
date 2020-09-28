@@ -1,13 +1,16 @@
+import { UserService } from './../../services/user.service';
 import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
+    Component,
+    OnInit,
+    AfterViewInit,
+    ViewChild,
+    ElementRef,
 } from "@angular/core";
 import * as M from "materialize-css";
 import { AuthService } from "src/app/services/auth.service";
-import { Observable } from "rxjs";
+import { Observable, pipe } from "rxjs";
+import User from 'src/app/models/user.model';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: "app-header",
@@ -17,10 +20,12 @@ import { Observable } from "rxjs";
 export class HeaderComponent implements OnInit, AfterViewInit {
   logoSrc: string;
   isLoggedIn$: Observable<boolean>;
+  currentUser$: Observable<User>;
 
   @ViewChild("sidenav") sidenavElem: ElementRef;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private userService: UserService) {
+    this.currentUser$ = this.userService.currentUser;
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
   }
 

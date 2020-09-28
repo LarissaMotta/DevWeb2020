@@ -5,6 +5,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { InputMaskModule } from "primeng/inputmask";
+import { PasswordModule } from 'primeng/password';
 import { DropdownModule } from "primeng/dropdown";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { ButtonModule } from "primeng/button";
@@ -28,6 +29,7 @@ import { ConfirmationService } from "primeng/api";
     InputNumberModule,
     InputTextareaModule,
     InputMaskModule,
+    PasswordModule,
     DropdownModule,
     RadioButtonModule,
     ButtonModule,

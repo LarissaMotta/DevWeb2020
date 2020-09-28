@@ -5,4 +5,14 @@ export default class User {
   name: string;
   email: string;
   role: Role;
+  avatar: string;
+  password: string;
+
+  constructor() {
+    this.role = Role.EMPLOYEE;
+    this.name = "";
+    this.email = "";
+    this.avatar = "";
+    this.password = "";   
+  }
 }
