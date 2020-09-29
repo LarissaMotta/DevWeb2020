@@ -63,22 +63,18 @@
 				<input type="password" class="browser-default" pPassword id="password" [(ngModel)]="handleUser.password"
 					required autofocus promptLabel="Insira a senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
 				<small class="p-invalid" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
-					ser
-					igual.</small>
+					ser igual.</small>
 				<small class="p-invalid" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
-					6
-					caracteres.</small>
+					6 caracteres.</small>
 			</div>
 			<div class="p-field p-col">
 				<label for="password-confirm">Confirmar Senha</label>
 				<input type="password" class="browser-default" pPassword id="password-confirm" [(ngModel)]="passwordConfirm"
 					required autofocus promptLabel="Insira a senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
 				<small class="p-invalid" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
-					ser
-					igual.</small>
+					ser igual.</small>
 				<small class="p-invalid" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
-					6
-					caracteres.</small>
+					6 caracteres.</small>
 			</div>
 		</div>
 

@@ -1,11 +1,13 @@
 import { ToastMessageService } from "./../../services/toast-message.service";
 import { ConfirmationService } from "primeng/api";
 import { UserService } from "./../../services/user.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Role } from "src/app/enums/role.enum";
 import { userDict } from "src/app/dicts/user.dict";
+import { Subscription } from "rxjs";
+import { map } from "rxjs/operators";
 import User from "src/app/models/user.model";
 import MailUtils from "src/app/utils/mail.util";
 
@@ -14,7 +16,7 @@ import MailUtils from "src/app/utils/mail.util";
   templateUrl: "./user.component.html",
   styleUrls: ["./user.component.scss"],
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   srcImage: string;
   users: User[];
   handleUser: User;
@@ -24,25 +26,31 @@ export class UserComponent implements OnInit {
   headerUserDialog: string;
   passwordConfirm: string;
 
+  private subscription: Subscription;
+
   constructor(
     private userService: UserService,
     private confirmationService: ConfirmationService,
     private toastMessageService: ToastMessageService
-  ) {}
+  ) {
+    this.srcImage = "assets/usuarios/usuario-sem-avatar.jpg";
+  }
 
   ngOnInit(): void {
-    this.users = [
-      {
-        id: 1,
-        name: "Harã Heique",
-        email: "harasantos@hotmail.com",
-        role: Role.ADMIN,
-        avatar: "",
-        password: "admin123",
+    this.subscription = this.userService.getAll().subscribe({
+      next: (users: User[]) => {
+        this.users = users.map((user: User) => {
+          user.password = !user.password ? "" : user.password;
+          return user;
+        });
       },
-    ];
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.error.message),
+    });
+  }
 
-    this.srcImage = "assets/usuarios/usuario-sem-avatar.jpg";
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   get roleDict(): any {
@@ -136,7 +144,7 @@ export class UserComponent implements OnInit {
     this.userService.update(user, user.id).subscribe({
       next: (userUpdated: User) => {
         let productIndex: number = this.users.findIndex(
-          (val: User, i: number) => val.id == user.id
+          (val: User, i: number) => val.id === user.id
         );
         this.users[productIndex] = userUpdated;
         this.users = [...this.users];
