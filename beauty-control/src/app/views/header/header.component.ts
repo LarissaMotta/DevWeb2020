@@ -1,3 +1,5 @@
+import { ToastMessageService } from "./../../services/toast-message.service";
+import { HttpErrorResponse } from "@angular/common/http";
 import { UserService } from "./../../services/user.service";
 import {
   Component,
@@ -5,39 +7,67 @@ import {
   AfterViewInit,
   ViewChild,
   ElementRef,
+  OnDestroy,
 } from "@angular/core";
 import * as M from "materialize-css";
 import { AuthService } from "src/app/services/auth.service";
-import { Observable, pipe } from "rxjs";
+import { Observable, Subscription } from "rxjs";
+import { Role } from "src/app/enums/role.enum";
 import User from "src/app/models/user.model";
-import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit, AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   logoSrc: string;
+  currentUser: User;
   isLoggedIn$: Observable<boolean>;
-  currentUser$: Observable<User>;
+
+  private subscription: Subscription;
 
   @ViewChild("sidenav") sidenavElem: ElementRef;
+  @ViewChild("userTooltip") tooltipElem: ElementRef;
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private toastMessageService: ToastMessageService
   ) {
-    this.currentUser$ = this.userService.currentUser;
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
   }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn;
+    this.subscription = this.userService.currentUser.subscribe({
+      next: (user: User) => (this.currentUser = user),
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.error.message),
+    });
   }
 
   ngAfterViewInit(): void {
     M.Sidenav.init(this.sidenavElem.nativeElement, {});
+    //M.Tooltip.init(this.tooltipElem.nativeElement, {});
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  get isAdmin(): boolean {
+    return this.currentUser && this.currentUser.role === Role.ADMIN;
+  }
+
+  get userAvatar(): string {
+    return this.currentUser.avatar
+      ? this.currentUser.avatar
+      : "assets/usuarios/usuario-sem-avatar.jpg";
+  }
+
+  get titleInfoUser(): string {
+    return `${this.currentUser.name} - ${this.currentUser.email}`;
   }
 
   onLogout(): void {

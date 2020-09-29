@@ -7,7 +7,6 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Role } from "src/app/enums/role.enum";
 import { userDict } from "src/app/dicts/user.dict";
 import { Subscription } from "rxjs";
-import { map } from "rxjs/operators";
 import User from "src/app/models/user.model";
 import MailUtils from "src/app/utils/mail.util";
 
