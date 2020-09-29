@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { endpoints } from "../routes/user.route";
-import { Router } from "@angular/router";
 import { Observable } from "rxjs";
 import { ApiService } from "./api.service";
-import { map } from "rxjs/operators";
 import User from "../models/user.model";
 
 @Injectable({

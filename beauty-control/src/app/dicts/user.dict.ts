@@ -1,6 +1,6 @@
 export const userDict = {
-	role: {
-		admin: "Administrador",
-		employee: "Funcionário"
-	}
-}
+  role: {
+    admin: "Administrador",
+    employee: "Funcionário",
+  }
+};

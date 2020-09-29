@@ -21,8 +21,8 @@ export class UserComponent implements OnInit {
   isNewUser: boolean;
   formSubmitted: boolean;
   showUserDialog: boolean;
-	headerUserDialog: string;
-	passwordConfirm: string;
+  headerUserDialog: string;
+  passwordConfirm: string;
 
   constructor(
     private userService: UserService,
@@ -37,9 +37,9 @@ export class UserComponent implements OnInit {
         name: "Harã Heique",
         email: "harasantos@hotmail.com",
         role: Role.ADMIN,
-				avatar: "",
-				password: "admin123"
-      }
+        avatar: "",
+        password: "admin123",
+      },
     ];
 
     this.srcImage = "assets/usuarios/usuario-sem-avatar.jpg";
@@ -51,25 +51,25 @@ export class UserComponent implements OnInit {
 
   get roleType(): typeof Role {
     return Role;
-	}
-	
-	get isValidEmail(): boolean {
-		return MailUtils.isValidEmail(this.handleUser.email);
-	}
+  }
 
-	get isValidLengthPassword(): boolean {
-		return this.handleUser.password.length >= 6;
-	}
+  get isValidEmail(): boolean {
+    return MailUtils.isValidEmail(this.handleUser.email);
+  }
+
+  get isValidLengthPassword(): boolean {
+    return this.handleUser.password.length >= 6;
+  }
 
   hideDialog(): void {
-		this.headerUserDialog = "";
+    this.headerUserDialog = "";
     this.showUserDialog = false;
     this.formSubmitted = false;
   }
 
   onClickBtnCreate(): void {
-		this.handleUser = new User();
-		this.passwordConfirm = this.handleUser.password;
+    this.handleUser = new User();
+    this.passwordConfirm = this.handleUser.password;
     this.isNewUser = true;
     this.formSubmitted = false;
     this.showUserDialog = true;
@@ -78,11 +78,11 @@ export class UserComponent implements OnInit {
   }
 
   onClickBtnUpdate(user: User): void {
-		this.handleUser = { ...user };
-		this.passwordConfirm = this.handleUser.password;
+    this.handleUser = { ...user };
+    this.passwordConfirm = this.handleUser.password;
     this.isNewUser = false;
     this.showUserDialog = true;
-		this.headerUserDialog = "Atualizar Usuário";
+    this.headerUserDialog = "Atualizar Usuário";
     normalizeFormLayout();
   }
 
@@ -164,10 +164,12 @@ export class UserComponent implements OnInit {
   }
 
   private isValidForm(user: User): boolean {
-		if (!user.name.trim() || 
-				!MailUtils.isValidEmail(user.email.trim()) ||
-				user.password !== this.passwordConfirm ||
-				user.password.length < 6) {
+    if (
+      !user.name.trim() ||
+      !MailUtils.isValidEmail(user.email.trim()) ||
+      user.password !== this.passwordConfirm ||
+      user.password.length < 6
+    ) {
       return false;
     } else {
       return true;
