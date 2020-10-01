@@ -4,7 +4,6 @@ import { UserService } from "./../../services/user.service";
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ViewChild,
   ElementRef,
   OnDestroy,
@@ -20,10 +19,10 @@ import User from "src/app/models/user.model";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"],
 })
-export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string;
   currentUser: User;
-  isLoggedIn$: Observable<boolean>;
+	isLoggedIn$: Observable<boolean>;
 
   private subscription: Subscription;
 
@@ -35,21 +34,19 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     private userService: UserService,
     private toastMessageService: ToastMessageService
   ) {
-    this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
+		this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
   }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn;
     this.subscription = this.userService.currentUser.subscribe({
-      next: (user: User) => (this.currentUser = user),
+      next: (user: User) => {
+        this.currentUser = user;
+				this.initMaterializeComponents();
+      },
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.error.message),
     });
-  }
-
-  ngAfterViewInit(): void {
-    M.Sidenav.init(this.sidenavElem.nativeElement, {});
-    //M.Tooltip.init(this.tooltipElem.nativeElement, {});
   }
 
   ngOnDestroy(): void {
@@ -72,5 +69,15 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onLogout(): void {
     this.authService.logout();
+  }
+
+  private initMaterializeComponents(): void {
+    setTimeout(() => {
+      M.Sidenav.init(this.sidenavElem.nativeElement, {});
+      M.Tooltip.init(this.tooltipElem.nativeElement, {
+				html: `${this.currentUser.name}<br>${this.currentUser.email}`,
+				margin: 0
+			});
+    }, 250);
   }
 }
