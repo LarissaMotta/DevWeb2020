@@ -19,7 +19,8 @@
 				<div class="product-list-detail">
 					<div class="product-name">{{product.name}}</div>
 					<div class="product-description">{{product.description}}</div>
-					<i class="pi pi-tag product-category-icon"></i><span class="product-category">{{product.category}}</span>
+					<i class="pi pi-tag product-category-icon"></i><span
+						class="product-category">{{categoryDict[product.category]}}</span>
 				</div>
 				<div class="product-list-action">
 					<div>
@@ -39,7 +40,7 @@
 				<div class="product-grid-item-top">
 					<div>
 						<i class="pi pi-tag product-category-icon"></i>
-						<span class="product-category">{{product.category}}</span>
+						<span class="product-category">{{categoryDict[product.category]}}</span>
 					</div>
 					<div>
 						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
@@ -97,22 +98,22 @@
 			<label class="p-mb-3">Categoria</label>
 			<div class="p-formgrid p-grid">
 				<div class="p-field-radiobutton p-col-6">
-					<p-radioButton id="category1" name="category" value="Rosto" [(ngModel)]="handleProduct.category">
+					<p-radioButton id="category1" name="category" value="face" [(ngModel)]="handleProduct.category">
 					</p-radioButton>
 					<label for="category1">Rosto</label>
 				</div>
 				<div class="p-field-radiobutton p-col-6">
-					<p-radioButton id="category2" name="category" value="Pele" [(ngModel)]="handleProduct.category">
+					<p-radioButton id="category2" name="category" value="skin" [(ngModel)]="handleProduct.category">
 					</p-radioButton>
 					<label for="category2">Pele</label>
 				</div>
 				<div class="p-field-radiobutton p-col-6">
-					<p-radioButton id="category3" name="category" value="Cabelo" [(ngModel)]="handleProduct.category">
+					<p-radioButton id="category3" name="category" value="hair" [(ngModel)]="handleProduct.category">
 					</p-radioButton>
 					<label for="category3">Cabelo</label>
 				</div>
 				<div class="p-field-radiobutton p-col-6">
-					<p-radioButton id="category4" name="category" value="Unhas" [(ngModel)]="handleProduct.category">
+					<p-radioButton id="category4" name="category" value="nail" [(ngModel)]="handleProduct.category">
 					</p-radioButton>
 					<label for="category4">Unhas</label>
 				</div>

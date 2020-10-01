@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ProductService } from "src/app/services/product.service";
-import { Category } from "src/app/enums/category.enum";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ConfirmationService } from "primeng/api";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
+import { productDict } from 'src/app/dicts/product.dict';
 import Product from "src/app/models/product.model";
 
 @Component({
@@ -29,8 +29,8 @@ export class ProductComponent implements OnInit {
     this.srcImage = "assets/produto/produto-sem-imagem.png";
   }
 
-  get category() {
-    return Category;
+  get categoryDict(): any {
+    return productDict.category;
   }
 
   ngOnInit(): void {
@@ -102,8 +102,9 @@ export class ProductComponent implements OnInit {
           "Produto criado com sucesso."
         );
       },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
+      error: (error: HttpErrorResponse) => {
+				this.toastMessageService.showToastError(error.error.message);
+			}
     });
   }
 
