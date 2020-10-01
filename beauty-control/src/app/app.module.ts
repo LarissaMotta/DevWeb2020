@@ -12,9 +12,10 @@ import { FooterComponent } from "./views/footer/footer.component";
 import { LoginComponent } from "./views/login/login.component";
 import { ProductComponent } from "./views/product/product.component";
 import { SupplierComponent } from "./views/supplier/supplier.component";
+import { UserComponent } from "./views/user/user.component";
 
 import { TokenInterceptor } from "./interceptors/token.interceptor";
-import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
+import { HttpErrorInterceptor } from "./interceptors/http-error.interceptor";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
     LoginComponent,
     ProductComponent,
     SupplierComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,7 @@ import { HttpErrorInterceptor } from './interceptors/http-error.interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

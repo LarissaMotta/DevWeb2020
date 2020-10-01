@@ -1,5 +1,5 @@
-<header *ngIf="isLoggedIn$ | async"></header>
-<div class="navbar-fixed" *ngIf="isLoggedIn$ | async">
+<header *ngIf="(isLoggedIn$ | async) && currentUser"></header>
+<div class="navbar-fixed" *ngIf="(isLoggedIn$ | async) && currentUser">
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">
@@ -11,11 +11,11 @@
       <ul class="right hide-on-med-and-down">
         <li><a routerLink="/product" routerLinkActive="active">Produtos</a></li>
         <li><a routerLink="/supplier" routerLinkActive="active">Fornecedores</a></li>
+        <li *ngIf="isAdmin"><a routerLink="/user" routerLinkActive="active">Usuários</a></li>
         <li><a routerLinkActive="active">Relatórios</a></li>
         <li>
-          <a data-target="dropdown-user" href="#" class="dropdown-trigger" title="Colocar informações do usuário"
-            #dropdown>
-            <img src="http://materializecss.com/images/yuna.jpg" alt="" class="circle" />
+          <a class="tooltipped" data-position="bottom" #userTooltip>
+            <img [src]="userAvatar" alt="" class="circle" />
           </a>
         </li>
         <li>
@@ -27,19 +27,20 @@
 </div>
 
 <ul id="sidenav-options" class="sidenav sidenav-close" #sidenav>
-  <li>
+  <li *ngIf="currentUser">
     <div class="user-view center-align">
       <div class="background">
       </div>
-      <a href="#user"><img class="circle auto-margin" src="http://materializecss.com/images/yuna.jpg" /></a>
-      <a href="#name"><span class="white-text name">John Doe</span></a>
+      <a href="#user"><img class="circle auto-margin" [src]="userAvatar" /></a>
+      <a href="#name"><span class="white-text name">{{currentUser.name}}</span></a>
       <a href="#email">
-        <span class="white-text email">jdandturk@gmail.com</span>
+        <span class="white-text email">{{currentUser.email}}</span>
       </a>
     </div>
   </li>
   <li><a class="waves-effect" routerLink="/product" routerLinkActive="active">Produtos</a></li>
   <li><a class="waves-effect" routerLink="/supplier" routerLinkActive="active">Fornecedores</a></li>
+  <li *ngIf="isAdmin"><a class="waves-effect" routerLink="/user" routerLinkActive="active">Usuários</a></li>
   <li><a class="waves-effect" routerLinkActive="active">Relatórios</a></li>
   <li><a class="waves-effect" (click)="onLogout()" routerLinkActive="active">Sair</a></li>
 </ul>

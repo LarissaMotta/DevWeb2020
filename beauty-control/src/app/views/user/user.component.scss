@@ -4,26 +4,26 @@
     font-weight: normal;
   }
 
-  .product-name {
+  .user-name {
     font-size: 1.5rem;
     font-weight: 700;
   }
 
-  .product-description {
+  .user-description {
     margin: 0 0 1rem 0;
   }
 
-  .product-category-icon {
+  .user-role-icon {
     vertical-align: middle;
     margin-right: 0.5rem;
   }
 
-  .product-category {
+  .user-role {
     font-weight: 600;
     vertical-align: middle;
   }
 
-  .product-list-item {
+  .user-list-item {
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -35,7 +35,7 @@
       margin-right: 2rem;
     }
 
-    .product-list-detail {
+    .user-list-detail {
       flex: 1 1 0;
     }
 
@@ -43,19 +43,19 @@
       margin: 0 0 0.5rem 0;
     }
 
-    .product-qnt {
+    .user-status {
       font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
       align-self: flex-end;
     }
 
-    .product-list-action {
+    .user-list-action {
       display: flex;
       flex-direction: column;
 
       div {
-        padding-bottom: 95%;
+        padding-bottom: 150%;
       }
     }
 
@@ -63,37 +63,10 @@
       margin-bottom: 0.5rem;
     }
   }
-
-  .product-grid-item {
-    margin: 0.5em;
-    border: 1px solid #dee2e6;
-
-    .product-grid-item-top,
-    .product-grid-item-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    img {
-      width: 75%;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-      margin: 2rem 0;
-    }
-
-    .product-grid-item-content {
-      text-align: center;
-    }
-
-    .product-qnt {
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-  }
 }
 
 @media screen and (max-width: 576px) {
-  :host ::ng-deep .product-list-item {
+  :host ::ng-deep .user-list-item {
     flex-direction: column;
     align-items: center;
 
@@ -102,15 +75,15 @@
       margin: 2rem 0;
     }
 
-    .product-list-detail {
+    .user-list-detail {
       text-align: center;
     }
 
-    .product-qnt {
+    .user-status {
       align-self: center;
     }
 
-    .product-list-action {
+    .user-list-action {
       display: flex;
       flex-direction: column;
 
@@ -119,7 +92,7 @@
       }
     }
 
-    .product-list-action {
+    .user-list-action {
       margin-top: 2rem;
       flex-direction: row;
       justify-content: space-between;

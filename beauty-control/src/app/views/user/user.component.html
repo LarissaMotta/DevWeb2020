@@ -1,0 +1,102 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
+
+<p-dataView #dv [value]="users" [paginator]="true" [rows]="10" layout="list" filterBy="name,email,role"
+	emptyMessage="Sem registros.">
+	<ng-template pTemplate="header">
+		<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+			<span class="p-input-icon-left p-mb-2 p-mb-md-0">
+				<i class="pi pi-search"></i>
+				<input type="search" pInputText placeholder="Pesquisar" (input)="dv.filter($event.target.value)">
+			</span>
+		</div>
+	</ng-template>
+	<ng-template let-user pTemplate="listItem">
+		<div class="p-col-12">
+			<div class="user-list-item">
+				<img class="avatar" [src]="srcImage" [alt]="user.name" />
+				<div class="user-list-detail">
+					<div class="user-name">{{user.name}}</div>
+					<div class="user-description">{{user.email}}</div>
+					<i class="pi pi-key user-role-icon"></i><span class="user-role">{{roleDict[user.role]}}</span>
+				</div>
+				<div class="user-list-action">
+					<div>
+						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(user)"
+							class="p-button-rounded p-button-text"></button>
+						<button pButton type="button" icon="pi pi-pencil" (click)="onClickBtnUpdate(user)"
+							class="p-button-rounded p-button-text"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+</p-dataView>
+
+<div class="fixed-action-btn">
+	<a class="btn-floating btn-large pink" (click)="onClickBtnCreate()">
+		<i class="material-icons">add</i>
+	</a>
+</div>
+
+<!-- Dialog (modal) -->
+<p-dialog [(visible)]="showUserDialog" [style]="{width: '450px'}" [header]="headerUserDialog" [modal]="true"
+	styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="p-field">
+			<label for="name">Nome</label>
+			<input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleUser.name" required
+				autofocus />
+			<small class="p-invalid" *ngIf="formSubmitted && !handleUser.name">Nome é requerido.</small>
+		</div>
+
+		<div class="p-field">
+			<label for="email">Email</label>
+			<input type="text" class="browser-default" pInputText id="email" [(ngModel)]="handleUser.email" required
+				autofocus />
+			<small class="p-invalid" *ngIf="formSubmitted && !isValidEmail">Email inválido.</small>
+		</div>
+
+		<div class="p-formgrid p-grid">
+			<div class="p-field p-col">
+				<label for="password">Senha</label>
+				<input type="password" class="browser-default" pPassword id="password" [(ngModel)]="handleUser.password"
+					required autofocus promptLabel="Insira a senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
+				<small class="p-invalid" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
+					ser igual.</small>
+				<small class="p-invalid" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
+					6 caracteres.</small>
+			</div>
+			<div class="p-field p-col">
+				<label for="password-confirm">Confirmar Senha</label>
+				<input type="password" class="browser-default" pPassword id="password-confirm" [(ngModel)]="passwordConfirm"
+					required autofocus promptLabel="Insira a senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
+				<small class="p-invalid" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
+					ser igual.</small>
+				<small class="p-invalid" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
+					6 caracteres.</small>
+			</div>
+		</div>
+
+		<div class="p-field">
+			<label class="p-mb-3">Role</label>
+			<div class="p-formgrid p-grid">
+				<div class="p-field-radiobutton p-col-6">
+					<p-radioButton id="role-employee" name="role" [value]="roleType.EMPLOYEE" [(ngModel)]="handleUser.role">
+					</p-radioButton>
+					<label for="role-employee">{{roleDict[roleType.EMPLOYEE]}}</label>
+				</div>
+				<div class="p-field-radiobutton p-col-6">
+					<p-radioButton id="role-admin" name="role" [value]="roleType.ADMIN" [(ngModel)]="handleUser.role">
+					</p-radioButton>
+					<label for="role-admin">{{roleDict[roleType.ADMIN]}}</label>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+
+	<ng-template pTemplate="footer">
+		<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+		<button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="saveUser()"></button>
+	</ng-template>
+</p-dialog>
