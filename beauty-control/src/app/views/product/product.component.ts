@@ -35,7 +35,7 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.productService.getAll().subscribe({
-      next: (data: any) => (this.products = data.products),
+      next: (products: Product[]) => this.products = products,
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.message),
     });
@@ -103,8 +103,8 @@ export class ProductComponent implements OnInit {
         );
       },
       error: (error: HttpErrorResponse) => {
-				this.toastMessageService.showToastError(error.error.message);
-			}
+        this.toastMessageService.showToastError(error.error.message);
+      }
     });
   }
 

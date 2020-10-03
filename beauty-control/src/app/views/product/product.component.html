@@ -29,7 +29,7 @@
 						<button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
 							class="p-button-rounded p-button-text"></button>
 					</div>
-					<span class="product-qnt">{{product.quantity}}</span>
+					<!-- <span class="product-qnt">{{product.quantity}}</span> -->
 				</div>
 			</div>
 		</div>
@@ -55,7 +55,7 @@
 					<div class="product-description">{{product.description}} </div>
 				</div>
 				<div class="product-grid-item-bottom">
-					<span class="product-qnt">{{product.quantity}}</span>
+					<!-- <span class="product-qnt">{{product.quantity}}</span> -->
 				</div>
 			</div>
 		</div>
@@ -83,15 +83,6 @@
 			<label for="description">Descrição</label>
 			<textarea id="description" class="browser-default" pInputTextarea [(ngModel)]="handleProduct.description"
 				[rows]="5" [cols]="20" autoResize="autoResize" required></textarea>
-		</div>
-
-		<div class="p-formgrid p-grid">
-			<div class="p-field p-col">
-				<label for="quantity">Quantidade</label>
-				<p-inputNumber class="browser-default" [(ngModel)]="handleProduct.quantity" [min]="0" mode="decimal"
-					inputId="quantity" [useGrouping]="false" [showButtons]="true" (onBlur)="normalizeNumberFields()">
-				</p-inputNumber>
-			</div>
 		</div>
 
 		<div class="p-field">
