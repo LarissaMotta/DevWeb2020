@@ -2,13 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { endpoints } from "../routes/user.route";
 import { Observable } from "rxjs";
-import { ApiService } from "./api.service";
+import { BaseService } from "./base.service";
 import User from "../models/user.model";
 
 @Injectable({
   providedIn: "root",
 })
-export class UserService extends ApiService<User> {
+export class UserService extends BaseService<User> {
   private currentUserValue: Observable<User>;
 
   constructor(protected http: HttpClient) {
