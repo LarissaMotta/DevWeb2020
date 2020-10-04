@@ -1,17 +1,18 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SupplierService } from "src/app/services/supplier.service";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import { ConfirmationService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import Supplier from "src/app/models/supplier.model";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-supplier",
   templateUrl: "./supplier.component.html",
   styleUrls: ["./supplier.component.scss"],
 })
-export class SupplierComponent implements OnInit {
+export class SupplierComponent implements OnInit, OnDestroy {
   suppliers: Supplier[];
   selectedSupplier: Supplier;
   handleSupplier: Supplier;
@@ -19,18 +20,24 @@ export class SupplierComponent implements OnInit {
   formSubmitted: boolean;
   isNewSupplier: boolean;
 
+  private subscription: Subscription;
+
   constructor(
     private supplierService: SupplierService,
     private toastMessageService: ToastMessageService,
     private confirmationService: ConfirmationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.supplierService.getAll().subscribe({
-      next: (data: Supplier[]) => (this.suppliers = data),
+    this.subscription = this.supplierService.getAll().subscribe({
+      next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
       error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
+        this.toastMessageService.showToastError(error.error.message),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onRowSelect(): void {
@@ -76,6 +83,7 @@ export class SupplierComponent implements OnInit {
   }
 
   createOrUpdateSupplier(): void {
+    this.normalizeTelphone();
     if (this.isNewSupplier) {
       this.createSupplier(this.handleSupplier);
     } else {
@@ -87,13 +95,13 @@ export class SupplierComponent implements OnInit {
     this.supplierService.create(supplier).subscribe({
       next: (supplierCreated: Supplier) => {
         this.suppliers.push(supplierCreated);
-        this.suppliers = [...this.suppliers];
+        this.suppliers = this.supplierService.sort([...this.suppliers], "name");
         this.toastMessageService.showToastSuccess(
           "Fornecedor criado com sucesso."
         );
       },
       error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
+        this.toastMessageService.showToastError(error.error.message),
     });
   }
 
@@ -104,13 +112,13 @@ export class SupplierComponent implements OnInit {
           (val: Supplier, i: number) => val.id == supplier.id
         );
         this.suppliers[supplierIndex] = supplierUpdated;
-        this.suppliers = [...this.suppliers];
+        this.suppliers = this.supplierService.sort([...this.suppliers], "name");
         this.toastMessageService.showToastSuccess(
           "Fornecedor atualizado com sucesso."
         );
       },
       error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
+        this.toastMessageService.showToastError(error.error.message),
     });
   }
 
@@ -124,7 +132,7 @@ export class SupplierComponent implements OnInit {
         );
       },
       error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
+        this.toastMessageService.showToastError(error.error.message),
     });
   }
 
@@ -134,11 +142,25 @@ export class SupplierComponent implements OnInit {
     }
   }
 
+  setMaskPhoneNumber(supplier: Supplier): string {
+    const phoneNumber: string = supplier.telephone;
+
+    if (phoneNumber) {
+      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2, 7)}-${phoneNumber.substring(7, 11)}`;
+    }
+
+    return "";
+  }
+
   private isValidForm(supplier: Supplier): boolean {
     if (!supplier.name.trim() || supplier.rating < 0) {
       return false;
     } else {
       return true;
     }
+  }
+
+  private normalizeTelphone(): void {
+    this.handleSupplier.telephone = this.handleSupplier.telephone.replace(/[() -]/g, '');
   }
 }

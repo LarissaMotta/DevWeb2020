@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
-export abstract class ApiService<T> {
+export abstract class BaseService<T> {
   protected httpOptions = {
     headers: new HttpHeaders({
       "Content-Type": "application/json; charset=utf-8"
@@ -28,5 +28,19 @@ export abstract class ApiService<T> {
 
   delete(id: number): Observable<T> {
     return this.http.delete<T>(`${this.baseUrl}/${id}`, this.httpOptions);
+  }
+
+  sort(collection: T[], propertyName: string): T[] {
+    return collection.sort((obj1: T, obj2: T) => {
+      if (obj1[propertyName] > obj2[propertyName]) {
+        return 1;
+      }
+
+      if (obj1[propertyName] < obj2[propertyName]) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 }
