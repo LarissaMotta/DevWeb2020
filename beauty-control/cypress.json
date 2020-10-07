@@ -1,0 +1,14 @@
+{
+	"baseUrl": "http://localhost:4200",
+	"env": {
+		"apiUrl": "https://devweb-ifes.herokuapp.com",
+		"routes": {
+			"login": "/auth/login"
+		},
+		"adminCredentials": {
+			"email": "admin@devweb.com",
+			"password": "devweb"
+		},
+		"tokenKey": "access_token"
+	}
+}
