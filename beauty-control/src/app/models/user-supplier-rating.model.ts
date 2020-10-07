@@ -6,4 +6,10 @@ export class UserSupplierRating {
   rating: number;
   user: User;
   supplier: Supplier;
+
+  constructor(ratingValue: number, user: User, supplier: Supplier) {
+    this.rating = ratingValue;
+    this.user = user;
+    this.supplier = supplier;
+  }
 }

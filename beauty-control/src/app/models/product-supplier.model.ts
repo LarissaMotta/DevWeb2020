@@ -7,4 +7,8 @@ export class ProductSupplier {
   date: Date;
   product: Product;
   supplier: Supplier;
+
+  constructor() {
+    this.quantity = 0;
+  }
 }
