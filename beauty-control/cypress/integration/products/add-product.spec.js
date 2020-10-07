@@ -1,15 +1,10 @@
 /// <reference types="cypress" />
 
-const productAdd = {
-  name: "Produto Teste Automizado",
-  description: "Descrição do produto teste automizado.",
-  category: "nail",
-};
-
 describe("Adicionar um novo produto", () => {
   before(() => {
     cy.login();
     cy.saveLocalStorage();
+    cy.fixture("products/add-product.json").as("data");
   });
 
   beforeEach(() => {
@@ -25,9 +20,11 @@ describe("Adicionar um novo produto", () => {
   });
 
   it("Deve preencher o formulário de produtos no modal.", () => {
-    cy.get("input#name").type(productAdd.name);
-    cy.get("textarea#description").type(productAdd.description);
-    cy.get(`p-radiobutton[value=${productAdd.category}`).click();
+    cy.fixture("products/add-product.json").then((data) => {
+      cy.get("input#name").type(data.name);
+      cy.get("textarea#description").type(data.description);
+      cy.get(`p-radiobutton[value=${data.category}`).click();
+    });
   });
 
   it("Deve salvar o produto preenchido.", () => {
