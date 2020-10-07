@@ -19,6 +19,7 @@ import User from "src/app/models/user.model";
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string;
+  avatarDefaultSrc: string;
   currentUser: User;
   isLoggedIn$: Observable<boolean>;
 
@@ -29,8 +30,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService  ) {
+    private userService: UserService
+  ) {
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
+    this.avatarDefaultSrc = "assets/usuarios/usuario-sem-avatar.jpg";
   }
 
   ngOnInit(): void {
@@ -39,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       next: (user: User) => {
         this.currentUser = user;
         this.initMaterializeComponents();
-      }
+      },
     });
   }
 
@@ -54,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   get userAvatar(): string {
     return this.currentUser?.avatar
       ? this.currentUser.avatar
-      : "assets/usuarios/usuario-sem-avatar.jpg";
+      : this.avatarDefaultSrc;
   }
 
   get titleInfoUser(): string {
