@@ -4,9 +4,14 @@ nav {
   margin: 2% 5% 2.5% 5%;
   background-color: #cc285c;
 
-  img {
+  .responsive-img {
     height: 50px;
     padding-top: 10px;
+  }
+
+  .user-img {
+    height: 40px;
+    margin-top: 10px;
   }
 
   ul {
@@ -21,7 +26,6 @@ nav {
     }
   }
 }
-
 
 ul.sidenav {
   background-color: #191616e0;
@@ -40,7 +44,6 @@ ul.sidenav {
   li > a {
     color: white !important;
   }
-
 }
 
 header {
