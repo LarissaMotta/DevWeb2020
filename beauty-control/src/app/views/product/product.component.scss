@@ -1,7 +1,11 @@
 :host ::ng-deep {
   .p-dropdown {
-    width: 14rem;
+    // width: 14rem;
     font-weight: normal;
+  }
+
+  .p-datepicker {
+    top: 0px !important;
   }
 
   .product-name {

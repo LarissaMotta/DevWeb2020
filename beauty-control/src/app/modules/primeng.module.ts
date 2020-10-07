@@ -17,9 +17,13 @@ import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
 import { DataViewModule } from 'primeng/dataview';
 import { RatingModule } from "primeng/rating";
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { CalendarModule } from 'primeng/calendar';
+import { AccordionModule } from 'primeng/accordion';
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [],
@@ -40,8 +44,12 @@ import { ConfirmationService } from "primeng/api";
     ConfirmDialogModule,
     DialogModule,
     DataViewModule,
-    RatingModule
+    RatingModule,
+    CommonModule,
+    DynamicDialogModule,
+    CalendarModule,
+    AccordionModule
   ],
   providers: [MessageService, ConfirmationService],
 })
-export class PrimengModule {}
+export class PrimengModule { }
