@@ -6,6 +6,10 @@ import { ToastMessageService } from "src/app/services/toast-message.service";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { productDict } from 'src/app/dicts/product.dict';
 import Product from "src/app/models/product.model";
+import { ProductSupplier } from 'src/app/models/product-supplier.model';
+import Supplier from 'src/app/models/supplier.model';
+import { SupplierService } from 'src/app/services/supplier.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-product",
@@ -21,12 +25,23 @@ export class ProductComponent implements OnInit {
   formSubmitted: boolean;
   isNewProduct: boolean;
 
+  showInfoBySupplierDialog: boolean;
+  historySelectProduct: ProductSupplier[];
+  handlerProductSupplier: ProductSupplier;
+  suppliers: Supplier[];
+  newQuantity: number;
+
+  private subscription: Subscription;
+
   constructor(
     private productService: ProductService,
     private toastMessageService: ToastMessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private supplierService: SupplierService
   ) {
     this.srcImage = "assets/produto/produto-sem-imagem.png";
+    this.suppliers = new Array<Supplier>();
+    this.historySelectProduct = new Array<ProductSupplier>();
   }
 
   get categoryDict(): any {
@@ -39,6 +54,7 @@ export class ProductComponent implements OnInit {
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.message),
     });
+    this.getSuppliers();
   }
 
   onProductSelect(product: Product): void {
@@ -74,6 +90,20 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  onClickBtnDetails(product: Product): void {
+    this.showInfoBySupplierDialog = true;
+    this.handlerProductSupplier = new ProductSupplier();
+    this.selectedProduct = product;
+    this.handlerProductSupplier.product = this.selectedProduct;
+    this.newQuantity = this.selectedProduct.quantity;
+    //TODO inicializar o hostorico
+    normalizeFormLayout();
+  }
+
+  hideDialogInfoSupplier() {
+    this.showInfoBySupplierDialog = false;
+  }
+
   saveProduct(): void {
     this.formSubmitted = true;
     let isValid: boolean = this.isValidForm(this.handleProduct);
@@ -83,6 +113,18 @@ export class ProductComponent implements OnInit {
       this.hideDialog();
       this.handleProduct = new Product();
     }
+  }
+
+  saveProductSupplier(): void {
+    this.createProductSupplier();
+    this.productService.get(this.selectedProduct.id).subscribe({
+      next: (productResult: Product) => {
+        this.updateProductOnList(productResult);
+        this.selectedProduct = productResult;
+        this.newQuantity = productResult.quantity;
+      },
+      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.error.message)
+    });
   }
 
   createOrUpdateProduct(): void {
@@ -108,6 +150,18 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  createProductSupplier(): void {
+    this.productService.createProductSupplier(this.handlerProductSupplier).subscribe({
+      next: (productSupplierCreated: ProductSupplier) => {
+        this.handlerProductSupplier = new ProductSupplier();
+        this.historySelectProduct.push(productSupplierCreated);
+        this.historySelectProduct = [...this.historySelectProduct];
+        this.toastMessageService.showToastSuccess("Estoque atualizado criado com sucesso.");
+      },
+      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
+    })
+  }
+
   updateProduct(product: Product): void {
     this.productService.update(product, product.id).subscribe({
       next: (productUpdated: Product) => {
@@ -123,6 +177,18 @@ export class ProductComponent implements OnInit {
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.message),
     });
+  }
+
+  updateProductOnList(productToUpdate: Product): void {
+    let productIndex: number = this.products.findIndex(
+      (val: Product, i: number) => val.id == productToUpdate.id
+    );
+    this.products[productIndex] = productToUpdate;
+    this.products = [...this.products];
+  }
+
+  updateQuantityProduct(): void {
+    this.updateProduct(this.cloneProductUpdateQuantity());
   }
 
   deleteProduct(product: Product): void {
@@ -151,5 +217,27 @@ export class ProductComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  private getSuppliers(): void {
+    if (this.suppliers.length < 1) {
+      this.subscription = this.supplierService.getAll().subscribe({
+        next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+      });
+    }
+  }
+
+  private cloneProductUpdateQuantity(): Product {
+    let productClone: Product = new Product();
+
+    productClone.id = this.selectedProduct.id;
+    productClone.quantity = this.newQuantity;
+    productClone.name = this.selectedProduct.name;
+    productClone.description = this.selectedProduct.description;
+    productClone.category = this.selectedProduct.category;
+
+    return productClone;
   }
 }

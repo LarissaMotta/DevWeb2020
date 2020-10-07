@@ -43,9 +43,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       next: (user: User) => {
         this.currentUser = user;
         this.initMaterializeComponents();
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
+      }
     });
   }
 
