@@ -3,9 +3,9 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { endpoints } from "../routes/user.route";
 import { Observable, throwError } from "rxjs";
 import { BaseService } from "./base.service";
-import { AuthService } from './auth.service';
+import { AuthService } from "./auth.service";
+import { catchError } from "rxjs/operators";
 import User from "../models/user.model";
-import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: "root",
@@ -15,15 +15,16 @@ export class UserService extends BaseService<User> {
 
   constructor(protected http: HttpClient, private authService: AuthService) {
     super(http, endpoints.baseUrl);
-    this.currentUserValue = this.http.get<User>(
-      endpoints.getCurrentUser,
-      this.httpOptions
-    ).pipe(catchError((error: HttpErrorResponse) => {
-      console.error(error.error.message);
-      this.authService.logout();
+    this.currentUserValue = this.http
+      .get<User>(endpoints.getCurrentUser, this.httpOptions)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error(error.error.message);
+          this.authService.logout();
 
-      return throwError(error);
-    }));
+          return throwError(error);
+        })
+      );
   }
 
   get currentUser(): Observable<User> {

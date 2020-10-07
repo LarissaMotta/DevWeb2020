@@ -1,5 +1,3 @@
-import { ToastMessageService } from "./../../services/toast-message.service";
-import { HttpErrorResponse } from "@angular/common/http";
 import { UserService } from "./../../services/user.service";
 import {
   Component,
@@ -31,9 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
-    private toastMessageService: ToastMessageService
-  ) {
+    private userService: UserService  ) {
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
   }
 
@@ -56,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   get userAvatar(): string {
-    return this.currentUser.avatar
+    return this.currentUser && this.currentUser.avatar
       ? this.currentUser.avatar
       : "assets/usuarios/usuario-sem-avatar.jpg";
   }
