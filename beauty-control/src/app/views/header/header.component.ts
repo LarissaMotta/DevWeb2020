@@ -48,17 +48,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   get isAdmin(): boolean {
-    return this.currentUser && this.currentUser.role === Role.ADMIN;
+    return this.currentUser?.role === Role.ADMIN;
   }
 
   get userAvatar(): string {
-    return this.currentUser && this.currentUser.avatar
+    return this.currentUser?.avatar
       ? this.currentUser.avatar
       : "assets/usuarios/usuario-sem-avatar.jpg";
   }
 
   get titleInfoUser(): string {
-    return `${this.currentUser.name} - ${this.currentUser.email}`;
+    return `${this.currentUser?.name} - ${this.currentUser?.email}`;
   }
 
   onLogout(): void {
