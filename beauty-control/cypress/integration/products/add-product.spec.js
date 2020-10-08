@@ -4,7 +4,6 @@ describe("Adicionar um novo produto", () => {
   before(() => {
     cy.login();
     cy.saveLocalStorage();
-    cy.fixture("products/add-product.json").as("data");
   });
 
   beforeEach(() => {
@@ -23,7 +22,7 @@ describe("Adicionar um novo produto", () => {
     cy.fixture("products/add-product.json").then((data) => {
       cy.get("input#name").type(data.name);
       cy.get("textarea#description").type(data.description);
-      cy.get(`p-radiobutton[value=${data.category}`).click();
+      cy.get(`p-radiobutton[value=${data.category}]`).click();
     });
   });
 
