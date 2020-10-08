@@ -4,11 +4,11 @@ import { ToastMessageService } from "src/app/services/toast-message.service";
 import { ConfirmationService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
-import Supplier from "src/app/models/supplier.model";
 import { Subscription, Observable, Subscriber } from 'rxjs';
 import { UserSupplierRating } from 'src/app/models/user-supplier-rating.model';
-import User from 'src/app/models/user.model';
 import { UserService } from 'src/app/services/user.service';
+import User from 'src/app/models/user.model';
+import Supplier from "src/app/models/supplier.model";
 
 @Component({
   selector: "app-supplier",
@@ -82,6 +82,8 @@ export class SupplierComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm({
       message: `Tem certeza que deseja deletar o fornecedor ${supplier.name}?`,
       header: "Atenção",
+      acceptLabel: "Sim",
+      rejectLabel: "Não",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
         this.deleteSupplier(supplier);

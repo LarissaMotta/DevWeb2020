@@ -5,11 +5,11 @@ import { ConfirmationService } from "primeng/api";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { productDict } from 'src/app/dicts/product.dict';
-import Product from "src/app/models/product.model";
 import { ProductSupplier } from 'src/app/models/product-supplier.model';
-import Supplier from 'src/app/models/supplier.model';
 import { SupplierService } from 'src/app/services/supplier.service';
 import { Subscription } from 'rxjs';
+import Product from "src/app/models/product.model";
+import Supplier from 'src/app/models/supplier.model';
 
 @Component({
   selector: "app-product",
