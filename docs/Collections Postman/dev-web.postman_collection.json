@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "3f1b6730-2a3b-49f1-97da-c07b78bbeb10",
+		"name": "dev-web",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "697dabf6-22b2-4418-a0ae-ab3ee6cecfd6",
+								"exec": [
+									"const response = pm.response.json();",
+									"console.log(response);",
+									"pm.environment.set(\"token\", response.access_token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@devweb.com\",\n  \"password\": \"devweb\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/auth/login",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getCurrentUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "04ab69ae-3dba-4366-909d-edfac5842062",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{bearer}} {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}{{host}}/auth",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "products",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d84557fc-8fc5-4709-9d1e-a2c8bc0dbdd5",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}{{host}}/products",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2313e709-ab61-456c-8499-aa640e9b20a9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3d5ff618-ac9e-49c0-af33-d20bfa12ba12",
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "suppliers",
+			"item": [
+				{
+					"name": "suppliers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a0738c50-324f-482b-b586-a9c30be96063",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}{{host}}/suppliers",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "product-suppliers",
+			"item": [
+				{
+					"name": "product-suppliers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ed75b17a-7d2f-4052-8f49-82096cedc818",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}{{host}}/product-suppliers",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"product-suppliers"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
