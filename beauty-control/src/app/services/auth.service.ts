@@ -1,29 +1,40 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from "@angular/common/http";
 import { endpoints } from "../routes/auth.route";
 import { environment } from "../../environments/environment";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject, Observable, throwError } from "rxjs";
+import { catchError, map } from "rxjs/operators";
+import User from "../models/user.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
+  private currentUserValue: BehaviorSubject<User>;
   private loggedIn: BehaviorSubject<boolean>;
-  private httpOptions: any = {};
+  private httpOptions = {};
 
   constructor(protected http: HttpClient, private router: Router) {
-    this.loggedIn = new BehaviorSubject<boolean>(false);
     this.httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json; charset=utf-8",
       }),
     };
+    this.loggedIn = new BehaviorSubject<boolean>(false);
+    this.currentUserValue = new BehaviorSubject<User>(null);
   }
 
   get isLoggedIn(): Observable<boolean> {
     return this.loggedIn.asObservable();
+  }
+
+  get currentUser(): Observable<User> {
+    return this.getCurrentUser();
   }
 
   authenticate(): boolean {
@@ -45,7 +56,7 @@ export class AuthService {
     return isLoggedIn;
   }
 
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string): Observable<void> {
     return this.http
       .post<any>(endpoints.login, { email, password }, this.httpOptions)
       .pipe(
@@ -59,6 +70,25 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(environment.tokenKey);
     this.loggedIn.next(false);
+    this.currentUserValue.next(null);
     this.router.navigate(["/login"]);
+  }
+
+  private getCurrentUser(): Observable<User> {
+    if (this.currentUserValue.value) {
+      return this.currentUserValue.asObservable();
+    }
+
+    return this.http.get<User>(endpoints.getCurrentUser, this.httpOptions).pipe(
+      map((user: User) => {
+        this.currentUserValue.next(user);
+        return user;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error(error.error.message);
+        this.logout();
+        return throwError(error);
+      })
+    );
   }
 }

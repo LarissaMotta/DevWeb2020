@@ -1,13 +1,13 @@
+import { AuthService } from "src/app/services/auth.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SupplierService } from "src/app/services/supplier.service";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import { ConfirmationService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
-import { Subscription, Observable, Subscriber } from 'rxjs';
-import { UserSupplierRating } from 'src/app/models/user-supplier-rating.model';
-import { UserService } from 'src/app/services/user.service';
-import User from 'src/app/models/user.model';
+import { Subscription, Observable, Subscriber } from "rxjs";
+import { UserSupplierRating } from "src/app/models/user-supplier-rating.model";
+import User from "src/app/models/user.model";
 import Supplier from "src/app/models/supplier.model";
 
 @Component({
@@ -31,35 +31,43 @@ export class SupplierComponent implements OnInit, OnDestroy {
     private supplierService: SupplierService,
     private toastMessageService: ToastMessageService,
     private confirmationService: ConfirmationService,
-    private userService: UserService
+    private authService: AuthService
   ) {
     this.subscriptions = new Array<Subscription>();
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(this.supplierService.getAll().subscribe({
-      next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    }));
-    this.subscriptions.push(this.userService.currentUser.subscribe({
-      next: (user: User) => {
-        this.currentUser = user;
-      }
-    }));
+    this.subscriptions.push(
+      this.supplierService.getAll().subscribe({
+        next: (data: Supplier[]) =>
+          (this.suppliers = this.supplierService.sort(data, "name")),
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+      })
+    );
+    this.subscriptions.push(
+      this.authService.currentUser.subscribe({
+        next: (user: User) => {
+          this.currentUser = user;
+        },
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(x => x.unsubscribe());
+    this.subscriptions.forEach((x) => x.unsubscribe());
   }
 
   onRowSelect(): void {
     this.handleSupplier = { ...this.selectedSupplier };
-    this.supplierService.getRateSupplier(this.selectedSupplier.id, this.currentUser.id).subscribe({
-      next: (userSupplierRating: UserSupplierRating) => this.handleSupplier.rating = userSupplierRating.rating,
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
+    this.supplierService
+      .getRateSupplier(this.selectedSupplier.id, this.currentUser.id)
+      .subscribe({
+        next: (userSupplierRating: UserSupplierRating) =>
+          (this.handleSupplier.rating = userSupplierRating.rating),
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+      });
     this.isNewSupplier = false;
     this.showSupplierDialog = true;
     normalizeFormLayout();
@@ -168,7 +176,10 @@ export class SupplierComponent implements OnInit, OnDestroy {
     const phoneNumber: string = supplier.telephone;
 
     if (phoneNumber) {
-      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2, 7)}-${phoneNumber.substring(7, 11)}`;
+      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(
+        2,
+        7
+      )}-${phoneNumber.substring(7, 11)}`;
     }
 
     return "";
@@ -183,11 +194,18 @@ export class SupplierComponent implements OnInit, OnDestroy {
   }
 
   private normalizeTelphone(): void {
-    this.handleSupplier.telephone = this.handleSupplier.telephone.replace(/[() -]/g, '');
+    this.handleSupplier.telephone = this.handleSupplier.telephone.replace(
+      /[() -]/g,
+      ""
+    );
   }
 
   private rateSupplier(supplier: Supplier, ratingValue: number): void {
-    const rating = new UserSupplierRating(supplier.rating, this.currentUser, supplier);
+    const rating = new UserSupplierRating(
+      supplier.rating,
+      this.currentUser,
+      supplier
+    );
     this.supplierService.rateSupplier(rating).subscribe({
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.error.message),

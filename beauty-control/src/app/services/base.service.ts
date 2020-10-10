@@ -2,13 +2,15 @@ import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 export abstract class BaseService<T> {
-  protected httpOptions = {
-    headers: new HttpHeaders({
-      "Content-Type": "application/json; charset=utf-8"
-    })
-  };
+  protected httpOptions = {};
 
-  constructor(protected http: HttpClient, protected baseUrl: string) {}
+  constructor(protected http: HttpClient, protected baseUrl: string) {
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json; charset=utf-8",
+      }),
+    };
+  }
 
   get(id: number): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/${id}`, this.httpOptions);
@@ -23,7 +25,11 @@ export abstract class BaseService<T> {
   }
 
   update(t: T, id: number): Observable<T> {
-    return this.http.put<T>(`${this.baseUrl}/${id}`, JSON.stringify(t), this.httpOptions);
+    return this.http.put<T>(
+      `${this.baseUrl}/${id}`,
+      JSON.stringify(t),
+      this.httpOptions
+    );
   }
 
   delete(id: number): Observable<T> {

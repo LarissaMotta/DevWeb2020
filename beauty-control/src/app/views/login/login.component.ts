@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     if (this.formLogin.valid) {
       this.authService
         .login(this.formLogin.value.email, this.formLogin.value.password)
-        .subscribe({ error: () => this.invalidUserSubmit = true });
+        .subscribe({ error: () => (this.invalidUserSubmit = true) });
     } else {
       this.formLogin.markAllAsTouched();
     }

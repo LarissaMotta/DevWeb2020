@@ -1,4 +1,3 @@
-import { UserService } from "./../../services/user.service";
 import {
   Component,
   OnInit,
@@ -28,20 +27,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild("sidenav") sidenavElem: ElementRef;
   @ViewChild("userTooltip") tooltipElem: ElementRef;
 
-  constructor(
-    private authService: AuthService,
-    private userService: UserService
-  ) {
+  constructor(private authService: AuthService) {
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
     this.avatarDefaultSrc = "assets/usuarios/usuario-sem-avatar.jpg";
   }
 
   ngOnInit(): void {
     this.isLoggedIn$ = this.authService.isLoggedIn;
-    this.subscription = this.userService.currentUser.subscribe({
+    this.subscription = this.authService.currentUser.subscribe({
       next: (user: User) => {
         this.currentUser = user;
-        this.initMaterializeComponents();
+        if (user) { this.initMaterializeComponents() };
       },
     });
   }

@@ -1,34 +1,16 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { endpoints } from "../routes/user.route";
-import { Observable, throwError } from "rxjs";
+import { Observable } from "rxjs";
 import { BaseService } from "./base.service";
-import { AuthService } from "./auth.service";
-import { catchError } from "rxjs/operators";
 import User from "../models/user.model";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService extends BaseService<User> {
-  private currentUserValue: Observable<User>;
-
-  constructor(protected http: HttpClient, private authService: AuthService) {
+  constructor(protected http: HttpClient) {
     super(http, endpoints.baseUrl);
-    this.currentUserValue = this.http
-      .get<User>(endpoints.getCurrentUser, this.httpOptions)
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error(error.error.message);
-          this.authService.logout();
-
-          return throwError(error);
-        })
-      );
-  }
-
-  get currentUser(): Observable<User> {
-    return this.currentUserValue;
   }
 
   getByEmail(email: string): Observable<User> {
