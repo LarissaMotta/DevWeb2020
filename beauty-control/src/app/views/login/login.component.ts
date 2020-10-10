@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private router: Router, private authService: AuthService) {
     this.redirectToHome();
-    this.urlImg = "../../../assets/logos/icon-white-fundo-transparente.png";
+    this.urlImg = "assets/logos/icon-white-fundo-transparente.png";
     this.formLogin = this.createForm();
     this.formSubmitted = false;
     this.invalidUserSubmit = false;

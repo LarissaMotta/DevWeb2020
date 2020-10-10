@@ -71,7 +71,7 @@ export class AuthService {
     localStorage.removeItem(environment.tokenKey);
     this.loggedIn.next(false);
     this.currentUserValue.next(null);
-    this.router.navigate(["/login"]);
+		this.router.navigate(["/login"]);
   }
 
   private getCurrentUser(): Observable<User> {
