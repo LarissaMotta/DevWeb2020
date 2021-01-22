@@ -41,5 +41,6 @@ Abaixo está a página inicial do [protótipo](https://github.com/LarissaMotta/d
 
 ### Informações adicionais
 Todo o código fonte está hospedado no:
+- [Artefatos](https://github.com/HaraHeique/LES-artefatos-beauty-control). 
 - [Front-end](https://github.com/LarissaMotta/devweb-front-end). 
 - [Back-end](https://github.com/LarissaMotta/devweb-back-end).
