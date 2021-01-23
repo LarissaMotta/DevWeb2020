@@ -14,10 +14,7 @@ import { Observable } from "rxjs";
 export class TokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const isApiUrl: boolean = request.url.startsWith(baseUrl);
     const isAuthenticate: boolean = this.authService.authenticate();
 

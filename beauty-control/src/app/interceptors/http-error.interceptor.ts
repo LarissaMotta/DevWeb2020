@@ -14,10 +14,7 @@ import { catchError } from "rxjs/operators";
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         return throwError(this.handleError(error));
@@ -34,8 +31,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
   private buildErrorMessage(error: HttpErrorResponse): void {
     if (!error.error.message) {
-      error.error.message =
-        "Um erro ocorreu no sistema. Favor contatar a equipe de desenvolvimento.";
+      error.error.message = "Um erro ocorreu no sistema. Favor contatar a equipe de desenvolvimento.";
     }
   }
 
