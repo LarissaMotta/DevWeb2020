@@ -20,9 +20,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logoSrc: string;
   avatarDefaultSrc: string;
   currentUser: User;
-  isLoggedIn$: Observable<boolean>;
+  isLoggedIn: boolean;
 
-  private subscription: Subscription;
+  private subscriptions: Subscription;
 
   @ViewChild("sidenav") sidenavElem: ElementRef;
   @ViewChild("userTooltip") tooltipElem: ElementRef;
@@ -30,20 +30,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(private authService: AuthService) {
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
     this.avatarDefaultSrc = "assets/usuarios/usuario-sem-avatar.jpg";
+    this.subscriptions = new Subscription();
   }
 
   ngOnInit(): void {
-    this.isLoggedIn$ = this.authService.isLoggedIn;
-    this.subscription = this.authService.currentUser.subscribe({
-      next: (user: User) => {
-        this.currentUser = user;
-        if (user) { this.initMaterializeComponents() };
-      },
-    });
+    this.subscriptions.add(
+      this.authService.isLoggedIn.subscribe({
+        next: (isLoggedIn: boolean) => {
+          this.isLoggedIn = isLoggedIn;
+          this.initGetCurrentUser();
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   get isAdmin(): boolean {
@@ -61,17 +63,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onLogout(): void {
-    this.subscription.unsubscribe();
     this.authService.logout();
   }
 
+  private initGetCurrentUser() {
+    this.subscriptions.add(
+      this.authService.currentUser.subscribe({
+        next: (user: User) => {
+          this.currentUser = user;
+          if (user) { this.initMaterializeComponents() };
+        }
+      })
+    );
+  }
+
   private initMaterializeComponents(): void {
-    setTimeout(() => {
-      M.Sidenav.init(this.sidenavElem.nativeElement, {});
-      M.Tooltip.init(this.tooltipElem.nativeElement, {
-        html: `${this.currentUser.name}<br>${this.currentUser.email}`,
-        margin: 0,
-      });
-    }, 250);
+    M.Sidenav.init(this.sidenavElem.nativeElement, {});
+    M.Tooltip.init(this.tooltipElem.nativeElement, {
+      html: `${this.currentUser.name}<br>${this.currentUser.email}`,
+      margin: 0,
+    });
   }
 }

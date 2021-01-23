@@ -1,5 +1,5 @@
-<header *ngIf="(isLoggedIn$ | async)"></header>
-<div class="navbar-fixed" *ngIf="(isLoggedIn$ | async)">
+<header *ngIf="isLoggedIn"></header>
+<div class="navbar-fixed" *ngIf="isLoggedIn">
   <nav>
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">

@@ -75,6 +75,10 @@ export class AuthService {
   }
 
   private getCurrentUser(): Observable<User> {
+    if (!this.loggedIn.value) {
+      return this.currentUserValue;
+    }
+
     if (this.currentUserValue.value) {
       return this.currentUserValue.asObservable();
     }
