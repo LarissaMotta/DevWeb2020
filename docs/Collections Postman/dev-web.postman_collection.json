@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3f1b6730-2a3b-49f1-97da-c07b78bbeb10",
+		"_postman_id": "1ac9d53b-e177-4031-af80-b90ae70edd60",
 		"name": "dev-web",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "697dabf6-22b2-4418-a0ae-ab3ee6cecfd6",
 								"exec": [
 									"const response = pm.response.json();",
 									"console.log(response);",
@@ -29,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"admin@devweb.com\",\n  \"password\": \"devweb\"\n}",
+							"raw": "{\n  \"email\": \"les@teste.com\",\n  \"password\": \"les2021\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -37,9 +36,10 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}{{host}}/auth/login",
+							"raw": "{{protocol}}://{{host}}/auth/login",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{protocol}}{{host}}"
+								"{{host}}"
 							],
 							"path": [
 								"auth",
@@ -55,7 +55,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "04ab69ae-3dba-4366-909d-edfac5842062",
 								"exec": [
 									""
 								],
@@ -73,9 +72,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}{{host}}/auth",
+							"raw": "{{protocol}}://{{host}}/auth",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{protocol}}{{host}}"
+								"{{host}}"
 							],
 							"path": [
 								"auth"
@@ -84,8 +84,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "products",
@@ -96,7 +95,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d84557fc-8fc5-4709-9d1e-a2c8bc0dbdd5",
 								"exec": [
 									""
 								],
@@ -114,9 +112,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}{{host}}/products",
+							"raw": "{{protocol}}://{{host}}/products",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{protocol}}{{host}}"
+								"{{host}}"
 							],
 							"path": [
 								"products"
@@ -124,9 +123,250 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{bearer}} {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Creme para rosto\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 10,\r\n    \"status\": \"out_of_stock\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/products",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "products",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 50,\r\n    \"status\": \"out_of_stock\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/products/1",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "products",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 50,\r\n    \"status\": \"out_of_stock\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/products/1",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "suppliers",
+			"item": [
+				{
+					"name": "suppliers",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/suppliers",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "suppliers",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Fornecedor 2\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/suppliers",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "suppliers",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Fornecedor teste\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/suppliers/1",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "suppliers",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/suppliers/3",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"suppliers",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "users",
@@ -137,7 +377,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "2313e709-ab61-456c-8499-aa640e9b20a9",
 								"exec": [
 									""
 								],
@@ -147,7 +386,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3d5ff618-ac9e-49c0-af33-d20bfa12ba12",
 								"exec": [
 									"console.log(pm.response.json());"
 								],
@@ -165,9 +403,10 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}{{host}}/users",
+							"raw": "{{protocol}}://{{host}}/users",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{protocol}}{{host}}"
+								"{{host}}"
 							],
 							"path": [
 								"users"
@@ -175,22 +414,186 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "userById",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/users/2",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Joaquina de Jesus\",\r\n    \"email\": \"joaquininha@teste.com\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"employee\",\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/users",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/users/2",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
-			"name": "suppliers",
+			"name": "reports",
 			"item": [
+				{
+					"name": "products",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/report/products",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"report",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "suppliers",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a0738c50-324f-482b-b586-a9c30be96063",
 								"exec": [
 									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
 								],
 								"type": "text/javascript"
 							}
@@ -206,39 +609,28 @@
 							}
 						],
 						"url": {
-							"raw": "{{protocol}}{{host}}/suppliers",
+							"raw": "{{protocol}}://{{host}}/report/suppliers",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{protocol}}{{host}}"
+								"{{host}}"
 							],
 							"path": [
+								"report",
 								"suppliers"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
-			"name": "product-suppliers",
+			"name": "users-suppliers-rating",
 			"item": [
 				{
-					"name": "product-suppliers",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "ed75b17a-7d2f-4052-8f49-82096cedc818",
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
+					"name": "create",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
@@ -246,21 +638,97 @@
 								"value": "{{bearer}} {{token}}"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rating\": 4,\r\n    \"user\": 1,\r\n    \"supplier\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{protocol}}{{host}}/product-suppliers",
+							"raw": "{{protocol}}://{{host}}/user-supplier-ratings",
+							"protocol": "{{protocol}}",
 							"host": [
-								"{{protocol}}{{host}}"
+								"{{host}}"
 							],
 							"path": [
-								"product-suppliers"
+								"user-supplier-ratings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"rating\": 5,\r\n    \"user\": 1,\r\n    \"supplier\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/user-supplier-ratings/1",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-supplier-ratings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/user-supplier-ratings/1",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"user-supplier-ratings",
+								"1"
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
