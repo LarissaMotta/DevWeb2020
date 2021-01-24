@@ -2,7 +2,7 @@
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid"
-  emptyMessage="Sem registros.">
+  emptyMessage="Sem registros" [loading]="loading">
   <ng-template pTemplate="header">
     <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
       <span class="p-input-icon-left p-mb-2 p-mb-md-0">
@@ -19,8 +19,13 @@
         <div class="product-list-detail">
           <div class="product-name">{{product.name}}</div>
           <div class="product-description">{{product.description}}</div>
-          <i class="pi pi-tag product-category-icon"></i><span
-            class="product-category">{{categoryDict[product.category]}}</span>
+          <div class="product-category">
+            <i class="pi pi-tag product-category-icon"></i>
+            <span>{{categoryDict[product.category]}}</span>
+          </div>
+          <div>
+            <span class="product-badge status-lowstock">Baixo estoque(10)</span>
+          </div>
         </div>
         <div class="product-list-action">
           <div>
@@ -60,6 +65,7 @@
         </div>
         <div class="product-grid-item-bottom">
           <span class="product-qnt">{{product.quantity}}</span>
+          <span class="product-badge status-lowstock">Em estoque(10)</span>
         </div>
       </div>
     </div>
@@ -76,11 +82,20 @@
 <p-dialog [(visible)]="showProductDialog" [style]="{width: '450px'}" header="Detalhes do Produto" [modal]="true"
   styleClass="p-fluid">
   <ng-template pTemplate="content">
-    <div class="p-field">
-      <label for="name">Nome</label>
-      <input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleProduct.name" required
-        autofocus />
-      <small class="p-invalid" *ngIf="formSubmitted && !handleProduct.name">Nome é requerido.</small>
+    <div class="p-formgrid p-grid">
+      <div class="p-field">
+        <label for="name">Nome</label>
+        <input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleProduct.name" required
+          autofocus />
+        <small class="p-invalid" *ngIf="formSubmitted && !handleProduct.name">Nome é requerido.</small>
+      </div>
+
+      <div class="p-field p-col">
+        <label for="rating">Baixo estoque (à partir de)</label>
+        <p-inputNumber class="browser-default" [(ngModel)]="handleProduct.runnigOutOfStock" mode="decimal" [showButtons]="true"
+          inputId="rating" [min]="0" [useGrouping]="false">
+        </p-inputNumber>
+      </div>
     </div>
 
     <div class="p-field">

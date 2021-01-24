@@ -7,7 +7,6 @@ import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { productDict } from 'src/app/dicts/product.dict';
 import { ProductSupplier } from 'src/app/models/product-supplier.model';
 import { SupplierService } from 'src/app/services/supplier.service';
-import { Subscription } from 'rxjs';
 import Product from "src/app/models/product.model";
 import Supplier from 'src/app/models/supplier.model';
 
@@ -24,14 +23,13 @@ export class ProductComponent implements OnInit {
   showProductDialog: boolean;
   formSubmitted: boolean;
   isNewProduct: boolean;
+  loading: boolean;
 
   showInfoBySupplierDialog: boolean;
   historySelectProduct: ProductSupplier[];
   handlerProductSupplier: ProductSupplier;
   suppliers: Supplier[];
   newQuantity: number;
-
-  private subscription: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -44,17 +42,22 @@ export class ProductComponent implements OnInit {
     this.historySelectProduct = new Array<ProductSupplier>();
   }
 
-  get categoryDict(): any {
-    return productDict.category;
+  ngOnInit(): void {
+    this.loading = true;
+    this.productService.getAll().subscribe({
+      next: (products: Product[]) => { 
+        this.products = products;
+        this.loading = false;
+      },
+      error: (error: HttpErrorResponse) =>
+        this.toastMessageService.showToastError(error.message)
+    });
+    
+    this.getSuppliers();
   }
 
-  ngOnInit(): void {
-    this.productService.getAll().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
-    });
-    this.getSuppliers();
+  get categoryDict(): any {
+    return productDict.category;
   }
 
   onProductSelect(product: Product): void {
@@ -221,7 +224,7 @@ export class ProductComponent implements OnInit {
 
   private getSuppliers(): void {
     if (this.suppliers.length < 1) {
-      this.subscription = this.supplierService.getAll().subscribe({
+      this.supplierService.getAll().subscribe({
         next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
         error: (error: HttpErrorResponse) =>
           this.toastMessageService.showToastError(error.error.message),
