@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ac9d53b-e177-4031-af80-b90ae70edd60",
+		"_postman_id": "dd494435-6e0a-4dbd-8fd2-15ca51d70999",
 		"name": "dev-web",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -722,6 +722,114 @@
 							],
 							"path": [
 								"user-supplier-ratings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product-stock-logs",
+			"item": [
+				{
+					"name": "product-stock-logs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/product-stock-logs",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product-stock-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-stock-logs",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"product\": 2,\r\n    \"supplier\": 4,\r\n    \"quantity\": 11,\r\n    \"status\": \"input\",\r\n    \"date\": \"Sun Jan 24 2021 10:50:22 GMT-0300 (Horário Padrão de Brasília)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/product-stock-logs",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product-stock-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-stock-logs Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/product-stock-logs/1",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product-stock-logs",
 								"1"
 							]
 						}
