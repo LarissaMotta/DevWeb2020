@@ -4,7 +4,7 @@
   [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [filterDelay]="0" selectionMode="single" dataKey="id"
   [globalFilterFields]="['name','telephone','observation']" [resizableColumns]="true" [autoLayout]="true"
   (onRowSelect)="onRowSelect()" [(selection)]="selectedSupplier" styleClass="p-datatable-responsive-demo"
-  currentPageReportTemplate="{currentPage} de {totalPages}">
+  currentPageReportTemplate="{currentPage} de {totalPages}" emptyMessage="Sem registros" [loading]="loading">
   <ng-template pTemplate="caption">
     <div class="table-header">
       <h5>
@@ -68,7 +68,8 @@
       <div class="p-field p-col">
         <label for="telephone">Telefone</label>
         <p-inputMask inputId="telephone" class="browser-default" mask="(99) 99999-9999" [(ngModel)]="handleSupplier.telephone"
-          placeholder="(99) 99999-9999"></p-inputMask>
+          placeholder="(99) 99999-9999" required></p-inputMask>
+        <small class="p-invalid" *ngIf="formSubmitted && !handleSupplier.telephone">Telefone é requerido.</small>
       </div>
 
       <div class="p-field p-col">

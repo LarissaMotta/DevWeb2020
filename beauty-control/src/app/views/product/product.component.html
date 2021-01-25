@@ -2,212 +2,191 @@
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 <p-dataView #dv [value]="products" [paginator]="true" [rows]="9" filterBy="name" layout="grid"
-  emptyMessage="Sem registros" [loading]="loading">
-  <ng-template pTemplate="header">
-    <div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
-      <span class="p-input-icon-left p-mb-2 p-mb-md-0">
-        <i class="pi pi-search"></i>
-        <input type="search" pInputText placeholder="Pesquisar por Nome" (input)="dv.filter($event.target.value)">
-      </span>
-      <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
-    </div>
-  </ng-template>
-  <ng-template let-product pTemplate="listItem">
-    <div class="p-col-12">
-      <div class="product-list-item">
-        <img [src]="srcImage" [alt]="product.name" />
-        <div class="product-list-detail">
-          <div class="product-name">{{product.name}}</div>
-          <div class="product-description">{{product.description}}</div>
-          <div class="product-category">
-            <i class="pi pi-tag product-category-icon"></i>
-            <span>{{categoryDict[product.category]}}</span>
-          </div>
-          <div>
-            <span class="product-badge status-lowstock">Baixo estoque(10)</span>
-          </div>
-        </div>
-        <div class="product-list-action">
-          <div>
-            <button pButton type="button" icon="pi pi-list" (click)="onClickBtnDetails(product)"
-              class="p-button-rounded p-button-text"></button>
-            <button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
-              class="p-button-rounded p-button-text"></button>
-            <button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
-              class="p-button-rounded p-button-text"></button>
-          </div>
-          <span class="product-qnt">{{product.quantity}}</span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-  <ng-template let-product pTemplate="gridItem">
-    <div class="p-col-12 p-md-4">
-      <div class="product-grid-item card">
-        <div class="product-grid-item-top">
-          <div>
-            <i class="pi pi-tag product-category-icon"></i>
-            <span class="product-category">{{categoryDict[product.category]}}</span>
-          </div>
-          <div>
-            <button pButton type="button" icon="pi pi-list" (click)="onClickBtnDetails(product)"
-              class="p-button-rounded p-button-text"></button>
-            <button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
-              class="p-button-rounded p-button-text"></button>
-            <button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
-              class="p-button-rounded p-button-text"></button>
-          </div>
-        </div>
-        <div class="product-grid-item-content">
-          <img [src]="srcImage" [alt]="product.name" />
-          <div class="product-name">{{product.name}}</div>
-          <div class="product-description">{{product.description}} </div>
-        </div>
-        <div class="product-grid-item-bottom">
-          <span class="product-qnt">{{product.quantity}}</span>
-          <span class="product-badge status-lowstock">Em estoque(10)</span>
-        </div>
-      </div>
-    </div>
-  </ng-template>
+	emptyMessage="Sem registros" [loading]="loading">
+	<ng-template pTemplate="header">
+		<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
+			<span class="p-input-icon-left p-mb-2 p-mb-md-0">
+				<i class="pi pi-search"></i>
+				<input type="search" pInputText placeholder="Pesquisar por Nome" (input)="dv.filter($event.target.value)">
+			</span>
+			<p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+		</div>
+	</ng-template>
+	<ng-template let-product pTemplate="listItem">
+		<div class="p-col-12">
+			<div class="product-list-item">
+				<img [src]="srcImage" [alt]="product.name" />
+				<div class="product-list-detail">
+					<div class="product-name">{{product.name}}</div>
+					<div class="product-description">{{product.description}}</div>
+					<div class="product-category">
+						<i class="pi pi-tag product-category-icon"></i>
+						<span>{{categoryDict[product.category]}}</span>
+					</div>
+					<div>
+						<span [ngClass]="getBadgeClass(product.status)">
+							{{getBadgedName(product.status, product.runnigOutOfStock)}}
+						</span>
+					</div>
+				</div>
+				<div class="product-list-action">
+					<div>
+						<button pButton type="button" icon="pi pi-plus-circle" (click)="onClickBtnInput(product)"
+							class="p-button-rounded p-button-text" title="Creditar itens"></button>
+						<button pButton type="button" icon="pi pi-minus-circle" (click)="onClickBtnOutput(product)"
+							class="p-button-rounded p-button-text" title="Debitar itens"></button>
+						<button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
+							class="p-button-rounded p-button-text" title="Editar produto"></button>
+						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
+							class="p-button-rounded p-button-text" title="Remover produto"></button>
+					</div>
+					<span class="product-qnt">{{product.quantity}}</span>
+				</div>
+			</div>
+		</div>
+	</ng-template>
+	<ng-template let-product pTemplate="gridItem">
+		<div class="p-col-12 p-md-4">
+			<div class="product-grid-item card">
+				<div class="product-grid-item-top">
+					<div class="product-category">
+						<i class="pi pi-tag product-category-icon"></i>
+						<span>{{categoryDict[product.category]}}</span>
+					</div>
+					<div>
+						<button pButton type="button" icon="pi pi-plus-circle" (click)="onClickBtnInput(product)"
+							class="p-button-rounded p-button-text" title="Creditar itens"></button>
+						<button pButton type="button" icon="pi pi-minus-circle" (click)="onClickBtnOutput(product)"
+							class="p-button-rounded p-button-text" title="Debitar itens"></button>
+						<button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
+							class="p-button-rounded p-button-text" title="Editar produto"></button>
+						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
+							class="p-button-rounded p-button-text" title="Remover produto"></button>
+					</div>
+				</div>
+				<div class="product-grid-item-content">
+					<img [src]="srcImage" [alt]="product.name" />
+					<div class="product-name">{{product.name}}</div>
+					<div class="product-description">{{product.description}} </div>
+				</div>
+				<div class="product-grid-item-bottom">
+					<span class="product-qnt">{{product.quantity}}</span>
+					<span [ngClass]="getBadgeClass(product.status)">
+						{{getBadgedName(product.status, product.runnigOutOfStock)}}
+					</span>
+				</div>
+			</div>
+		</div>
+	</ng-template>
 </p-dataView>
 
 <div class="fixed-action-btn">
-  <a class="btn-floating btn-large pink" (click)="onClickBtnCreate()">
-    <i class="material-icons">add</i>
-  </a>
+	<a class="btn-floating btn-large pink" (click)="onClickBtnCreate()">
+		<i class="material-icons">add</i>
+	</a>
 </div>
 
-<!-- Dialog (modal) -->
+<!-- Dialog (modal) - create e update -->
 <p-dialog [(visible)]="showProductDialog" [style]="{width: '450px'}" header="Detalhes do Produto" [modal]="true"
-  styleClass="p-fluid">
-  <ng-template pTemplate="content">
-    <div class="p-formgrid p-grid">
-      <div class="p-field">
-        <label for="name">Nome</label>
-        <input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleProduct.name" required
-          autofocus />
-        <small class="p-invalid" *ngIf="formSubmitted && !handleProduct.name">Nome é requerido.</small>
-      </div>
+	styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="p-formgrid p-grid">
+			<div class="p-field p-col">
+				<label for="name">Nome</label>
+				<input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleProduct.name" required
+					autofocus />
+				<small class="p-invalid" *ngIf="formSubmitted && !handleProduct.name">Nome é requerido.</small>
+			</div>
 
-      <div class="p-field p-col">
-        <label for="rating">Baixo estoque (à partir de)</label>
-        <p-inputNumber class="browser-default" [(ngModel)]="handleProduct.runnigOutOfStock" mode="decimal" [showButtons]="true"
-          inputId="rating" [min]="0" [useGrouping]="false">
-        </p-inputNumber>
-      </div>
-    </div>
+			<div class="p-field p-col">
+				<label for="rating">Baixo estoque (à partir de)</label>
+				<p-inputNumber class="browser-default" [(ngModel)]="handleProduct.runnigOutOfStock" mode="decimal"
+					[showButtons]="true" inputId="rating" [min]="0" [useGrouping]="false" required>
+				</p-inputNumber>
+				<small class="p-invalid" *ngIf="formSubmitted && !handleProduct.runnigOutOfStock">Baixo estoque é
+					requerido.</small>
+			</div>
+		</div>
 
-    <div class="p-field">
-      <label for="description">Descrição</label>
-      <textarea id="description" class="browser-default" pInputTextarea [(ngModel)]="handleProduct.description"
-        [rows]="5" [cols]="20" autoResize="autoResize" required></textarea>
-    </div>
+		<div class="p-field">
+			<label for="description">Descrição</label>
+			<textarea id="description" class="browser-default" pInputTextarea [(ngModel)]="handleProduct.description"
+				[rows]="5" [cols]="20" autoResize="autoResize" required></textarea>
+		</div>
 
-    <div class="p-field">
-      <label class="p-mb-3">Categoria</label>
-      <div class="p-formgrid p-grid">
-        <div class="p-field-radiobutton p-col-6">
-          <p-radioButton id="category1" name="category" value="face" [(ngModel)]="handleProduct.category">
-          </p-radioButton>
-          <label for="category1">Rosto</label>
-        </div>
-        <div class="p-field-radiobutton p-col-6">
-          <p-radioButton id="category2" name="category" value="skin" [(ngModel)]="handleProduct.category">
-          </p-radioButton>
-          <label for="category2">Pele</label>
-        </div>
-        <div class="p-field-radiobutton p-col-6">
-          <p-radioButton id="category3" name="category" value="hair" [(ngModel)]="handleProduct.category">
-          </p-radioButton>
-          <label for="category3">Cabelo</label>
-        </div>
-        <div class="p-field-radiobutton p-col-6">
-          <p-radioButton id="category4" name="category" value="nail" [(ngModel)]="handleProduct.category">
-          </p-radioButton>
-          <label for="category4">Unhas</label>
-        </div>
-      </div>
-    </div>
-  </ng-template>
+		<div class="p-field">
+			<label class="p-mb-3">Categoria</label>
+			<div class="p-formgrid p-grid">
+				<div class="p-field-radiobutton p-col-6">
+					<p-radioButton id="category1" name="category" value="face" [(ngModel)]="handleProduct.category">
+					</p-radioButton>
+					<label for="category1">Rosto</label>
+				</div>
+				<div class="p-field-radiobutton p-col-6">
+					<p-radioButton id="category2" name="category" value="skin" [(ngModel)]="handleProduct.category">
+					</p-radioButton>
+					<label for="category2">Pele</label>
+				</div>
+				<div class="p-field-radiobutton p-col-6">
+					<p-radioButton id="category3" name="category" value="hair" [(ngModel)]="handleProduct.category">
+					</p-radioButton>
+					<label for="category3">Cabelo</label>
+				</div>
+				<div class="p-field-radiobutton p-col-6">
+					<p-radioButton id="category4" name="category" value="nail" [(ngModel)]="handleProduct.category">
+					</p-radioButton>
+					<label for="category4">Unhas</label>
+				</div>
+			</div>
+		</div>
+	</ng-template>
 
-  <ng-template pTemplate="footer">
-    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
-  </ng-template>
+	<ng-template pTemplate="footer">
+		<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+		<button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+	</ng-template>
 </p-dialog>
 
+<!-- Dialog (modal) - creditar e debitar -->
+<p-dialog [(visible)]="showProductInputDialog" [style]="{width: '450px'}" header="Creditar entrada de produtos"
+	[modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="p-field">
+			<label for="supplierId">Fornecedor</label>
+			<p-dropdown [options]="suppliers" [(ngModel)]="selectedSupplier" optionLabel="name" [showClear]="false" id="supplierId">
+			</p-dropdown>
+			<small class="p-invalid" *ngIf="formSubmitted && !handleProductLog.supplier.id">Fornecedor é requerido.</small>
+		</div>
 
-<!-- Dialog (modal) -->
-<p-dialog *ngIf="handlerProductSupplier" [(visible)]="showInfoBySupplierDialog" [style]="{width: '60%'}"
-  header="Informações do Produto" [modal]="true" styleClass="p-fluid">
+		<div class="p-field">
+			<label for="quantity">Quantidade</label>
+			<p-inputNumber class="browser-default" [(ngModel)]="handleProductLog.quantity" mode="decimal" [showButtons]="true"
+				inputId="quantity" [min]="0" [useGrouping]="false" required>
+			</p-inputNumber>
+			<small class="p-invalid" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que zero.</small>
+		</div>
+	</ng-template>
 
-  <!-- <p-table [value]="historySelectProduct" [paginator]="true" [rows]="4" [responsive]="true">
-    <ng-template pTemplate="header">
-      <tr>
-        <th>Fornecedor</th>
-        <th>Quantidade</th>
-        <th>Data</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-productSupplier>
-      <tr>
-        <td>{{productSupplier.supplier.name}}</td>
-        <td>{{productSupplier.quantity}}</td>
-        <td>{{productSupplier.date}}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <br> -->
+	<ng-template pTemplate="footer">
+		<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+		<button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="creditProduct()"></button>
+	</ng-template>
+</p-dialog>
 
-  <!-- TODO fazer funcionar e ajustar datepicker -->
-  <p-accordion>
-    <p-accordionTab header="Adicionar Estoque">
-      <ng-template pTemplate="content">
-        <div class="p-fluid p-grid p-formgrid">
+<p-dialog [(visible)]="showProductOutputDialog" [style]="{width: '450px'}" header="Debitar saída de produtos"
+	[modal]="true" styleClass="p-fluid">
+	<ng-template pTemplate="content">
+		<div class="p-field">
+			<label for="quantity">Quantidade</label>
+			<p-inputNumber class="browser-default" [(ngModel)]="handleProductLog.quantity" mode="decimal" [showButtons]="true"
+				inputId="quantity" [min]="0" [max]="maxOutputProduct" [useGrouping]="false" required>
+			</p-inputNumber>
+			<small class="p-invalid" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que 0 e menor que {{maxOutputProduct}}.</small>
+		</div>
+	</ng-template>
 
-          <div class="p-field p-col-12 p-md-4">
-            <label for="name">Fornecedor</label>
-            <p-dropdown class="browser-default" [options]="suppliers" [(ngModel)]="handlerProductSupplier.supplier"
-              placeholder="Selecione" optionLabel="name" [showClear]="true" required></p-dropdown>
-          </div>
-
-          <div class="p-field p-col-12 p-md-3">
-            <label for="date">Data</label>
-            <p-calendar class="browser-default" inputId="date" [(ngModel)]="handlerProductSupplier.date"
-              dateFormat="dd.mm.y" required></p-calendar>
-          </div>
-
-          <div class="p-fieldp-col-12 p-md-3">
-            <label for="quantity">Quantidade</label>
-            <p-inputNumber class="browser-default" [(ngModel)]="handlerProductSupplier.quantity" mode="decimal"
-              inputId="quantity" [useGrouping]="false" required>
-            </p-inputNumber>
-          </div>
-
-          <div class="p-field p-col-10 p-md-2">
-            <label style="color: #ffffff00;">button</label>
-            <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text"
-              (click)="saveProductSupplier()"></button>
-          </div>
-        </div>
-      </ng-template>
-    </p-accordionTab>
-  </p-accordion>
-
-  <div class="p-field">
-    <div class="p-field p-col-12 p-md-5">
-      <label for="minmax-buttons">Quantidade de Produtos em Estoque</label>
-      <p-inputNumber class="browser-default" [(ngModel)]="newQuantity" mode="decimal" [showButtons]="true"
-        inputId="minmax-buttons" [min]="0" [max]="selectedProduct.quantity" [useGrouping]="false">
-      </p-inputNumber>
-    </div>
-  </div>
-
-  <ng-template pTemplate="footer">
-    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text"
-      (click)="hideDialogInfoSupplier()"></button>
-    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text"
-      (click)="updateQuantityProduct()"></button>
-  </ng-template>
+	<ng-template pTemplate="footer">
+		<button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+		<button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" (click)="debitProduct()"></button>
+	</ng-template>
 </p-dialog>

@@ -1,3 +1,5 @@
+import { StatusStock } from './../../enums/status-stock.enum';
+import { StatusProduct } from './../../enums/status-product.enum';
 import { Component, OnInit } from "@angular/core";
 import { ProductService } from "src/app/services/product.service";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -5,10 +7,10 @@ import { ConfirmationService } from "primeng/api";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { productDict } from 'src/app/dicts/product.dict';
-import { ProductSupplier } from 'src/app/models/product-supplier.model';
 import { SupplierService } from 'src/app/services/supplier.service';
 import Product from "src/app/models/product.model";
 import Supplier from 'src/app/models/supplier.model';
+import ProductStockLog from 'src/app/models/product-stock-log.model';
 
 @Component({
   selector: "app-product",
@@ -25,11 +27,12 @@ export class ProductComponent implements OnInit {
   isNewProduct: boolean;
   loading: boolean;
 
-  showInfoBySupplierDialog: boolean;
-  historySelectProduct: ProductSupplier[];
-  handlerProductSupplier: ProductSupplier;
-  suppliers: Supplier[];
-  newQuantity: number;
+  handleProductLog: ProductStockLog;
+  showProductInputDialog: boolean;
+  showProductOutputDialog: boolean;
+	suppliers: Supplier[];
+	selectedSupplier: Supplier;
+	maxOutputProduct: number;
 
   constructor(
     private productService: ProductService,
@@ -39,26 +42,25 @@ export class ProductComponent implements OnInit {
   ) {
     this.srcImage = "assets/produto/produto-sem-imagem.png";
     this.suppliers = new Array<Supplier>();
-    this.historySelectProduct = new Array<ProductSupplier>();
   }
 
   ngOnInit(): void {
     this.loading = true;
-    this.productService.getAll().subscribe({
-      next: (products: Product[]) => { 
-        this.products = products;
-        this.loading = false;
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message)
-    });
     
-    this.getSuppliers();
+    this.productService.getAll().subscribe({
+      next: (products: Product[]) => this.products = products,
+      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
+      complete: () => this.loading = false
+		});
   }
 
   get categoryDict(): any {
     return productDict.category;
   }
+
+	get statusDict(): any {
+		return productDict.status;
+	}
 
   onProductSelect(product: Product): void {
     this.handleProduct = { ...product };
@@ -68,7 +70,9 @@ export class ProductComponent implements OnInit {
   }
 
   hideDialog(): void {
-    this.showProductDialog = false;
+		this.showProductDialog = false;
+		this.showProductInputDialog = false;
+		this.showProductOutputDialog = false;
     this.formSubmitted = false;
   }
 
@@ -93,18 +97,27 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  onClickBtnDetails(product: Product): void {
-    this.showInfoBySupplierDialog = true;
-    this.handlerProductSupplier = new ProductSupplier();
-    this.selectedProduct = product;
-    this.handlerProductSupplier.product = this.selectedProduct;
-    this.newQuantity = this.selectedProduct.quantity;
-    //TODO inicializar o hostorico
-    normalizeFormLayout();
-  }
+  onClickBtnInput(product: Product): void {
+		this.getSuppliers();
 
-  hideDialogInfoSupplier() {
-    this.showInfoBySupplierDialog = false;
+		this.handleProductLog = new ProductStockLog();
+		this.handleProductLog.product.id = product.id;
+		this.handleProductLog.status = StatusStock.INPUT;
+
+		this.formSubmitted = false;
+		this.showProductInputDialog = true;
+		normalizeFormLayout();
+	}
+	
+	onClickBtnOutput(product: Product): void {
+		this.handleProductLog = new ProductStockLog();
+		this.handleProductLog.product.id = product.id;
+		this.handleProductLog.status = StatusStock.OUTPUT;
+
+		this.maxOutputProduct = product.quantity;
+		this.formSubmitted = false;
+		this.showProductOutputDialog = true;
+		normalizeFormLayout();
   }
 
   saveProduct(): void {
@@ -116,18 +129,6 @@ export class ProductComponent implements OnInit {
       this.hideDialog();
       this.handleProduct = new Product();
     }
-  }
-
-  saveProductSupplier(): void {
-    this.createProductSupplier();
-    this.productService.get(this.selectedProduct.id).subscribe({
-      next: (productResult: Product) => {
-        this.updateProductOnList(productResult);
-        this.selectedProduct = productResult;
-        this.newQuantity = productResult.quantity;
-      },
-      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.error.message)
-    });
   }
 
   createOrUpdateProduct(): void {
@@ -143,26 +144,12 @@ export class ProductComponent implements OnInit {
       next: (productCreated: Product) => {
         this.products.push(productCreated);
         this.products = [...this.products];
-        this.toastMessageService.showToastSuccess(
-          "Produto criado com sucesso."
-        );
+        this.toastMessageService.showToastSuccess("Produto criado com sucesso.");
       },
       error: (error: HttpErrorResponse) => {
         this.toastMessageService.showToastError(error.error.message);
       }
     });
-  }
-
-  createProductSupplier(): void {
-    this.productService.createProductSupplier(this.handlerProductSupplier).subscribe({
-      next: (productSupplierCreated: ProductSupplier) => {
-        this.handlerProductSupplier = new ProductSupplier();
-        this.historySelectProduct.push(productSupplierCreated);
-        this.historySelectProduct = [...this.historySelectProduct];
-        this.toastMessageService.showToastSuccess("Estoque atualizado criado com sucesso.");
-      },
-      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
-    })
   }
 
   updateProduct(product: Product): void {
@@ -173,25 +160,11 @@ export class ProductComponent implements OnInit {
         );
         this.products[productIndex] = productUpdated;
         this.products = [...this.products];
-        this.toastMessageService.showToastSuccess(
-          "Produto atualizado com sucesso."
-        );
+        this.toastMessageService.showToastSuccess("Produto atualizado com sucesso.");
       },
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.message),
     });
-  }
-
-  updateProductOnList(productToUpdate: Product): void {
-    let productIndex: number = this.products.findIndex(
-      (val: Product, i: number) => val.id == productToUpdate.id
-    );
-    this.products[productIndex] = productToUpdate;
-    this.products = [...this.products];
-  }
-
-  updateQuantityProduct(): void {
-    this.updateProduct(this.cloneProductUpdateQuantity());
   }
 
   deleteProduct(product: Product): void {
@@ -199,20 +172,84 @@ export class ProductComponent implements OnInit {
       next: () => {
         this.products = this.products.filter((val) => val.id !== product.id);
         this.handleProduct = new Product();
-        this.toastMessageService.showToastSuccess(
-          "Produto deletado com sucesso."
-        );
+        this.toastMessageService.showToastSuccess("Produto deletado com sucesso.");
       },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
+      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message)
     });
-  }
+	}
+	
+	creditProduct(): void {
+		this.formSubmitted = true;
+		this.setDropdownProductLogField();
+
+		if (!this.isValidFormStock(this.handleProductLog)) return;
+
+		this.productService.creditProduct(this.handleProductLog).subscribe({
+      next: (productInput: any) => {
+        let productIndex: number = this.products.findIndex(
+          (val: Product, i: number) => val.id == productInput.product
+				);
+				let productUpdated: Product = this.products[productIndex];
+				productUpdated.quantity += productInput.quantity;
+				productUpdated.status = this.productService.getProductStatus(productUpdated);
+        this.products = [...this.products];
+        this.toastMessageService.showToastSuccess("Crédito do produto atualizado com sucesso.");
+      },
+      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message)
+		});
+		
+		this.hideDialog();
+	}
+
+	debitProduct(): void {
+		this.formSubmitted = true;
+
+		if (!this.isValidFormStock(this.handleProductLog)) return;
+
+		this.productService.debitProduct(this.handleProductLog).subscribe({
+      next: (productOutput: any) => {
+        let productIndex: number = this.products.findIndex(
+          (val: Product, i: number) => val.id == productOutput.product
+				);
+				let productUpdated: Product = this.products[productIndex];
+				productUpdated.quantity -= productOutput.quantity;
+				productUpdated.status = this.productService.getProductStatus(productUpdated);
+        this.products = [...this.products];
+        this.toastMessageService.showToastSuccess("Débito do produto atualizado com sucesso.");
+      },
+      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message)
+		});
+		
+		this.hideDialog();
+	}
 
   normalizeNumberFields(): void {
     if (!this.handleProduct.quantity) {
       this.handleProduct.quantity = 0;
     }
-  }
+	}
+
+  getBadgeClass(status: StatusProduct) {
+		const baseClass = (status) => `product-badge status-${status}`;
+
+		if (status === StatusProduct.IN_STOCK) return baseClass("instock");
+		if (status === StatusProduct.OUT_OF_STOCK) return baseClass("outofstock");
+		if (status === StatusProduct.RUNNIG_OUT_OF_STOCK) return baseClass("lowstock");
+
+		return baseClass("none");
+	}
+	
+	getBadgedName(status: StatusProduct, runningOutOfStock: number) {
+		return `${this.statusDict[status].toUpperCase()} (${runningOutOfStock})`;
+	}
+
+	private setDropdownProductLogField(): void {
+		if (!this.selectedSupplier && this.suppliers.length > 0) {
+			this.handleProductLog.supplier = this.suppliers[0];
+		} else {
+			this.handleProductLog.supplier = this.selectedSupplier;
+		}
+	}
 
   private isValidForm(product: Product): boolean {
     if (!product.name.trim() || product.quantity < 0 || !product.category) {
@@ -220,27 +257,32 @@ export class ProductComponent implements OnInit {
     } else {
       return true;
     }
-  }
+	}
+
+	private isValidFormStock(inputProduct: ProductStockLog): boolean {
+		if (inputProduct.status === StatusStock.INPUT && !inputProduct.supplier.id) {
+			return false;
+		}
+
+		if (!inputProduct.quantity || inputProduct.quantity <= 0) {
+			return false;
+		}
+
+		if (inputProduct.status === StatusStock.OUTPUT && inputProduct.quantity > this.maxOutputProduct) {
+			return false;
+		}
+
+		return true;
+	}
 
   private getSuppliers(): void {
-    if (this.suppliers.length < 1) {
-      this.supplierService.getAll().subscribe({
-        next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-      });
-    }
-  }
-
-  private cloneProductUpdateQuantity(): Product {
-    let productClone: Product = new Product();
-
-    productClone.id = this.selectedProduct.id;
-    productClone.quantity = this.newQuantity;
-    productClone.name = this.selectedProduct.name;
-    productClone.description = this.selectedProduct.description;
-    productClone.category = this.selectedProduct.category;
-
-    return productClone;
+		this.supplierService.getAll().subscribe({
+			next: (data: Supplier[]) => { 
+				this.suppliers = this.supplierService.sort(data, "name");
+				//this.suppliers.unshift(new Supplier());
+			},
+			error: (error: HttpErrorResponse) => 
+					this.toastMessageService.showToastError(error.error.message)
+		});
   }
 }

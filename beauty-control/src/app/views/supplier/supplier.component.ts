@@ -5,7 +5,7 @@ import { ToastMessageService } from "src/app/services/toast-message.service";
 import { ConfirmationService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
-import { Subscription, Observable, Subscriber } from "rxjs";
+import { Subscription } from "rxjs";
 import { UserSupplierRating } from "src/app/models/user-supplier-rating.model";
 import User from "src/app/models/user.model";
 import Supplier from "src/app/models/supplier.model";
@@ -22,7 +22,7 @@ export class SupplierComponent implements OnInit, OnDestroy {
   showSupplierDialog: boolean;
   formSubmitted: boolean;
   isNewSupplier: boolean;
-
+  loading: boolean;
   currentUser: User;
 
   private subscriptions: Subscription[];
@@ -37,12 +37,13 @@ export class SupplierComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loading = true;
+    
     this.subscriptions.push(
       this.supplierService.getAll().subscribe({
-        next: (data: Supplier[]) =>
-          (this.suppliers = this.supplierService.sort(data, "name")),
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
+        next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
+        error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.error.message),
+        complete: () => this.loading = false
       })
     );
     this.subscriptions.push(
@@ -60,14 +61,14 @@ export class SupplierComponent implements OnInit, OnDestroy {
 
   onRowSelect(): void {
     this.handleSupplier = { ...this.selectedSupplier };
-    this.supplierService
-      .getRateSupplier(this.selectedSupplier.id, this.currentUser.id)
-      .subscribe({
-        next: (userSupplierRating: UserSupplierRating) =>
-          (this.handleSupplier.rating = userSupplierRating.rating),
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-      });
+    // this.supplierService
+    //   .getRateSupplier(this.selectedSupplier.id, this.currentUser.id)
+    //   .subscribe({
+    //     next: (userSupplierRating: UserSupplierRating) =>
+    //       (this.handleSupplier.rating = userSupplierRating.rating),
+    //     error: (error: HttpErrorResponse) =>
+    //       this.toastMessageService.showToastError(error.error.message)
+    //   });
     this.isNewSupplier = false;
     this.showSupplierDialog = true;
     normalizeFormLayout();
@@ -112,6 +113,8 @@ export class SupplierComponent implements OnInit, OnDestroy {
 
   createOrUpdateSupplier(): void {
     this.normalizeTelphone();
+    this.normalizeNumberFields();
+
     if (this.isNewSupplier) {
       this.createSupplier(this.handleSupplier);
     } else {
@@ -124,10 +127,8 @@ export class SupplierComponent implements OnInit, OnDestroy {
       next: (supplierCreated: Supplier) => {
         this.suppliers.push(supplierCreated);
         this.suppliers = this.supplierService.sort([...this.suppliers], "name");
-        this.toastMessageService.showToastSuccess(
-          "Fornecedor criado com sucesso."
-        );
-        this.rateSupplier(supplierCreated, supplier.rating);
+        this.toastMessageService.showToastSuccess("Fornecedor criado com sucesso.");
+        //this.rateSupplier(supplierCreated, supplier.rating);
       },
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.error.message),
@@ -145,7 +146,7 @@ export class SupplierComponent implements OnInit, OnDestroy {
         this.toastMessageService.showToastSuccess(
           "Fornecedor atualizado com sucesso."
         );
-        this.rateSupplier(supplierUpdated, supplier.rating);
+        //this.rateSupplier(supplierUpdated, supplier.rating);
       },
       error: (error: HttpErrorResponse) =>
         this.toastMessageService.showToastError(error.error.message),
@@ -166,12 +167,6 @@ export class SupplierComponent implements OnInit, OnDestroy {
     });
   }
 
-  normalizeNumberFields(): void {
-    if (!this.handleSupplier.rating) {
-      this.handleSupplier.rating = 0;
-    }
-  }
-
   setMaskPhoneNumber(supplier: Supplier): string {
     const phoneNumber: string = supplier.telephone;
 
@@ -190,6 +185,12 @@ export class SupplierComponent implements OnInit, OnDestroy {
       return false;
     } else {
       return true;
+    }
+  }
+
+  private normalizeNumberFields(): void {
+    if (!this.handleSupplier.rating) {
+      this.handleSupplier.rating = 0;
     }
   }
 
