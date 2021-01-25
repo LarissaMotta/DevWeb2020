@@ -3,7 +3,7 @@
 O trabalho em questão é da disciplina de *Desenvolvimento Web*, do curso de graduação de Bacharelado de Sistema de Informação do IFES - Serra, pelo docente Mr. Felipe Frechiani de Oliveira.
 
 ### Informações Gerais
-- **Equipe**: [Antônio Carlos](https://github.com/duraes-antonio), [Harã Heique](https://github.com/HaraHeique), [Larissa Motta](https://github.com/LarissaMotta) e [Nicolas Sampaio](https://github.com/NicolasSampaio)
+- **Equipe**: [Antônio Carlos](https://github.com/duraes-antonio), [Harã Heique](https://github.com/HaraHeique), [Joel Will](https://github.com/joelwb) e [Nicolas Sampaio](https://github.com/NicolasSampaio)
 - **Principais responsáveis**: [Harã Heique](https://github.com/HaraHeique) e [Antônio Carlos](https://github.com/duraes-antonio)
 - **Tecnologia**: Angular (Versão 9.0.6+)
 - **Ambiente de desenvolvimento**: Visual Studio Code (versão 1.35.1+)
