@@ -25,7 +25,7 @@
 					</div>
 					<div>
 						<span [ngClass]="getBadgeClass(product.status)">
-							{{getBadgedName(product.status, product.runnigOutOfStock)}}
+							{{getBadgedName(product.status)}}
 						</span>
 					</div>
 				</div>
@@ -72,7 +72,7 @@
 				<div class="product-grid-item-bottom">
 					<span class="product-qnt">{{product.quantity}}</span>
 					<span [ngClass]="getBadgeClass(product.status)">
-						{{getBadgedName(product.status, product.runnigOutOfStock)}}
+						{{getBadgedName(product.status)}}
 					</span>
 				</div>
 			</div>

@@ -239,8 +239,8 @@ export class ProductComponent implements OnInit {
 		return baseClass("none");
 	}
 	
-	getBadgedName(status: StatusProduct, runningOutOfStock: number) {
-		return `${this.statusDict[status].toUpperCase()} (${runningOutOfStock})`;
+	getBadgedName(status: StatusProduct) {
+		return `${this.statusDict[status].toUpperCase()}`;
 	}
 
 	private setDropdownProductLogField(): void {
