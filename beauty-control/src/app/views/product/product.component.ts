@@ -1,6 +1,6 @@
 import { StatusStock } from './../../enums/status-stock.enum';
 import { StatusProduct } from './../../enums/status-product.enum';
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ProductService } from "src/app/services/product.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { ConfirmationService } from "primeng/api";
@@ -8,6 +8,7 @@ import { ToastMessageService } from "src/app/services/toast-message.service";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { productDict } from 'src/app/dicts/product.dict';
 import { SupplierService } from 'src/app/services/supplier.service';
+import { Subscription } from 'rxjs';
 import Product from "src/app/models/product.model";
 import Supplier from 'src/app/models/supplier.model';
 import ProductStockLog from 'src/app/models/product-stock-log.model';
@@ -17,7 +18,7 @@ import ProductStockLog from 'src/app/models/product-stock-log.model';
   templateUrl: "./product.component.html",
   styleUrls: ["./product.component.scss"],
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   srcImage: string;
   products: Product[];
   selectedProduct: Product;
@@ -34,6 +35,8 @@ export class ProductComponent implements OnInit {
 	selectedSupplier: Supplier;
 	maxOutputProduct: number;
 
+	private subscriptions: Subscription;
+
   constructor(
     private productService: ProductService,
     private toastMessageService: ToastMessageService,
@@ -46,13 +49,18 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    
-    this.productService.getAll().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
-      complete: () => this.loading = false
-		});
-  }
+		this.subscriptions.add(
+			this.productService.getAll().subscribe({
+				next: (products: Product[]) => this.products = products,
+				error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
+				complete: () => this.loading = false
+			})
+		);
+	}
+	
+	ngOnDestroy(): void {
+		this.subscriptions.unsubscribe();
+	}
 
   get categoryDict(): any {
     return productDict.category;
@@ -93,7 +101,7 @@ export class ProductComponent implements OnInit {
       icon: "pi pi-exclamation-triangle",
       accept: () => {
         this.deleteProduct(product);
-      },
+      }
     });
   }
 
@@ -140,42 +148,49 @@ export class ProductComponent implements OnInit {
   }
 
   createProduct(product: Product): void {
-    this.productService.create(product).subscribe({
-      next: (productCreated: Product) => {
-        this.products.push(productCreated);
-        this.products = [...this.products];
-        this.toastMessageService.showToastSuccess("Produto criado com sucesso.");
-      },
-      error: (error: HttpErrorResponse) => {
-        this.toastMessageService.showToastError(error.error.message);
-      }
-    });
+		this.subscriptions.add(
+			this.productService.create(product).subscribe({
+				next: (productCreated: Product) => {
+					this.products.push(productCreated);
+					this.products = [...this.products];
+					this.toastMessageService.showToastSuccess("Produto criado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) => {
+					this.toastMessageService.showToastError(error.error.message);
+				}
+			})
+		);
   }
 
   updateProduct(product: Product): void {
-    this.productService.update(product, product.id).subscribe({
-      next: (productUpdated: Product) => {
-        let productIndex: number = this.products.findIndex(
-          (val: Product, i: number) => val.id == product.id
-        );
-        this.products[productIndex] = productUpdated;
-        this.products = [...this.products];
-        this.toastMessageService.showToastSuccess("Produto atualizado com sucesso.");
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
-    });
+		this.subscriptions.add(
+			this.productService.update(product, product.id).subscribe({
+				next: (productUpdated: Product) => {
+					let productIndex: number = this.products.findIndex(
+						(val: Product, i: number) => val.id == product.id
+					);
+					this.products[productIndex] = productUpdated;
+					this.products = [...this.products];
+					this.toastMessageService.showToastSuccess("Produto atualizado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.message)
+			})
+		);
   }
 
   deleteProduct(product: Product): void {
-    this.productService.delete(product.id).subscribe({
-      next: () => {
-        this.products = this.products.filter((val) => val.id !== product.id);
-        this.handleProduct = new Product();
-        this.toastMessageService.showToastSuccess("Produto deletado com sucesso.");
-      },
-      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message)
-    });
+		this.subscriptions.add(
+			this.productService.delete(product.id).subscribe({
+				next: () => {
+					this.products = this.products.filter((val) => val.id !== product.id);
+					this.handleProduct = new Product();
+					this.toastMessageService.showToastSuccess("Produto deletado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) => 
+					this.toastMessageService.showToastError(error.message)
+			})
+		);
 	}
 	
 	creditProduct(): void {
@@ -184,19 +199,22 @@ export class ProductComponent implements OnInit {
 
 		if (!this.isValidFormStock(this.handleProductLog)) return;
 
-		this.productService.creditProduct(this.handleProductLog).subscribe({
-      next: (productInput: any) => {
-        let productIndex: number = this.products.findIndex(
-          (val: Product, i: number) => val.id == productInput.product
-				);
-				let productUpdated: Product = this.products[productIndex];
-				productUpdated.quantity += productInput.quantity;
-				productUpdated.status = this.productService.getProductStatus(productUpdated);
-        this.products = [...this.products];
-        this.toastMessageService.showToastSuccess("Crédito do produto atualizado com sucesso.");
-      },
-      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message)
-		});
+		this.subscriptions.add(
+			this.productService.creditProduct(this.handleProductLog).subscribe({
+				next: (productInput: any) => {
+					let productIndex: number = this.products.findIndex(
+						(val: Product, i: number) => val.id == productInput.product
+					);
+					let productUpdated: Product = this.products[productIndex];
+					productUpdated.quantity += productInput.quantity;
+					productUpdated.status = this.productService.getProductStatus(productUpdated);
+					this.products = [...this.products];
+					this.toastMessageService.showToastSuccess("Crédito do produto atualizado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) => 
+					this.toastMessageService.showToastError(error.message)
+			})
+		);
 		
 		this.hideDialog();
 	}
@@ -206,19 +224,22 @@ export class ProductComponent implements OnInit {
 
 		if (!this.isValidFormStock(this.handleProductLog)) return;
 
-		this.productService.debitProduct(this.handleProductLog).subscribe({
-      next: (productOutput: any) => {
-        let productIndex: number = this.products.findIndex(
-          (val: Product, i: number) => val.id == productOutput.product
-				);
-				let productUpdated: Product = this.products[productIndex];
-				productUpdated.quantity -= productOutput.quantity;
-				productUpdated.status = this.productService.getProductStatus(productUpdated);
-        this.products = [...this.products];
-        this.toastMessageService.showToastSuccess("Débito do produto atualizado com sucesso.");
-      },
-      error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message)
-		});
+		this.subscriptions.add(
+			this.productService.debitProduct(this.handleProductLog).subscribe({
+				next: (productOutput: any) => {
+					let productIndex: number = this.products.findIndex(
+						(val: Product, i: number) => val.id == productOutput.product
+					);
+					let productUpdated: Product = this.products[productIndex];
+					productUpdated.quantity -= productOutput.quantity;
+					productUpdated.status = this.productService.getProductStatus(productUpdated);
+					this.products = [...this.products];
+					this.toastMessageService.showToastSuccess("Débito do produto atualizado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) => 
+					this.toastMessageService.showToastError(error.message)
+			})
+		);
 		
 		this.hideDialog();
 	}
@@ -230,7 +251,7 @@ export class ProductComponent implements OnInit {
 	}
 
   getBadgeClass(status: StatusProduct) {
-		const baseClass = (status) => `product-badge status-${status}`;
+		const baseClass = (status: string) => `product-badge status-${status}`;
 
 		if (status === StatusProduct.IN_STOCK) return baseClass("instock");
 		if (status === StatusProduct.OUT_OF_STOCK) return baseClass("outofstock");
@@ -276,13 +297,13 @@ export class ProductComponent implements OnInit {
 	}
 
   private getSuppliers(): void {
-		this.supplierService.getAll().subscribe({
-			next: (data: Supplier[]) => { 
-				this.suppliers = this.supplierService.sort(data, "name");
-				//this.suppliers.unshift(new Supplier());
-			},
-			error: (error: HttpErrorResponse) => 
+		this.subscriptions.add(
+			this.supplierService.getAll().subscribe({
+				next: (data: Supplier[]) =>
+					this.suppliers = this.supplierService.sort(data, "name"),
+				error: (error: HttpErrorResponse) => 
 					this.toastMessageService.showToastError(error.error.message)
-		});
+			})
+		);
   }
 }
