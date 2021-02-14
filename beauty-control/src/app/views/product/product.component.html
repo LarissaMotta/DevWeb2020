@@ -86,7 +86,7 @@
 	</a>
 </div>
 
-<!-- Dialog (modal) - create e update -->
+<!-- Dialog (modal) - criar e atualizar -->
 <p-dialog [(visible)]="showProductDialog" [style]="{width: '450px'}" header="Detalhes do Produto" [modal]="true"
 	styleClass="p-fluid">
 	<ng-template pTemplate="content">
@@ -95,7 +95,7 @@
 				<label for="name">Nome</label>
 				<input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleProduct.name" required
 					autofocus />
-				<small class="p-invalid" *ngIf="formSubmitted && !handleProduct.name">Nome é requerido.</small>
+				<small class="p-error" *ngIf="formSubmitted && !handleProduct.name">Nome é requerido.</small>
 			</div>
 
 			<div class="p-field p-col">
@@ -103,7 +103,7 @@
 				<p-inputNumber class="browser-default" [(ngModel)]="handleProduct.runnigOutOfStock" mode="decimal"
 					[showButtons]="true" inputId="rating" [min]="0" [useGrouping]="false" required>
 				</p-inputNumber>
-				<small class="p-invalid" *ngIf="formSubmitted && !handleProduct.runnigOutOfStock">Baixo estoque é
+				<small class="p-error" *ngIf="formSubmitted && !handleProduct.runnigOutOfStock">Baixo estoque é
 					requerido.</small>
 			</div>
 		</div>
@@ -155,7 +155,7 @@
 			<label for="supplierId">Fornecedor</label>
 			<p-dropdown [options]="suppliers" [(ngModel)]="selectedSupplier" optionLabel="name" [showClear]="false" id="supplierId">
 			</p-dropdown>
-			<small class="p-invalid" *ngIf="formSubmitted && !handleProductLog.supplier.id">Fornecedor é requerido.</small>
+			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.supplier.id">Fornecedor é requerido.</small>
 		</div>
 
 		<div class="p-field">
@@ -163,7 +163,7 @@
 			<p-inputNumber class="browser-default" [(ngModel)]="handleProductLog.quantity" mode="decimal" [showButtons]="true"
 				inputId="quantity" [min]="0" [useGrouping]="false" required>
 			</p-inputNumber>
-			<small class="p-invalid" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que zero.</small>
+			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que zero.</small>
 		</div>
 	</ng-template>
 
@@ -179,9 +179,12 @@
 		<div class="p-field">
 			<label for="quantity">Quantidade</label>
 			<p-inputNumber class="browser-default" [(ngModel)]="handleProductLog.quantity" mode="decimal" [showButtons]="true"
-				inputId="quantity" [min]="0" [max]="maxOutputProduct" [useGrouping]="false" required>
+				inputId="quantity" [min]="0" [useGrouping]="false" required>
 			</p-inputNumber>
-			<small class="p-invalid" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que 0 e menor que {{maxOutputProduct}}.</small>
+			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que zero.</small>
+			<small class="p-error" *ngIf="handleProductLog.quantity > maxOutputProduct">
+				Quantidade deve ser maior que 0 e menor ou igual a {{maxOutputProduct}}.
+			</small>
 		</div>
 	</ng-template>
 

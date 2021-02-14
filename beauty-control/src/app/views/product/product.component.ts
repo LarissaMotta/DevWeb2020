@@ -45,11 +45,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   ) {
 		this.subscriptions = new Subscription();
     this.srcImage = "assets/produto/produto-sem-imagem.png";
-    this.suppliers = new Array<Supplier>();
+		this.suppliers = new Array<Supplier>();
+		this.loading = true;
   }
 
   ngOnInit(): void {
-    this.loading = true;
 		this.subscriptions.add(
 			this.productService.getAll().subscribe({
 				next: (products: Product[]) => this.products = products,
@@ -210,7 +210,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 					productUpdated.quantity += productInput.quantity;
 					productUpdated.status = this.productService.getProductStatus(productUpdated);
 					this.products = [...this.products];
-					this.toastMessageService.showToastSuccess("Crédito do produto atualizado com sucesso.");
+					this.toastMessageService.showToastSuccess("Crédito do produto realizado com sucesso.");
 				},
 				error: (error: HttpErrorResponse) => 
 					this.toastMessageService.showToastError(error.message)
@@ -235,7 +235,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 					productUpdated.quantity -= productOutput.quantity;
 					productUpdated.status = this.productService.getProductStatus(productUpdated);
 					this.products = [...this.products];
-					this.toastMessageService.showToastSuccess("Débito do produto atualizado com sucesso.");
+					this.toastMessageService.showToastSuccess("Débito do produto realizado com sucesso.");
 				},
 				error: (error: HttpErrorResponse) => 
 					this.toastMessageService.showToastError(error.message)

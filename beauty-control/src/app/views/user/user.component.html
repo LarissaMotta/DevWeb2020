@@ -2,7 +2,7 @@
 <p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
 
 <p-dataView #dv [value]="users" [paginator]="true" [rows]="10" layout="list" filterBy="name,email,role"
-	emptyMessage="Sem registros.">
+	emptyMessage="Sem registros" [loading]="loading">
 	<ng-template pTemplate="header">
 		<div class="p-d-flex p-flex-column p-flex-md-row p-jc-md-between">
 			<span class="p-input-icon-left p-mb-2 p-mb-md-0">
@@ -47,39 +47,39 @@
 			<label for="name">Nome</label>
 			<input type="text" class="browser-default" pInputText id="name" [(ngModel)]="handleUser.name" required
 				autofocus />
-			<small class="p-invalid" *ngIf="formSubmitted && !handleUser.name">Nome é requerido.</small>
+			<small class="p-error" *ngIf="formSubmitted && !handleUser.name">Nome é requerido.</small>
 		</div>
 
 		<div class="p-field">
 			<label for="email">Email</label>
 			<input type="text" class="browser-default" pInputText id="email" [(ngModel)]="handleUser.email" required
 				autofocus />
-			<small class="p-invalid" *ngIf="formSubmitted && !isValidEmail">Email inválido.</small>
+			<small class="p-error" *ngIf="formSubmitted && !isValidEmail">Email inválido.</small>
 		</div>
 
-		<div class="p-formgrid p-grid">
+		<div *ngIf="isNewUser" class="p-formgrid p-grid">
 			<div class="p-field p-col">
 				<label for="password">Senha</label>
 				<input type="password" class="browser-default" pPassword id="password" [(ngModel)]="handleUser.password"
 					required autofocus promptLabel="Insira a senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
-				<small class="p-invalid" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
+				<small class="p-error" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
 					ser igual.</small>
-				<small class="p-invalid" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
+				<small class="p-error" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
 					6 caracteres.</small>
 			</div>
 			<div class="p-field p-col">
 				<label for="password-confirm">Confirmar Senha</label>
 				<input type="password" class="browser-default" pPassword id="password-confirm" [(ngModel)]="passwordConfirm"
 					required autofocus promptLabel="Insira a senha" weakLabel="Fraca" mediumLabel="Média" strongLabel="Forte" />
-				<small class="p-invalid" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
+				<small class="p-error" *ngIf="formSubmitted && handleUser.password !== passwordConfirm">A senha deve
 					ser igual.</small>
-				<small class="p-invalid" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
+				<small class="p-error" *ngIf="formSubmitted && !isValidLengthPassword">A senha deve possuir pelo menos
 					6 caracteres.</small>
 			</div>
 		</div>
 
 		<div class="p-field">
-			<label class="p-mb-3">Role</label>
+			<label class="p-mb-3">Perfil</label>
 			<div class="p-formgrid p-grid">
 				<div class="p-field-radiobutton p-col-6">
 					<p-radioButton id="role-employee" name="role" [value]="roleType.EMPLOYEE" [(ngModel)]="handleUser.role">

@@ -29,10 +29,10 @@ export class SupplierComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService
   ) {
     this.subscriptions = new Array<Subscription>();
+    this.loading = true;
   }
 
   ngOnInit(): void {
-    this.loading = true;
     this.subscriptions.push(
       this.supplierService.getAll().subscribe({
         next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
@@ -150,17 +150,14 @@ export class SupplierComponent implements OnInit, OnDestroy {
     const phoneNumber: string = supplier.telephone;
 
     if (phoneNumber) {
-      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(
-        2,
-        7
-      )}-${phoneNumber.substring(7, 11)}`;
+      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2, 7)}-${phoneNumber.substring(7, 11)}`;
     }
 
     return "";
   }
 
   private isValidForm(supplier: Supplier): boolean {
-    if (!supplier.name.trim() || supplier.rating < 0) {
+    if (!supplier.name.trim() || supplier.rating < 0 || !supplier.telephone) {
       return false;
     } else {
       return true;
