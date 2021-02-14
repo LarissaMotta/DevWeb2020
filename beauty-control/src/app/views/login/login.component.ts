@@ -3,7 +3,6 @@ import { Router } from "@angular/router";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: "app-login",
@@ -58,7 +57,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 						error: () => { 
 							this.invalidUserSubmit = true;
 						}
-					}).add(() => this.isSubmittingAuth = false)
+					})
+					.add(() => this.isSubmittingAuth = false)
 			);
     } else {
       this.formLogin.markAllAsTouched();
