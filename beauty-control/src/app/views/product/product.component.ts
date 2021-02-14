@@ -31,11 +31,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   handleProductLog: ProductStockLog;
   showProductInputDialog: boolean;
   showProductOutputDialog: boolean;
-	suppliers: Supplier[];
-	selectedSupplier: Supplier;
-	maxOutputProduct: number;
+  suppliers: Supplier[];
+  selectedSupplier: Supplier;
+  maxOutputProduct: number;
 
-	private subscriptions: Subscription;
+  private subscriptions: Subscription;
 
   constructor(
     private productService: ProductService,
@@ -43,6 +43,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private supplierService: SupplierService
   ) {
+		this.subscriptions = new Subscription();
     this.srcImage = "assets/produto/produto-sem-imagem.png";
     this.suppliers = new Array<Supplier>();
   }

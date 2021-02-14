@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs';
 import { Router } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -8,21 +9,28 @@ import { AuthService } from "src/app/services/auth.service";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   urlImg: string;
   formLogin: FormGroup;
   formSubmitted: boolean;
-  invalidUserSubmit: boolean;
+	invalidUserSubmit: boolean;
+	
+	subscriptions: Subscription;
 
   constructor(private router: Router, private authService: AuthService) {
+		this.subscriptions = new Subscription();
     this.redirectToHome();
     this.urlImg = "assets/logos/icon-white-fundo-transparente.png";
     this.formLogin = this.createForm();
     this.formSubmitted = false;
-    this.invalidUserSubmit = false;
+		this.invalidUserSubmit = false;
   }
-
-  ngOnInit(): void {}
+	
+	ngOnInit(): void {}
+	
+	ngOnDestroy(): void {
+		this.subscriptions.unsubscribe();
+	}
 
   get formControls(): any {
     return this.formLogin.controls;
@@ -40,9 +48,12 @@ export class LoginComponent implements OnInit {
     this.formSubmitted = true;
 
     if (this.formLogin.valid) {
-      this.authService
-        .login(this.formLogin.value.email, this.formLogin.value.password)
-        .subscribe({ error: () => (this.invalidUserSubmit = true) });
+			this.subscriptions.add(
+				this.authService.login(this.formLogin.value.email, this.formLogin.value.password)
+					.subscribe({ 
+						error: () => this.invalidUserSubmit = true
+					})
+			);
     } else {
       this.formLogin.markAllAsTouched();
     }
@@ -50,11 +61,14 @@ export class LoginComponent implements OnInit {
 
   private createForm(): FormGroup {
     return new FormGroup({
-      email: new FormControl(null, [Validators.required, Validators.email]),
+      email: new FormControl(null, [
+				Validators.required, 
+				Validators.email
+			]),
       password: new FormControl(null, [
         Validators.required,
-        Validators.minLength(6),
-      ]),
+        Validators.minLength(6)
+      ])
     });
   }
 
