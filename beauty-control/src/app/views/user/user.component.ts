@@ -72,7 +72,25 @@ export class UserComponent implements OnInit, OnDestroy {
 
   get isValidLengthPassword(): boolean {
     return this.handleUser.password.length >= 6;
-  }
+	}
+	
+	createStateOption(user: User): any {
+		return [{
+			label: "Desativado", 
+			field: {
+				id: user.id,
+				oldValue: user.active,
+				value: false
+			}
+		}, {
+			label: "Ativado", 
+			field: {
+				id: user.id,
+				oldValue: user.active,
+				value: true
+			}
+		}];
+	}
 
   hideDialog(): void {
     this.headerUserDialog = "";
@@ -110,7 +128,18 @@ export class UserComponent implements OnInit, OnDestroy {
         this.deleteUser(user);
       },
     });
-  }
+	}
+	
+	onChangeState(event: any): void {
+		const id: number = event.option.field.id;
+		const value: boolean = event.option.field.value;
+		const oldValue: boolean = event.option.field.oldValue;
+
+		if (value === oldValue) return;
+
+		console.log("São diferentes!");
+		this.userService.updateState(id, value);
+	}
 
   saveUser(): void {
     this.formSubmitted = true;
@@ -174,7 +203,7 @@ export class UserComponent implements OnInit, OnDestroy {
 					this.toastMessageService.showToastError(error.error.message)
 			})
 		);
-  }
+	}
 
   private isValidForm(user: User): boolean {
     if (

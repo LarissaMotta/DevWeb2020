@@ -1,12 +1,12 @@
 import { StatusProduct } from "./../enums/status-product.enum";
-import Product from "../models/product.model";
-import ProductStockLog from "src/app/models/product-stock-log.model";
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BaseService } from "./base.service";
 import { endpoints } from "../routes/product.route";
 import { ProductSupplier } from "../models/product-supplier.model";
 import { Observable } from "rxjs";
+import Product from "../models/product.model";
+import ProductStockLog from "src/app/models/product-stock-log.model";
 
 @Injectable({
   providedIn: "root",
@@ -16,9 +16,7 @@ export class ProductService extends BaseService<Product> {
     super(http, endpoints.baseUrl);
   }
 
-  createProductSupplier(
-    productSupplier: ProductSupplier
-  ): Observable<ProductSupplier> {
+  createProductSupplier(productSupplier: ProductSupplier): Observable<ProductSupplier> {
     return this.http.post<ProductSupplier>(
       endpoints.productSupplier,
       JSON.stringify(productSupplier),

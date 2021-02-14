@@ -26,4 +26,8 @@ export class UserService extends BaseService<User> {
       this.httpOptions
     );
   }
+
+  updateState(id: number, active: boolean) {
+    // TODO Chamar endpoint no backend
+  }
 }

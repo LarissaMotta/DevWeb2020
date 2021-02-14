@@ -13,7 +13,7 @@
 	</ng-template>
 	<ng-template let-user pTemplate="listItem">
 		<div class="p-col-12">
-			<div class="user-list-item">
+			<div [ngClass]="{'user-list-item': true, 'user-desactive': !user.active}">
 				<img class="avatar" [src]="srcImage" [alt]="user.name" />
 				<div class="user-list-detail">
 					<div class="user-name">{{user.name}}</div>
@@ -21,11 +21,15 @@
 					<i class="pi pi-key user-role-icon"></i><span class="user-role">{{roleDict[user.role]}}</span>
 				</div>
 				<div class="user-list-action">
-					<div>
-						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(user)"
-							class="p-button-rounded p-button-text"></button>
+					<div class="actions">
+						<!-- <button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(user)"
+							class="p-button-rounded p-button-text" [disabled]="!user.active"></button> -->
 						<button pButton type="button" icon="pi pi-pencil" (click)="onClickBtnUpdate(user)"
-							class="p-button-rounded p-button-text"></button>
+							class="p-button-rounded p-button-text" [disabled]="!user.active"></button>
+					</div>
+					<div class="state-button">
+						<p-selectButton [options]="createStateOption(user)" [(ngModel)]="user.active" (onOptionClick)="onChangeState($event)" optionLabel="label" optionValue="field.value">
+						</p-selectButton>
 					</div>
 				</div>
 			</div>
