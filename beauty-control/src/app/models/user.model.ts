@@ -7,12 +7,14 @@ export default class User {
   role: Role;
   avatar: string;
   password: string;
+  active: boolean;
 
   constructor() {
     this.role = Role.EMPLOYEE;
     this.name = "";
     this.email = "";
     this.avatar = "";
-    this.password = "";   
+    this.password = "";
+    this.active = true;
   }
 }

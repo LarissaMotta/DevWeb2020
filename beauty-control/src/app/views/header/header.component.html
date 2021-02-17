@@ -2,7 +2,7 @@
 <div class="navbar-fixed" *ngIf="isLoggedIn">
   <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">
+      <a routerLink="/product" class="brand-logo">
         <img class="responsive-img" [src]="logoSrc" alt="Logo" />
       </a>
       <a href="#" data-target="sidenav-options" class="sidenav-trigger">
@@ -12,7 +12,7 @@
         <li><a routerLink="/product" routerLinkActive="active">Produtos</a></li>
         <li><a routerLink="/supplier" routerLinkActive="active">Fornecedores</a></li>
         <li *ngIf="isAdmin"><a routerLink="/user" routerLinkActive="active">Usuários</a></li>
-        <li><a routerLinkActive="active">Relatórios</a></li>
+        <li *ngIf="isAdmin"><a routerLinkActive="active">Relatórios</a></li>
         <li>
           <a class="tooltipped" data-position="bottom" #userTooltip>
             <img [src]="userAvatar" alt="" class="circle user-img" />
@@ -41,6 +41,6 @@
   <li><a class="waves-effect" routerLink="/product" routerLinkActive="active">Produtos</a></li>
   <li><a class="waves-effect" routerLink="/supplier" routerLinkActive="active">Fornecedores</a></li>
   <li *ngIf="isAdmin"><a class="waves-effect" routerLink="/user" routerLinkActive="active">Usuários</a></li>
-  <li><a class="waves-effect" routerLinkActive="active">Relatórios</a></li>
+  <li *ngIf="isAdmin"><a class="waves-effect" routerLinkActive="active">Relatórios</a></li>
   <li><a class="waves-effect" (click)="onLogout()" routerLinkActive="active">Sair</a></li>
 </ul>

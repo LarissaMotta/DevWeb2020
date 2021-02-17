@@ -23,12 +23,19 @@
       </div>
       <small *ngIf="isFormFieldInvalid('password')">Senha inválida</small>
       <div class="wthree-field">
-        <button type="submit" class="btn">Entrar</button>
+        <button type="submit" class="btn">
+					<ng-container *ngIf="isSubmittingAuth; else btnLoginMessage">
+						<div class="loader">Loading...</div>
+					</ng-container>
+					<ng-template #btnLoginMessage>
+						Entrar
+					</ng-template>
+				</button>
       </div>
       <ul class="list-login left-align">
-        <li>
+        <!-- <li>
           <a href="#" class="text-right">Esqueceu sua senha?</a>
-        </li>
+        </li> -->
         <li class="clearfix"></li>
       </ul>
     </form>

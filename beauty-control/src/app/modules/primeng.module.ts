@@ -20,6 +20,7 @@ import { RatingModule } from "primeng/rating";
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
@@ -48,7 +49,8 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     DynamicDialogModule,
     CalendarModule,
-    AccordionModule
+    AccordionModule,
+    SelectButtonModule
   ],
   providers: [MessageService, ConfirmationService],
 })

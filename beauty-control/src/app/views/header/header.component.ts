@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import * as M from "materialize-css";
 import { AuthService } from "src/app/services/auth.service";
-import { Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { Role } from "src/app/enums/role.enum";
 import User from "src/app/models/user.model";
 
@@ -28,9 +28,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @ViewChild("userTooltip") tooltipElem: ElementRef;
 
   constructor(private authService: AuthService) {
+    this.subscriptions = new Subscription();
     this.logoSrc = "assets/logos/icon-beautycontrol-white.png";
     this.avatarDefaultSrc = "assets/usuarios/usuario-sem-avatar.jpg";
-    this.subscriptions = new Subscription();
   }
 
   ngOnInit(): void {

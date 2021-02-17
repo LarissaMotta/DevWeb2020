@@ -23,33 +23,39 @@ export class UserComponent implements OnInit, OnDestroy {
   formSubmitted: boolean;
   showUserDialog: boolean;
   headerUserDialog: string;
-  passwordConfirm: string;
+	passwordConfirm: string;
+	loading: boolean;
 
-  private subscription: Subscription;
+  private subscriptions: Subscription;
 
   constructor(
     private userService: UserService,
     private confirmationService: ConfirmationService,
     private toastMessageService: ToastMessageService
   ) {
-    this.srcImage = "assets/usuarios/usuario-sem-avatar.jpg";
+		this.subscriptions = new Subscription();
+		this.srcImage = "assets/usuarios/usuario-sem-avatar.jpg";
+		this.loading = true;
   }
 
   ngOnInit(): void {
-    this.subscription = this.userService.getAll().subscribe({
-      next: (users: User[]) => {
-        this.users = users.map((user: User) => {
-          user.password = !user.password ? "" : user.password;
-          return user;
-        });
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
+    this.subscriptions.add(
+			this.userService.getAll().subscribe({
+				next: (users: User[]) => {
+					this.users = users.map((user: User) => {
+						user.password = !user.password ? "" : user.password;
+						return user;
+					});
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.error.message),
+				complete: () => this.loading = false
+			})
+		);
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 
   get roleDict(): any {
@@ -66,7 +72,25 @@ export class UserComponent implements OnInit, OnDestroy {
 
   get isValidLengthPassword(): boolean {
     return this.handleUser.password.length >= 6;
-  }
+	}
+	
+	createStateOption(user: User): any {
+		return [{
+			label: "Desativado", 
+			field: {
+				id: user.id,
+				oldValue: user.active,
+				value: false
+			}
+		}, {
+			label: "Ativado", 
+			field: {
+				id: user.id,
+				oldValue: user.active,
+				value: true
+			}
+		}];
+	}
 
   hideDialog(): void {
     this.headerUserDialog = "";
@@ -104,7 +128,18 @@ export class UserComponent implements OnInit, OnDestroy {
         this.deleteUser(user);
       },
     });
-  }
+	}
+	
+	onChangeState(event: any): void {
+		const id: number = event.option.field.id;
+		const value: boolean = event.option.field.value;
+		const oldValue: boolean = event.option.field.oldValue;
+
+		if (value === oldValue) return;
+
+		console.log("São diferentes!");
+		this.userService.updateState(id, value);
+	}
 
   saveUser(): void {
     this.formSubmitted = true;
@@ -126,56 +161,56 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   createUser(user: User): void {
-    this.userService.create(user).subscribe({
-      next: (userCreated: User) => {
-        this.users.push(userCreated);
-        this.users = [...this.users];
-        this.toastMessageService.showToastSuccess(
-          "Usuário criado com sucesso."
-        );
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
-    });
+		this.subscriptions.add(
+			this.userService.create(user).subscribe({
+				next: (userCreated: User) => {
+					this.users.push(userCreated);
+					this.users = [...this.users];
+					this.toastMessageService.showToastSuccess("Usuário criado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.message),
+			})
+		);
   }
 
   updateUser(user: User): void {
-    this.userService.update(user, user.id).subscribe({
-      next: (userUpdated: User) => {
-        let productIndex: number = this.users.findIndex(
-          (val: User, i: number) => val.id === user.id
-        );
-        this.users[productIndex] = userUpdated;
-        this.users = [...this.users];
-        this.toastMessageService.showToastSuccess(
-          "Usuário atualizado com sucesso."
-        );
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.message),
-    });
+		this.subscriptions.add(
+			this.userService.update(user, user.id).subscribe({
+				next: (userUpdated: User) => {
+					let productIndex: number = this.users.findIndex(
+						(val: User, i: number) => val.id === user.id
+					);
+					this.users[productIndex] = userUpdated;
+					this.users = [...this.users];
+					this.toastMessageService.showToastSuccess("Usuário atualizado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.message),
+			})
+		);
   }
 
   deleteUser(user: User): void {
-    this.userService.delete(user.id).subscribe({
-      next: () => {
-        this.users = this.users.filter((val) => val.id !== user.id);
-        this.handleUser = new User();
-        this.toastMessageService.showToastSuccess(
-          "Usuário deletado com sucesso."
-        );
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
-  }
+		this.subscriptions.add(
+			this.userService.delete(user.id).subscribe({
+				next: () => {
+					this.users = this.users.filter((val) => val.id !== user.id);
+					this.handleUser = new User();
+					this.toastMessageService.showToastSuccess("Usuário deletado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.error.message)
+			})
+		);
+	}
 
   private isValidForm(user: User): boolean {
     if (
       !user.name.trim() ||
       !MailUtils.isValidEmail(user.email.trim()) ||
-      user.password !== this.passwordConfirm ||
-      user.password.length < 6
+      this.isNewUser && user.password !== this.passwordConfirm ||
+      this.isNewUser && user.password.length < 6
     ) {
       return false;
     } else {

@@ -21,7 +21,11 @@
   .user-role {
     font-weight: 600;
     vertical-align: middle;
-  }
+	}
+	
+	.user-desactive {
+		background: #8a8a8a !important;
+	}
 
   .user-list-item {
     display: flex;
@@ -48,15 +52,16 @@
       font-weight: 600;
       margin-bottom: 0.5rem;
       align-self: flex-end;
-    }
+		}
 
     .user-list-action {
       display: flex;
-      flex-direction: column;
-
-      div {
-        padding-bottom: 150%;
-      }
+			flex-direction: column;
+			
+			.actions {
+				align-self: flex-end;
+				padding-bottom: 50%;
+			}
     }
 
     .p-button {

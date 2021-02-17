@@ -1,13 +1,10 @@
-import { AuthService } from "src/app/services/auth.service";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SupplierService } from "src/app/services/supplier.service";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import { ConfirmationService } from "primeng/api";
 import { HttpErrorResponse } from "@angular/common/http";
 import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
-import { Subscription, Observable, Subscriber } from "rxjs";
-import { UserSupplierRating } from "src/app/models/user-supplier-rating.model";
-import User from "src/app/models/user.model";
+import { Subscription } from "rxjs";
 import Supplier from "src/app/models/supplier.model";
 
 @Component({
@@ -22,52 +19,35 @@ export class SupplierComponent implements OnInit, OnDestroy {
   showSupplierDialog: boolean;
   formSubmitted: boolean;
   isNewSupplier: boolean;
-
-  currentUser: User;
+  loading: boolean;
 
   private subscriptions: Subscription[];
 
   constructor(
     private supplierService: SupplierService,
     private toastMessageService: ToastMessageService,
-    private confirmationService: ConfirmationService,
-    private authService: AuthService
+    private confirmationService: ConfirmationService
   ) {
     this.subscriptions = new Array<Subscription>();
+    this.loading = true;
   }
 
   ngOnInit(): void {
     this.subscriptions.push(
       this.supplierService.getAll().subscribe({
-        next: (data: Supplier[]) =>
-          (this.suppliers = this.supplierService.sort(data, "name")),
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-      })
-    );
-    this.subscriptions.push(
-      this.authService.currentUser.subscribe({
-        next: (user: User) => {
-          this.currentUser = user;
-        },
+        next: (data: Supplier[]) => this.suppliers = this.supplierService.sort(data, "name"),
+        error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.error.message),
+        complete: () => this.loading = false
       })
     );
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((x) => x.unsubscribe());
+    this.subscriptions.forEach(x => x.unsubscribe());
   }
 
   onRowSelect(): void {
     this.handleSupplier = { ...this.selectedSupplier };
-    this.supplierService
-      .getRateSupplier(this.selectedSupplier.id, this.currentUser.id)
-      .subscribe({
-        next: (userSupplierRating: UserSupplierRating) =>
-          (this.handleSupplier.rating = userSupplierRating.rating),
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-      });
     this.isNewSupplier = false;
     this.showSupplierDialog = true;
     normalizeFormLayout();
@@ -112,6 +92,8 @@ export class SupplierComponent implements OnInit, OnDestroy {
 
   createOrUpdateSupplier(): void {
     this.normalizeTelphone();
+    this.normalizeNumberFields();
+
     if (this.isNewSupplier) {
       this.createSupplier(this.handleSupplier);
     } else {
@@ -120,76 +102,71 @@ export class SupplierComponent implements OnInit, OnDestroy {
   }
 
   createSupplier(supplier: Supplier): void {
-    this.supplierService.create(supplier).subscribe({
-      next: (supplierCreated: Supplier) => {
-        this.suppliers.push(supplierCreated);
-        this.suppliers = this.supplierService.sort([...this.suppliers], "name");
-        this.toastMessageService.showToastSuccess(
-          "Fornecedor criado com sucesso."
-        );
-        this.rateSupplier(supplierCreated, supplier.rating);
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
+    this.subscriptions.push(
+			this.supplierService.create(supplier).subscribe({
+				next: (supplierCreated: Supplier) => {
+					this.suppliers.push(supplierCreated);
+					this.suppliers = this.supplierService.sort([...this.suppliers], "name");
+					this.toastMessageService.showToastSuccess("Fornecedor criado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.error.message),
+			})
+		);
   }
 
   updateSupplier(supplier: Supplier): void {
-    this.supplierService.update(supplier, supplier.id).subscribe({
-      next: (supplierUpdated: Supplier) => {
-        let supplierIndex: number = this.suppliers.findIndex(
-          (val: Supplier, i: number) => val.id == supplier.id
-        );
-        this.suppliers[supplierIndex] = supplierUpdated;
-        this.suppliers = this.supplierService.sort([...this.suppliers], "name");
-        this.toastMessageService.showToastSuccess(
-          "Fornecedor atualizado com sucesso."
-        );
-        this.rateSupplier(supplierUpdated, supplier.rating);
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
+    this.subscriptions.push(
+			this.supplierService.update(supplier, supplier.id).subscribe({
+				next: (supplierUpdated: Supplier) => {
+					let supplierIndex: number = this.suppliers.findIndex(
+						(val: Supplier, i: number) => val.id == supplier.id
+					);
+					this.suppliers[supplierIndex] = supplierUpdated;
+					this.suppliers = this.supplierService.sort([...this.suppliers], "name");
+					this.toastMessageService.showToastSuccess("Fornecedor atualizado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.error.message),
+			})
+		);
   }
 
   deleteSupplier(supplier: Supplier): void {
-    this.supplierService.delete(supplier.id).subscribe({
-      next: () => {
-        this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
-        this.handleSupplier = new Supplier();
-        this.toastMessageService.showToastSuccess(
-          "Fornecedor deletado com sucesso."
-        );
-      },
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
-  }
-
-  normalizeNumberFields(): void {
-    if (!this.handleSupplier.rating) {
-      this.handleSupplier.rating = 0;
-    }
+    this.subscriptions.push(
+			this.supplierService.delete(supplier.id).subscribe({
+				next: () => {
+					this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
+					this.handleSupplier = new Supplier();
+					this.toastMessageService.showToastSuccess("Fornecedor deletado com sucesso.");
+				},
+				error: (error: HttpErrorResponse) =>
+					this.toastMessageService.showToastError(error.error.message),
+			})
+		);
   }
 
   setMaskPhoneNumber(supplier: Supplier): string {
     const phoneNumber: string = supplier.telephone;
 
     if (phoneNumber) {
-      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(
-        2,
-        7
-      )}-${phoneNumber.substring(7, 11)}`;
+      return `(${phoneNumber.substring(0, 2)}) ${phoneNumber.substring(2, 7)}-${phoneNumber.substring(7, 11)}`;
     }
 
     return "";
   }
 
   private isValidForm(supplier: Supplier): boolean {
-    if (!supplier.name.trim() || supplier.rating < 0) {
+    if (!supplier.name.trim() || supplier.rating < 0 || !supplier.telephone) {
       return false;
     } else {
       return true;
+    }
+  }
+
+  private normalizeNumberFields(): void {
+    if (!this.handleSupplier.rating) {
+      this.handleSupplier.rating = 0;
     }
   }
 
@@ -198,17 +175,5 @@ export class SupplierComponent implements OnInit, OnDestroy {
       /[() -]/g,
       ""
     );
-  }
-
-  private rateSupplier(supplier: Supplier, ratingValue: number): void {
-    const rating = new UserSupplierRating(
-      supplier.rating,
-      this.currentUser,
-      supplier
-    );
-    this.supplierService.rateSupplier(rating).subscribe({
-      error: (error: HttpErrorResponse) =>
-        this.toastMessageService.showToastError(error.error.message),
-    });
   }
 }
