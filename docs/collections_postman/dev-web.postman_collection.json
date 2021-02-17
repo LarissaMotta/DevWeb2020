@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ac9d53b-e177-4031-af80-b90ae70edd60",
+		"_postman_id": "dd494435-6e0a-4dbd-8fd2-15ca51d70999",
 		"name": "dev-web",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -137,7 +137,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Creme para rosto\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 10,\r\n    \"status\": \"out_of_stock\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Creme para rosto\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 10,\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -311,7 +311,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Fornecedor teste\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
+							"raw": "{\r\n    \"id\": 13,\r\n    \"rating\": 5,\r\n    \"name\": \"Fornecedor com id 13\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -319,14 +319,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/suppliers/1",
+							"raw": "{{protocol}}://{{host}}/suppliers/13",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"suppliers",
-								"1"
+								"13"
 							]
 						}
 					},
@@ -496,6 +496,75 @@
 				{
 					"name": "users",
 					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 7,\r\n    \"name\": \"Joaquina teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/users/7",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "active",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/users/7/active",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"users",
+								"7",
+								"active"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users",
+					"request": {
 						"method": "DELETE",
 						"header": [
 							{
@@ -625,10 +694,46 @@
 			]
 		},
 		{
-			"name": "users-suppliers-rating",
+			"name": "product-stock-logs",
 			"item": [
 				{
-					"name": "create",
+					"name": "product-stock-logs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/product-stock-logs",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"product-stock-logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-stock-logs",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -640,7 +745,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"rating\": 4,\r\n    \"user\": 1,\r\n    \"supplier\": 1\r\n}",
+							"raw": "{\r\n    \"product\": 2,\r\n    \"supplier\": 4,\r\n    \"quantity\": 11,\r\n    \"status\": \"input\",\r\n    \"date\": \"Sun Jan 24 2021 10:50:22 GMT-0300 (Horário Padrão de Brasília)\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -648,54 +753,20 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/user-supplier-ratings",
+							"raw": "{{protocol}}://{{host}}/product-stock-logs",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"user-supplier-ratings"
+								"product-stock-logs"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "put",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"type": "text",
-								"value": "{{bearer}} {{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": 1,\r\n    \"rating\": 5,\r\n    \"user\": 1,\r\n    \"supplier\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{protocol}}://{{host}}/user-supplier-ratings/1",
-							"protocol": "{{protocol}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"user-supplier-ratings",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
+					"name": "product-stock-logs Copy",
 					"request": {
 						"method": "DELETE",
 						"header": [
@@ -715,13 +786,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/user-supplier-ratings/1",
+							"raw": "{{protocol}}://{{host}}/product-stock-logs/1",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
-								"user-supplier-ratings",
+								"product-stock-logs",
 								"1"
 							]
 						}
