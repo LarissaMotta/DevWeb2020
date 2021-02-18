@@ -137,8 +137,16 @@ export class UserComponent implements OnInit, OnDestroy {
 
 		if (value === oldValue) return;
 
-		console.log("São diferentes!");
-		this.userService.updateState(id, value);
+		this.subscriptions.add(
+      this.userService.updateState(id, value).subscribe({
+        next: () => {
+          const mensagem: string = value ? "ativado" : "desativado";
+          this.toastMessageService.showToastSuccess(`Usuário ${mensagem} com sucesso.`);
+        },
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.message),
+      })
+    );
 	}
 
   saveUser(): void {
@@ -175,6 +183,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   updateUser(user: User): void {
+    user.password = null;
+
 		this.subscriptions.add(
 			this.userService.update(user, user.id).subscribe({
 				next: (userUpdated: User) => {

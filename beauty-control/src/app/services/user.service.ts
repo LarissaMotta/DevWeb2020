@@ -27,7 +27,11 @@ export class UserService extends BaseService<User> {
     );
   }
 
-  updateState(id: number, active: boolean) {
-    // TODO Chamar endpoint no backend
+  updateState(id: number, active: boolean): Observable<void> {
+    return this.http.put<void>(
+      endpoints.active.replace("{id}", id.toString()),
+      { active },
+      this.httpOptions
+    );
   }
 }
