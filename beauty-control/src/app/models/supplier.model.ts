@@ -5,14 +5,16 @@ export default class Supplier {
   name: string;
   telephone: string;
   observation: string;
-  rating: number;
+  avgRating: number;
+  userRating: number;
   categories: Category[];
 
   constructor() {
     this.name = "";
     this.telephone = "";
     this.observation = "";
-    this.rating = 0;
+    this.avgRating = 0;
+    this.userRating = 0;
     this.categories = [];
   }
 }
