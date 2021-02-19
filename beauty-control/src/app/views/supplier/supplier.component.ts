@@ -157,11 +157,15 @@ export class SupplierComponent implements OnInit, OnDestroy {
   }
 
   private isValidForm(supplier: Supplier): boolean {
-    if (!supplier.name.trim() || supplier.userRating < 0 || !supplier.telephone) {
+    if (!supplier.name.trim() || !supplier.telephone) {
       return false;
-    } else {
-      return true;
     }
+    
+    if (supplier.userRating < 0 || supplier.userRating > 5) {
+      return false;
+    }
+
+    return true;
   }
 
   private normalizeNumberFields(): void {

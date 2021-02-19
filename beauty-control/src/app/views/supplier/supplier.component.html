@@ -77,6 +77,9 @@
         <p-inputNumber class="browser-default" [(ngModel)]="handleSupplier.userRating" mode="decimal" [showButtons]="true"
           inputId="rating" [min]="0" [max]="5" [useGrouping]="false">
         </p-inputNumber>
+        <small class="p-error" *ngIf="handleSupplier.userRating < 0 || handleSupplier.userRating > 5">
+          A avaliação do fornecedor deve ser entre 0 e 5.
+        </small>
       </div>
     </div>
 
