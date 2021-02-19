@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "dd494435-6e0a-4dbd-8fd2-15ca51d70999",
+		"_postman_id": "cb1254b3-83cf-43d7-992f-17369c17a53b",
 		"name": "dev-web",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -278,7 +278,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Fornecedor 2\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Fornecedor teste\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\r\n    \"userRating\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -311,7 +311,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 13,\r\n    \"rating\": 5,\r\n    \"name\": \"Fornecedor com id 13\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
+							"raw": "{\r\n    \"id\": 13,\r\n    \"rating\": 4,\r\n    \"name\": \"Fornecedor com id 13\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -506,7 +506,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 7,\r\n    \"name\": \"Joaquina teste\"\r\n}",
+							"raw": "{\r\n    \"id\": 7,\r\n    \"name\": \"Joaquina dos Santos\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
