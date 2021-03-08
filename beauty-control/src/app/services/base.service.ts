@@ -24,12 +24,16 @@ export abstract class BaseService<T> {
     return this.http.post<T>(this.baseUrl, JSON.stringify(t), this.httpOptions);
   }
 
+  createAsFormData(form: FormData): Observable<T> {
+    return this.http.post<T>(this.baseUrl, form);
+  }
+
   update(t: T, id: number): Observable<T> {
-    return this.http.put<T>(
-      `${this.baseUrl}/${id}`,
-      JSON.stringify(t),
-      this.httpOptions
-    );
+    return this.http.put<T>(`${this.baseUrl}/${id}`, JSON.stringify(t), this.httpOptions);
+  }
+
+	updateAsFormData(form: FormData, id: number): Observable<T> {
+    return this.http.put<T>(`${this.baseUrl}/${id}`, form);
   }
 
   delete(id: number): Observable<T> {

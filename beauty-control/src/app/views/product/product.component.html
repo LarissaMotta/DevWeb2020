@@ -35,7 +35,7 @@
 							class="p-button-rounded p-button-text" title="Creditar itens"></button>
 						<button pButton type="button" icon="pi pi-minus-circle" (click)="onClickBtnOutput(product)"
 							class="p-button-rounded p-button-text" title="Debitar itens"></button>
-						<button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
+						<button pButton type="button" icon="pi pi-pencil" (click)="onClickBtnEdit(product)"
 							class="p-button-rounded p-button-text" title="Editar produto"></button>
 						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
 							class="p-button-rounded p-button-text" title="Remover produto"></button>
@@ -58,7 +58,7 @@
 							class="p-button-rounded p-button-text" title="Creditar itens"></button>
 						<button pButton type="button" icon="pi pi-minus-circle" (click)="onClickBtnOutput(product)"
 							class="p-button-rounded p-button-text" title="Debitar itens"></button>
-						<button pButton type="button" icon="pi pi-pencil" (click)="onProductSelect(product)"
+						<button pButton type="button" icon="pi pi-pencil" (click)="onClickBtnEdit(product)"
 							class="p-button-rounded p-button-text" title="Editar produto"></button>
 						<button pButton type="button" icon="pi pi-trash" (click)="onClickBtnDelete(product)"
 							class="p-button-rounded p-button-text" title="Remover produto"></button>
@@ -87,7 +87,7 @@
 </div>
 
 <!-- Dialog (modal) - criar e atualizar -->
-<p-dialog [(visible)]="showProductDialog" [style]="{width: '450px'}" header="Detalhes do Produto" [modal]="true"
+<p-dialog [(visible)]="showProductDialog" [style]="{width: '600px'}" header="Detalhes do Produto" [modal]="true"
 	styleClass="p-fluid">
 	<ng-template pTemplate="content">
 		<div class="p-formgrid p-grid">
@@ -139,6 +139,17 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="p-field product-upload-image">
+			<p-fileUpload name="img[]" (onSelect)="onSelectImageProduct($event)" accept="image/*" maxFileSize="10000000"
+				[showUploadButton]="false" chooseLabel="Selecionar imagem" cancelLabel="Remover">
+				<ng-template pTemplate="content">
+					<ul *ngIf="selectedFile">
+						<li>{{selectedFile.name}} - {{selectedFile.size}} bytes</li>
+					</ul>
+				</ng-template>
+			</p-fileUpload>
+		</div>
 	</ng-template>
 
 	<ng-template pTemplate="footer">
@@ -153,7 +164,8 @@
 	<ng-template pTemplate="content">
 		<div class="p-field">
 			<label for="supplierId">Fornecedor</label>
-			<p-dropdown [options]="suppliers" [(ngModel)]="selectedSupplier" optionLabel="name" [showClear]="false" id="supplierId">
+			<p-dropdown [options]="suppliers" [(ngModel)]="selectedSupplier" optionLabel="name" [showClear]="false"
+				id="supplierId">
 			</p-dropdown>
 			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.supplier.id">Fornecedor é requerido.</small>
 		</div>
@@ -163,7 +175,8 @@
 			<p-inputNumber class="browser-default" [(ngModel)]="handleProductLog.quantity" mode="decimal" [showButtons]="true"
 				inputId="quantity" [min]="0" [useGrouping]="false" required>
 			</p-inputNumber>
-			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que zero.</small>
+			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que
+				zero.</small>
 		</div>
 	</ng-template>
 
@@ -181,7 +194,8 @@
 			<p-inputNumber class="browser-default" [(ngModel)]="handleProductLog.quantity" mode="decimal" [showButtons]="true"
 				inputId="quantity" [min]="0" [useGrouping]="false" required>
 			</p-inputNumber>
-			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que zero.</small>
+			<small class="p-error" *ngIf="formSubmitted && !handleProductLog.quantity">Quantidade deve ser maior que
+				zero.</small>
 			<small class="p-error" *ngIf="handleProductLog.quantity > maxOutputProduct">
 				Quantidade deve ser maior que 0 e menor ou igual a {{maxOutputProduct}}.
 			</small>

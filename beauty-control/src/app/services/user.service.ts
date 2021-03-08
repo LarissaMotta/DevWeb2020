@@ -20,9 +20,9 @@ export class UserService extends BaseService<User> {
     );
   }
 
-  getById(id: string): Observable<User> {
+  getById(id: number): Observable<User> {
     return this.http.get<User>(
-      endpoints.getUserById.replace("{id}", id),
+      endpoints.getUserById.replace("{id}", id.toString()),
       this.httpOptions
     );
   }

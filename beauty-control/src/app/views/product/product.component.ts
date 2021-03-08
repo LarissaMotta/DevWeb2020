@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import Product from "src/app/models/product.model";
 import Supplier from 'src/app/models/supplier.model';
 import ProductStockLog from 'src/app/models/product-stock-log.model';
+import DataProcessUtil from 'src/app/utils/data-process.util';
 
 @Component({
   selector: "app-product",
@@ -27,6 +28,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   formSubmitted: boolean;
   isNewProduct: boolean;
   loading: boolean;
+	selectedFile: File;
 
   handleProductLog: ProductStockLog;
   showProductInputDialog: boolean;
@@ -71,24 +73,25 @@ export class ProductComponent implements OnInit, OnDestroy {
 		return productDict.status;
 	}
 
-  onProductSelect(product: Product): void {
-    this.handleProduct = { ...product };
-    this.isNewProduct = false;
-    this.showProductDialog = true;
-    normalizeFormLayout();
-  }
-
   hideDialog(): void {
 		this.showProductDialog = false;
 		this.showProductInputDialog = false;
 		this.showProductOutputDialog = false;
     this.formSubmitted = false;
+		this.selectedFile = null;
   }
 
   onClickBtnCreate(): void {
     this.handleProduct = new Product();
     this.isNewProduct = true;
     this.formSubmitted = false;
+    this.showProductDialog = true;
+    normalizeFormLayout();
+  }
+
+	onClickBtnEdit(product: Product): void {
+    this.handleProduct = { ...product };
+    this.isNewProduct = false;
     this.showProductDialog = true;
     normalizeFormLayout();
   }
@@ -129,6 +132,12 @@ export class ProductComponent implements OnInit, OnDestroy {
 		normalizeFormLayout();
   }
 
+	onSelectImageProduct(event: any) {
+		if (event.currentFiles && event.currentFiles.length > 0) {
+			this.selectedFile = event.currentFiles[0];
+		}
+	}
+
   saveProduct(): void {
     this.formSubmitted = true;
     let isValid: boolean = this.isValidForm(this.handleProduct);
@@ -149,9 +158,13 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   createProduct(product: Product): void {
+		const formProduct: FormData = DataProcessUtil.convertToFormData(product);
+		formProduct.append("img", this.selectedFile);
+
 		this.subscriptions.add(
-			this.productService.create(product).subscribe({
+			this.productService.createAsFormData(formProduct).subscribe({
 				next: (productCreated: Product) => {
+					console.log(productCreated);
 					this.products.push(productCreated);
 					this.products = [...this.products];
 					this.toastMessageService.showToastSuccess("Produto criado com sucesso.");

@@ -33,11 +33,11 @@
 
   .product-badge {
     border-radius: 2px;
-    padding: .25em .5rem;
+    padding: 0.25em 0.5rem;
     text-transform: uppercase;
     font-weight: 700;
     font-size: 12px;
-    letter-spacing: .3px;
+    letter-spacing: 0.3px;
   }
 
   .product-badge.status-lowstock {
@@ -99,6 +99,20 @@
     .p-button {
       margin-bottom: 0.5rem;
     }
+  }
+
+  .product-upload-image {
+    .p-button {
+      height: 2rem;
+    }
+
+    .p-button-icon-only {
+      width: 2.357rem !important;
+    }
+
+		.p-fileupload-row.ng-star-inserted div {
+			width: fit-content;
+		}
   }
 
   .product-grid-item {

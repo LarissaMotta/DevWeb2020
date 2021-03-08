@@ -16,6 +16,19 @@ export class ProductService extends BaseService<Product> {
     super(http, endpoints.baseUrl);
   }
 
+	getProductStatus(product: Product): StatusProduct {
+    if (product.quantity <= 0) return StatusProduct.OUT_OF_STOCK;
+    if (product.quantity > product.runnigOutOfStock) return StatusProduct.IN_STOCK;
+    return StatusProduct.RUNNIG_OUT_OF_STOCK;
+	}
+
+	getProductImage(id: number): Observable<any> {
+		return this.http.get<any>(
+      endpoints.getProductImage.replace("{id}", id.toString()),
+      this.httpOptions
+    );
+	}
+
   createProductSupplier(productSupplier: ProductSupplier): Observable<ProductSupplier> {
     return this.http.post<ProductSupplier>(
       endpoints.productSupplier,
@@ -31,12 +44,6 @@ export class ProductService extends BaseService<Product> {
   debitProduct(productOutput: ProductStockLog): Observable<ProductStockLog> {
     return this.buildProductStockLogRequestObj(productOutput);
   }
-
-  getProductStatus(product: Product): StatusProduct {
-    if (product.quantity <= 0) return StatusProduct.OUT_OF_STOCK;
-    if (product.quantity > product.runnigOutOfStock) return StatusProduct.IN_STOCK;
-    return StatusProduct.RUNNIG_OUT_OF_STOCK;
-	}
 
   private buildProductStockLogRequestObj(productLog: ProductStockLog): Observable<ProductStockLog> {
     const obj: any = {

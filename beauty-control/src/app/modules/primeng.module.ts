@@ -21,10 +21,11 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { FileUploadModule } from 'primeng/fileupload';
+import { CommonModule } from '@angular/common';
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
-import { CommonModule } from '@angular/common';
 
 @NgModule({
   imports: [],
@@ -50,7 +51,8 @@ import { CommonModule } from '@angular/common';
     DynamicDialogModule,
     CalendarModule,
     AccordionModule,
-    SelectButtonModule
+    SelectButtonModule,
+    FileUploadModule
   ],
   providers: [MessageService, ConfirmationService],
 })
