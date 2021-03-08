@@ -39,7 +39,7 @@
       <td>{{supplier.name}}</td>
       <td>{{setMaskPhoneNumber(supplier)}}</td>
       <td style="text-align:center; width: 4rem;">
-        <p-rating [ngModel]="supplier.rating" readonly="true" [cancel]="false"></p-rating>
+        <p-rating [ngModel]="supplier.avgRating" readonly="true" [cancel]="false"></p-rating>
       </td>
       <td>{{supplier.observation}}</td>
     </tr>
@@ -74,9 +74,12 @@
 
       <div class="p-field p-col">
         <label for="rating">Avaliação</label>
-        <p-inputNumber class="browser-default" [(ngModel)]="handleSupplier.rating" mode="decimal" [showButtons]="true"
+        <p-inputNumber class="browser-default" [(ngModel)]="handleSupplier.userRating" mode="decimal" [showButtons]="true"
           inputId="rating" [min]="0" [max]="5" [useGrouping]="false">
         </p-inputNumber>
+        <small class="p-error" *ngIf="handleSupplier.userRating < 0 || handleSupplier.userRating > 5">
+          A avaliação do fornecedor deve ser entre 0 e 5.
+        </small>
       </div>
     </div>
 

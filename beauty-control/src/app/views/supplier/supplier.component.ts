@@ -157,23 +157,24 @@ export class SupplierComponent implements OnInit, OnDestroy {
   }
 
   private isValidForm(supplier: Supplier): boolean {
-    if (!supplier.name.trim() || supplier.rating < 0 || !supplier.telephone) {
+    if (!supplier.name.trim() || !supplier.telephone) {
       return false;
-    } else {
-      return true;
     }
+    
+    if (supplier.userRating < 0 || supplier.userRating > 5) {
+      return false;
+    }
+
+    return true;
   }
 
   private normalizeNumberFields(): void {
-    if (!this.handleSupplier.rating) {
-      this.handleSupplier.rating = 0;
+    if (!this.handleSupplier.userRating) {
+      this.handleSupplier.userRating = 0;
     }
   }
 
   private normalizeTelphone(): void {
-    this.handleSupplier.telephone = this.handleSupplier.telephone.replace(
-      /[() -]/g,
-      ""
-    );
+    this.handleSupplier.telephone = this.handleSupplier.telephone.replace(/[() -]/g, "");
   }
 }

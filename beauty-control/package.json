@@ -13,7 +13,7 @@
     "cypress:run": "cypress run",
     "cypress:chrome": "cypress run -b chrome",
     "deploy:qas": "ng build --prod --base-href https://LarissaMotta.github.io/devweb-front-end/ && angular-cli-ghpages --branch gh-pages",
-    "deploy:prd": "ng build --prod && sudo firebase init && sudo firebase deploy && sudo firebase open hosting:site"
+    "deploy:prd": "ng build --prod && firebase login --no-localhost && firebase init && firebase deploy && firebase open hosting:site"
   },
   "private": true,
   "dependencies": {
