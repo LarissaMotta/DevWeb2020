@@ -32,7 +32,7 @@ export abstract class BaseService<T> {
     return this.http.put<T>(`${this.baseUrl}/${id}`, JSON.stringify(t), this.httpOptions);
   }
 
-	updateAsFormData(form: FormData, id: number): Observable<T> {
+  updateAsFormData(form: FormData, id: number): Observable<T> {
     return this.http.put<T>(`${this.baseUrl}/${id}`, form);
   }
 

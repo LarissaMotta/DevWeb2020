@@ -15,7 +15,7 @@
 	<ng-template let-product pTemplate="listItem">
 		<div class="p-col-12">
 			<div class="product-list-item">
-				<img [src]="srcImage" [alt]="product.name" />
+				<div *ngIf="product.img"><img [src]="product.img" [alt]="product.name"/></div>
 				<div class="product-list-detail">
 					<div class="product-name">{{product.name}}</div>
 					<div class="product-description">{{product.description}}</div>
@@ -65,7 +65,7 @@
 					</div>
 				</div>
 				<div class="product-grid-item-content">
-					<img [src]="srcImage" [alt]="product.name" />
+					<div *ngIf="product.img"><img [src]="product.img" [alt]="product.name"/></div>
 					<div class="product-name">{{product.name}}</div>
 					<div class="product-description">{{product.description}} </div>
 				</div>
@@ -143,11 +143,6 @@
 		<div class="p-field product-upload-image">
 			<p-fileUpload name="img[]" (onSelect)="onSelectImageProduct($event)" accept="image/*" maxFileSize="10000000"
 				[showUploadButton]="false" chooseLabel="Selecionar imagem" cancelLabel="Remover">
-				<ng-template pTemplate="content">
-					<ul *ngIf="selectedFile">
-						<li>{{selectedFile.name}} - {{selectedFile.size}} bytes</li>
-					</ul>
-				</ng-template>
 			</p-fileUpload>
 		</div>
 	</ng-template>

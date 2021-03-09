@@ -20,7 +20,6 @@ import DataProcessUtil from 'src/app/utils/data-process.util';
   styleUrls: ["./product.component.scss"],
 })
 export class ProductComponent implements OnInit, OnDestroy {
-  srcImage: string;
   products: Product[];
   selectedProduct: Product;
   handleProduct: Product;
@@ -29,6 +28,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   isNewProduct: boolean;
   loading: boolean;
 	selectedFile: File;
+	srcNoImage: string;
 
   handleProductLog: ProductStockLog;
   showProductInputDialog: boolean;
@@ -46,7 +46,8 @@ export class ProductComponent implements OnInit, OnDestroy {
     private supplierService: SupplierService
   ) {
 		this.subscriptions = new Subscription();
-    this.srcImage = "assets/produto/produto-sem-imagem.png";
+    this.srcNoImage = "assets/produto/produto-sem-imagem.png";
+		this.products = new Array<Product>();
 		this.suppliers = new Array<Supplier>();
 		this.loading = true;
   }
@@ -54,7 +55,14 @@ export class ProductComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 		this.subscriptions.add(
 			this.productService.getAll().subscribe({
-				next: (products: Product[]) => this.products = products,
+				next: (products: Product[]) => {
+					this.productService.sort(products, "name")
+						.forEach((product: Product) => {
+							product.img = null;
+							this.products.push(product);
+							this.getProductImage(product);
+						});
+				},
 				error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
 				complete: () => this.loading = false
 			})
@@ -103,9 +111,7 @@ export class ProductComponent implements OnInit, OnDestroy {
       acceptLabel: "Sim",
       rejectLabel: "Não",
       icon: "pi pi-exclamation-triangle",
-      accept: () => {
-        this.deleteProduct(product);
-      }
+      accept: () => this.deleteProduct(product)
     });
   }
 
@@ -158,13 +164,15 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   createProduct(product: Product): void {
-		const formProduct: FormData = DataProcessUtil.convertToFormData(product);
+		const properties = ["name", "description", "category", "runnigOutOfStock"];
+		const formProduct: FormData = DataProcessUtil.convertToFormData(product, properties);
 		formProduct.append("img", this.selectedFile);
 
 		this.subscriptions.add(
 			this.productService.createAsFormData(formProduct).subscribe({
 				next: (productCreated: Product) => {
-					console.log(productCreated);
+					this.getProductImage(productCreated);
+					productCreated.img = null;
 					this.products.push(productCreated);
 					this.products = [...this.products];
 					this.toastMessageService.showToastSuccess("Produto criado com sucesso.");
@@ -177,12 +185,20 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
   updateProduct(product: Product): void {
+		const properties = ["id", "name", "description", "category", "runnigOutOfStock"];
+		const formProduct: FormData = DataProcessUtil.convertToFormData(product, properties);
+		formProduct.set("img", this.selectedFile);
+
 		this.subscriptions.add(
-			this.productService.update(product, product.id).subscribe({
+			this.productService.updateAsFormData(formProduct, product.id).subscribe({
 				next: (productUpdated: Product) => {
+					this.getProductImage(productUpdated);
 					let productIndex: number = this.products.findIndex(
 						(val: Product, i: number) => val.id == product.id
 					);
+					productUpdated.img = null;
+					productUpdated.quantity = product.quantity;
+					productUpdated.status = this.productService.getProductStatus(productUpdated);
 					this.products[productIndex] = productUpdated;
 					this.products = [...this.products];
 					this.toastMessageService.showToastSuccess("Produto atualizado com sucesso.");
@@ -320,4 +336,28 @@ export class ProductComponent implements OnInit, OnDestroy {
 			})
 		);
   }
+
+	private getProductImage(product: Product): void {
+		this.subscriptions.add(
+			this.productService.getProductImage(product.id).subscribe({
+				next: (data: Blob) => this.readImageAsBase64(product, data),
+				error: (error: HttpErrorResponse) => {
+					// TODO Mudar aqui depois quando consertar os erros de a imagem não encontrada no back
+					//this.toastMessageService.showToastError(error.error.message)
+					this.readImageAsBase64(product, null);
+				}
+			})
+		);
+	}
+
+	private readImageAsBase64(product: Product, blob: Blob): void {
+		if (!blob) {
+			product.img = this.srcNoImage;
+		} else {
+			const reader = new FileReader();
+			reader.readAsDataURL(blob);
+			reader.onloadend = () => 
+				product.img = blob.size > 0 ? reader.result as string : this.srcNoImage;
+		}
+	}
 }

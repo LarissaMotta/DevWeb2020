@@ -22,11 +22,11 @@ export class ProductService extends BaseService<Product> {
     return StatusProduct.RUNNIG_OUT_OF_STOCK;
 	}
 
-	getProductImage(id: number): Observable<any> {
-		return this.http.get<any>(
-      endpoints.getProductImage.replace("{id}", id.toString()),
-      this.httpOptions
-    );
+	getProductImage(id: number): Observable<Blob> {
+		return this.http.get<Blob>(
+			endpoints.getProductImage.replace("{id}", id.toString()),
+			{ responseType: 'blob' } as object
+		);
 	}
 
   createProductSupplier(productSupplier: ProductSupplier): Observable<ProductSupplier> {

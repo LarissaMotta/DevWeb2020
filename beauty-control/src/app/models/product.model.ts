@@ -18,6 +18,6 @@ export default class Product {
     this.runnigOutOfStock = 0;
     this.category = Category.FACE;
     this.status = StatusProduct.OUT_OF_STOCK;
-    this.img = "";
+    this.img = null;
   }
 }
