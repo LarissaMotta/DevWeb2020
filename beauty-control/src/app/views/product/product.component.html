@@ -15,7 +15,7 @@
 	<ng-template let-product pTemplate="listItem">
 		<div class="p-col-12">
 			<div class="product-list-item">
-				<div *ngIf="product.img"><img [src]="product.img" [alt]="product.name"/></div>
+				<div *ngIf="product.imgBlob"><img [src]="product.imgBlob" [alt]="product.name"/></div>
 				<div class="product-list-detail">
 					<div class="product-name">{{product.name}}</div>
 					<div class="product-description">{{product.description}}</div>
@@ -65,7 +65,7 @@
 					</div>
 				</div>
 				<div class="product-grid-item-content">
-					<div *ngIf="product.img"><img [src]="product.img" [alt]="product.name"/></div>
+					<div *ngIf="product.imgBlob"><img [src]="product.imgBlob" [alt]="product.name"/></div>
 					<div class="product-name">{{product.name}}</div>
 					<div class="product-description">{{product.description}} </div>
 				</div>

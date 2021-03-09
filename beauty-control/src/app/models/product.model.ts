@@ -10,6 +10,7 @@ export default class Product {
   category: Category;
   status: StatusProduct;
   img: string;
+  imgBlob: string;
 
   constructor() {
     this.name = "";
@@ -19,5 +20,6 @@ export default class Product {
     this.category = Category.FACE;
     this.status = StatusProduct.OUT_OF_STOCK;
     this.img = null;
+    this.imgBlob = null;
   }
 }

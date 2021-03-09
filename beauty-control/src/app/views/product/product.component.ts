@@ -58,7 +58,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 				next: (products: Product[]) => {
 					this.productService.sort(products, "name")
 						.forEach((product: Product) => {
-							product.img = null;
 							this.products.push(product);
 							this.getProductImage(product);
 						});
@@ -173,7 +172,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 			this.productService.createAsFormData(formProduct).subscribe({
 				next: (productCreated: Product) => {
 					this.getProductImage(productCreated);
-					productCreated.img = null;
 					this.products.push(productCreated);
 					this.products = [...this.products];
 					this.toastMessageService.showToastSuccess("Produto criado com sucesso.");
@@ -197,7 +195,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 					let productIndex: number = this.products.findIndex(
 						(val: Product, i: number) => val.id == product.id
 					);
-					productUpdated.img = null;
 					productUpdated.quantity = product.quantity;
 					productUpdated.status = this.productService.getProductStatus(productUpdated);
 					this.products[productIndex] = productUpdated;
@@ -339,6 +336,11 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
 
 	private getProductImage(product: Product): void {
+    if (!product.img) { 
+      this.readImageAsBase64(product, null); 
+      return;
+    }
+
 		this.subscriptions.add(
 			this.productService.getProductImage(product.id).subscribe({
 				next: (data: Blob) => this.readImageAsBase64(product, data),
@@ -353,12 +355,12 @@ export class ProductComponent implements OnInit, OnDestroy {
 
 	private readImageAsBase64(product: Product, blob: Blob): void {
 		if (!blob) {
-			product.img = this.srcNoImage;
+			product.imgBlob = this.srcNoImage;
 		} else {
 			const reader = new FileReader();
 			reader.readAsDataURL(blob);
 			reader.onloadend = () => 
-				product.img = blob.size > 0 ? reader.result as string : this.srcNoImage;
+				product.imgBlob = blob.size > 0 ? reader.result as string : this.srcNoImage;
 		}
 	}
 }
