@@ -1,0 +1,17 @@
+:host ::ng-deep {
+	.report-chart {
+    width: 100%;
+    height: 650px;
+  }
+
+  .title-reports {
+    .p-panel-title {
+      color: #ffffff;
+      font-size: 1.64rem;
+    }
+
+		.p-panel-header-icon {
+			color: #ffffff;
+		}
+  }
+}

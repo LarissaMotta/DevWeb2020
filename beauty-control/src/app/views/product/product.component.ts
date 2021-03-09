@@ -63,7 +63,8 @@ export class ProductComponent implements OnInit, OnDestroy {
 							this.getProductImage(product);
 						});
 				},
-				error: (error: HttpErrorResponse) => this.toastMessageService.showToastError(error.message),
+				error: (error: HttpErrorResponse) => 
+					this.toastMessageService.showToastError(error.message),
 				complete: () => this.loading = false
 			})
 		);

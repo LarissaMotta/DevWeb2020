@@ -1,1 +1,8 @@
-<p>product-report works!</p>
+<p-panel header="Produtos" styleClass="title-reports" [toggleable]="true">
+	<ng-template pTemplate="icons">
+		<p-menu #menu id="config_menu" [popup]="true"></p-menu>
+	</ng-template>
+
+	<div id="pie-browser" class="report-chart p-mb-5"></div>
+	<div id="bar-population" class="report-chart"></div>
+</p-panel>

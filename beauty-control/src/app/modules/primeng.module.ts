@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
-
+import { CommonModule } from "@angular/common";
 import { TableModule } from "primeng/table";
 import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
 import { InputTextareaModule } from "primeng/inputtextarea";
 import { InputMaskModule } from "primeng/inputmask";
-import { PasswordModule } from 'primeng/password';
+import { PasswordModule } from "primeng/password";
 import { DropdownModule } from "primeng/dropdown";
 import { RadioButtonModule } from "primeng/radiobutton";
 import { ButtonModule } from "primeng/button";
@@ -15,14 +15,15 @@ import { MessagesModule } from "primeng/messages";
 import { MessageModule } from "primeng/message";
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { DialogModule } from "primeng/dialog";
-import { DataViewModule } from 'primeng/dataview';
+import { DataViewModule } from "primeng/dataview";
 import { RatingModule } from "primeng/rating";
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { CalendarModule } from 'primeng/calendar';
-import { AccordionModule } from 'primeng/accordion';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { FileUploadModule } from 'primeng/fileupload';
-import { CommonModule } from '@angular/common';
+import { DynamicDialogModule } from "primeng/dynamicdialog";
+import { CalendarModule } from "primeng/calendar";
+import { AccordionModule } from "primeng/accordion";
+import { SelectButtonModule } from "primeng/selectbutton";
+import { FileUploadModule } from "primeng/fileupload";
+import { PanelModule } from "primeng/panel";
+import { MenuModule } from 'primeng/menu';
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
@@ -52,8 +53,10 @@ import { ConfirmationService } from "primeng/api";
     CalendarModule,
     AccordionModule,
     SelectButtonModule,
-    FileUploadModule
+    FileUploadModule,
+    PanelModule,
+    MenuModule
   ],
   providers: [MessageService, ConfirmationService],
 })
-export class PrimengModule { }
+export class PrimengModule {}
