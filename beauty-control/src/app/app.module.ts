@@ -16,6 +16,10 @@ import { UserComponent } from "./views/user/user.component";
 
 import { TokenInterceptor } from "./interceptors/token.interceptor";
 import { HttpErrorInterceptor } from "./interceptors/http-error.interceptor";
+import { ReportComponent } from './views/report/report.component';
+import { UserReportComponent } from './views/report/user-report/user-report.component';
+import { ProductReportComponent } from './views/report/product-report/product-report.component';
+import { SupplierReportComponent } from './views/report/supplier-report/supplier-report.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +30,10 @@ import { HttpErrorInterceptor } from "./interceptors/http-error.interceptor";
     ProductComponent,
     SupplierComponent,
     UserComponent,
+    ReportComponent,
+    UserReportComponent,
+    ProductReportComponent,
+    SupplierReportComponent,
   ],
   imports: [
     BrowserModule,
