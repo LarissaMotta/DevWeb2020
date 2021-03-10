@@ -1,8 +1,17 @@
+import { ToastMessageService } from "./../../../services/toast-message.service";
+import { HttpErrorResponse } from "@angular/common/http";
+import { Subscription } from "rxjs";
+import { ReportService } from "./../../../services/report.service";
 import { OnDestroy } from "@angular/core";
 import { AfterViewInit } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
+import { ProductWorkflow, ProductWorkflowData } from "./../../../models/product-workflow.model";
 import * as Highcharts from "highcharts";
 import theme from "highcharts/themes/dark-unica";
+import drilldown from "highcharts/modules/drilldown";
+import exporting from "highcharts/modules/exporting";
+import exportData from "highcharts/modules/export-data";
+import accessibility from "highcharts/modules/accessibility";
 
 @Component({
   selector: "app-product-report",
@@ -10,138 +19,156 @@ import theme from "highcharts/themes/dark-unica";
   styleUrls: ["./product-report.component.scss"],
 })
 export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit {
-  
-	constructor() {}
+  productsWorkflow: ProductWorkflow;
 
-  ngOnInit(): void {}
+  private subscriptions: Subscription;
 
-  ngOnDestroy(): void {}
+  constructor(
+    private reportService: ReportService,
+    private toastMessageService: ToastMessageService
+  ) {
+    this.subscriptions = new Subscription();
+  }
+
+  ngOnInit(): void {
+    this.subscriptions.add(
+      this.reportService.getProductWorkFlow().subscribe({
+        next: (data: ProductWorkflow) => {
+          this.productsWorkflow = data;
+          this.buildProductWorkflowChart();
+        },
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   ngAfterViewInit(): void {
     theme(Highcharts);
-    this.buildPieChartBrowser();
-		this.buildBarChartPopulation();
+    drilldown(Highcharts);
+    exporting(Highcharts);
+    exportData(Highcharts);
+    accessibility(Highcharts);
   }
 
-	private buildBarChartPopulation() {
-    Highcharts.chart('bar-population', {
+  private buildProductWorkflowChart(): void {
+    const inputTotal: number = this.getTotalQuantityWorkflow(this.productsWorkflow.inputs);
+    const outputTotal: number = this.getTotalQuantityWorkflow(this.productsWorkflow.outputs);
+    const workFlowTotal: number = inputTotal + outputTotal;
+
+    const dataInput: any[] = this.getDataWorkflow(this.productsWorkflow.inputs);
+    const dataOutput: any[] = this.getDataWorkflow(this.productsWorkflow.outputs);
+
+    const chartOptions: Highcharts.Options = {
       chart: {
-        type: 'bar'
+        type: "pie",
+      },
+      lang: {
+        drillUpText: '<< Voltar para Fluxos'
+      },
+      credits: {
+        enabled: false
       },
       title: {
-        text: 'Historic World Population by Region'
-      },
-      xAxis: {
-        categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
-      },
-      yAxis: {
-        min: 0,
-        title: {
-          text: 'Population (millions)',
-          align: 'high'
+        text: "Fluxo de Produtos",
+        style: {
+          fontWeight: "bold",
         },
       },
-      tooltip: {
-        valueSuffix: ' millions'
+      subtitle: {
+        text: "Entrada e Saída de Produtos do estoque",
       },
-      plotOptions: {
-        bar: {
-          dataLabels: {
-            enabled: true
-          }
+      accessibility: {
+        announceNewData: {
+          enabled: true,
         }
       },
-      series: [{
-        type: undefined,
-        name: 'Year 1800',
-        data: [107, 31, 635, 203, 2]
-      }, {
-        type: undefined,
-        name: 'Year 1900',
-        data: [133, 156, 947, 408, 6]
-      }, {
-        type: undefined,
-        name: 'Year 2000',
-        data: [814, 841, 3714, 727, 31]
-      }, {
-        type: undefined,
-        name: 'Year 2016',
-        data: [1216, 1001, 4436, 738, 40]
-      }]
-    });
-  }
-
-  private buildPieChartBrowser() {
-    Highcharts.chart("pie-browser", {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: "pie"
-      },
-      title: {
-        text: "Browser market shares in October, 2019",
-      },
-      tooltip: {
-        pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
-      },
       plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: "pointer",
+        series: {
           dataLabels: {
             enabled: true,
-            format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+            formatter: function() {
+              let percentage = 0;
+
+              if (this.y) {
+                percentage = (this.y / workFlowTotal) * 100;
+              }
+
+              return `${this.point.name}: ${this.y} (${percentage.toFixed(2)}%)`;
+            }
           },
         },
       },
+      exporting: {
+        enabled: true,
+        buttons: {
+          contextButton: {
+            symbolFill: "#fff",
+            symbolStroke: "#fff",
+          },
+        },
+      },
+      tooltip: {
+        headerFormat: '<span style="color:{point.color};font-size:13px;">{point.name}</span><br>',
+        pointFormat: '<span><b>{point.y}</b> itens</span><br/>'
+      },
       series: [
         {
-          name: "Brands",
+          name: "Fluxos",
+          type: "pie",
           colorByPoint: true,
-          type: undefined,
           data: [
             {
-              name: "Chrome",
-              y: 61.41,
-              sliced: true,
-              selected: true,
+              name: "Entrada",
+              y: inputTotal,
+              drilldown: "input"
             },
             {
-              name: "Internet Explorer",
-              y: 11.84,
-            },
-            {
-              name: "Firefox",
-              y: 10.85,
-            },
-            {
-              name: "Edge",
-              y: 4.67,
-            },
-            {
-              name: "Safari",
-              y: 4.18,
-            },
-            {
-              name: "Sogou Explorer",
-              y: 1.64,
-            },
-            {
-              name: "Opera",
-              y: 1.6,
-            },
-            {
-              name: "QQ",
-              y: 1.2,
-            },
-            {
-              name: "Other",
-              y: 2.61,
+              name: "Saída",
+              y: outputTotal,
+              drilldown: "output",
             },
           ],
         },
       ],
-    });
+      drilldown: {
+        series: [
+          {
+            id: "input",
+            name: "Entrada",
+            type: "pie",
+            data: dataInput
+          },
+          {
+            id: "output",
+            name: "Saída",
+            type: "pie",
+            data: dataOutput
+          }
+        ]
+      },
+    };
+
+    Highcharts.chart("product-workflow-chart", chartOptions);
+  }
+
+  private getTotalQuantityWorkflow(workflowData: ProductWorkflowData[]): number {
+    return workflowData
+      .map((p: ProductWorkflowData) => p.quantity)
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+  }
+
+  private getDataWorkflow(workflowData: ProductWorkflowData[]): any[] {
+    return workflowData
+      .map((p: ProductWorkflowData) => {
+        return {
+          name: p.name,
+          y: p.quantity
+        }
+      });
   }
 }
