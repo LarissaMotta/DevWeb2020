@@ -63,7 +63,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 						});
 				},
 				error: (error: HttpErrorResponse) => 
-					this.toastMessageService.showToastError(error.message),
+					this.toastMessageService.showToastError(error.error.message),
 				complete: () => this.loading = false
 			})
 		);
@@ -202,7 +202,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 					this.toastMessageService.showToastSuccess("Produto atualizado com sucesso.");
 				},
 				error: (error: HttpErrorResponse) =>
-					this.toastMessageService.showToastError(error.message)
+					this.toastMessageService.showToastError(error.error.message)
 			})
 		);
   }
@@ -216,7 +216,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 					this.toastMessageService.showToastSuccess("Produto deletado com sucesso.");
 				},
 				error: (error: HttpErrorResponse) => 
-					this.toastMessageService.showToastError(error.message)
+					this.toastMessageService.showToastError(error.error.message)
 			})
 		);
 	}
@@ -240,7 +240,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 					this.toastMessageService.showToastSuccess("Crédito do produto realizado com sucesso.");
 				},
 				error: (error: HttpErrorResponse) => 
-					this.toastMessageService.showToastError(error.message)
+					this.toastMessageService.showToastError(error.error.message)
 			})
 		);
 		
@@ -265,7 +265,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 					this.toastMessageService.showToastSuccess("Débito do produto realizado com sucesso.");
 				},
 				error: (error: HttpErrorResponse) => 
-					this.toastMessageService.showToastError(error.message)
+					this.toastMessageService.showToastError(error.error.message)
 			})
 		);
 		
