@@ -2,4 +2,16 @@
 	<ng-template pTemplate="icons">
 		<p-menu #menu id="config_menu" [popup]="true"></p-menu>
 	</ng-template>
+
+  <div id="supplier-rating-chart" class="report-chart p-mb-5" >
+    <div *ngIf="loading" class="report-loading">
+      <p-progressBar mode="indeterminate" [style]="{'height': '8px'}"></p-progressBar>
+    </div>
+  </div>
+
+  <div id="product-purchased-chart" class="report-chart" >
+    <div *ngIf="loading" class="report-loading">
+      <p-progressBar mode="indeterminate" [style]="{'height': '8px'}"></p-progressBar>
+    </div>
+  </div>
 </p-panel>

@@ -23,7 +23,8 @@ import { AccordionModule } from "primeng/accordion";
 import { SelectButtonModule } from "primeng/selectbutton";
 import { FileUploadModule } from "primeng/fileupload";
 import { PanelModule } from "primeng/panel";
-import { MenuModule } from 'primeng/menu';
+import { MenuModule } from "primeng/menu";
+import { ProgressBarModule } from "primeng/progressbar";
 
 import { MessageService } from "primeng/api";
 import { ConfirmationService } from "primeng/api";
@@ -55,8 +56,9 @@ import { ConfirmationService } from "primeng/api";
     SelectButtonModule,
     FileUploadModule,
     PanelModule,
-    MenuModule
+    MenuModule,
+    ProgressBarModule
   ],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService, ConfirmationService]
 })
 export class PrimengModule {}

@@ -3,5 +3,9 @@
 		<p-menu #menu id="config_menu" [popup]="true"></p-menu>
 	</ng-template>
 
-	<div id="product-workflow-chart" class="report-chart"></div>
+  <div id="product-workflow-chart" class="report-chart" >
+    <div *ngIf="loading" class="report-loading">
+      <p-progressBar mode="indeterminate" [style]="{'height': '8px'}"></p-progressBar>
+    </div>
+  </div>
 </p-panel>

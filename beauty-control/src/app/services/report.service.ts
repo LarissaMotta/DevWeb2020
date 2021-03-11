@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ProductWorkflow } from '../models/product-workflow.model';
+import { BestSupplier } from '../models/best-supplier.model';
+import { ProductPurchased } from '../models/product-purchased.model';
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +23,26 @@ export class ReportService {
     );
   }
 
+  public getSupplierRating(rating?: number): Observable<BestSupplier[]> {
+    const params = new HttpParams()
+    this.setRatingParam(params, rating);
+
+    return this.http.get<BestSupplier[]>(
+      endpoints.supplierRating,
+      { params }
+    );
+  }
+
+  public getProductPurchasedBySupplier(start?: Date, end?: Date): Observable<ProductPurchased[]> {
+    const params = new HttpParams()
+    this.setRangeDateParams(params, start, end);
+
+    return this.http.get<ProductPurchased[]>(
+      endpoints.productPurchasedBySupplier,
+      { params }
+    );
+  }
+
   private setRangeDateParams(params: HttpParams, start?: Date, end?: Date): void {
     if (start) {
       params.set("startDate", start.toISOString());
@@ -28,6 +50,12 @@ export class ReportService {
 
     if (end) {
       params.set("endDate", end.toISOString());
+    }
+  }
+
+  private setRatingParam(params: HttpParams, rating?: number): void {
+    if (rating) {
+      params.set("userRating", rating.toString());
     }
   }
 }

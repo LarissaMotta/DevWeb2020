@@ -20,6 +20,7 @@ import accessibility from "highcharts/modules/accessibility";
 })
 export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit {
   productsWorkflow: ProductWorkflow;
+  loading: boolean;
 
   private subscriptions: Subscription;
 
@@ -28,6 +29,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
     private toastMessageService: ToastMessageService
   ) {
     this.subscriptions = new Subscription();
+    this.loading = true;
   }
 
   ngOnInit(): void {
@@ -39,6 +41,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
         },
         error: (error: HttpErrorResponse) =>
           this.toastMessageService.showToastError(error.error.message),
+        complete: () => this.loading = false
       })
     );
   }
@@ -68,7 +71,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
         type: "pie",
       },
       lang: {
-        drillUpText: '<< Voltar para Fluxos'
+        drillUpText: "<< Voltar para Fluxos"
       },
       credits: {
         enabled: false
@@ -77,6 +80,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
         text: "Fluxo de Produtos",
         style: {
           fontWeight: "bold",
+          fontSize: "2rem",
         },
       },
       subtitle: {
@@ -92,7 +96,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
           dataLabels: {
             enabled: true,
             formatter: function() {
-              let percentage = 0;
+              let percentage: number = 0;
 
               if (this.y) {
                 percentage = (this.y / workFlowTotal) * 100;
@@ -158,8 +162,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private getTotalQuantityWorkflow(workflowData: ProductWorkflowData[]): number {
     return workflowData
-      .map((p: ProductWorkflowData) => p.quantity)
-      .reduce((accumulator, currentValue) => accumulator + currentValue);
+      .reduce((acc: number, curr: ProductWorkflowData) => acc + curr.quantity, 0);
   }
 
   private getDataWorkflow(workflowData: ProductWorkflowData[]): any[] {
@@ -168,7 +171,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
         return {
           name: p.name,
           y: p.quantity
-        }
+        };
       });
   }
 }
