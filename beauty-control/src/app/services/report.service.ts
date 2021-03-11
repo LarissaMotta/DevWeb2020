@@ -5,6 +5,7 @@ import { Injectable } from "@angular/core";
 import { ProductWorkflow } from '../models/product-workflow.model';
 import { BestSupplier } from '../models/best-supplier.model';
 import { ProductPurchased } from '../models/product-purchased.model';
+import { UserRoleReport } from '../models/user-role-report.model';
 
 @Injectable({
   providedIn: "root",
@@ -39,6 +40,16 @@ export class ReportService {
 
     return this.http.get<ProductPurchased[]>(
       endpoints.productPurchasedBySupplier,
+      { params }
+    );
+  }
+
+  public getUserRole(start?: Date, end?: Date): Observable<UserRoleReport> {
+    const params = new HttpParams()
+    this.setRangeDateParams(params, start, end);
+
+    return this.http.get<UserRoleReport>(
+      endpoints.userRoles,
       { params }
     );
   }
