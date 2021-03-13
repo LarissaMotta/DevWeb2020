@@ -1,3 +1,4 @@
+import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { ToastMessageService } from "./../../../services/toast-message.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Subscription } from "rxjs";
@@ -5,7 +6,10 @@ import { ReportService } from "./../../../services/report.service";
 import { OnDestroy } from "@angular/core";
 import { AfterViewInit } from "@angular/core";
 import { Component, OnInit } from "@angular/core";
-import { ProductWorkflow, ProductWorkflowData } from "./../../../models/product-workflow.model";
+import {
+  ProductWorkflow,
+  ProductWorkflowData,
+} from "./../../../models/product-workflow.model";
 import * as Highcharts from "highcharts";
 import theme from "highcharts/themes/dark-unica";
 import drilldown from "highcharts/modules/drilldown";
@@ -20,6 +24,8 @@ import accessibility from "highcharts/modules/accessibility";
 })
 export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit {
   productsWorkflow: ProductWorkflow;
+  startDate?: Date;
+  endDate?: Date;
   loading: boolean;
 
   private subscriptions: Subscription;
@@ -33,17 +39,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.reportService.getProductWorkFlow().subscribe({
-        next: (data: ProductWorkflow) => {
-          this.productsWorkflow = data;
-          this.buildProductWorkflowChart();
-        },
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-        complete: () => this.loading = false
-      })
-    );
+    this.getProductWorkFlow();
   }
 
   ngOnDestroy(): void {
@@ -56,25 +52,52 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
     exporting(Highcharts);
     exportData(Highcharts);
     accessibility(Highcharts);
+    normalizeFormLayout();
+  }
+
+  onSelectDateFilter(): void {
+    if (this.startDate && this.endDate && this.startDate >= this.endDate) { return; }
+    
+    this.getProductWorkFlow(this.startDate, this.endDate);
+  }
+
+  private getProductWorkFlow(startDate?: Date, endDate?: Date): void {
+    this.subscriptions.add(
+      this.reportService.getProductWorkFlow(startDate, endDate).subscribe({
+        next: (data: ProductWorkflow) => {
+          this.productsWorkflow = data;
+          this.buildProductWorkflowChart();
+        },
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+        complete: () => (this.loading = false),
+      })
+    );
   }
 
   private buildProductWorkflowChart(): void {
-    const inputTotal: number = this.getTotalQuantityWorkflow(this.productsWorkflow.inputs);
-    const outputTotal: number = this.getTotalQuantityWorkflow(this.productsWorkflow.outputs);
+    const inputTotal: number = this.getTotalQuantityWorkflow(
+      this.productsWorkflow.inputs
+    );
+    const outputTotal: number = this.getTotalQuantityWorkflow(
+      this.productsWorkflow.outputs
+    );
     const workFlowTotal: number = inputTotal + outputTotal;
 
     const dataInput: any[] = this.getDataWorkflow(this.productsWorkflow.inputs);
-    const dataOutput: any[] = this.getDataWorkflow(this.productsWorkflow.outputs);
+    const dataOutput: any[] = this.getDataWorkflow(
+      this.productsWorkflow.outputs
+    );
 
     const chartOptions: Highcharts.Options = {
       chart: {
         type: "pie",
       },
       lang: {
-        drillUpText: "<< Voltar para Fluxos"
+        drillUpText: "<< Voltar para Fluxos",
       },
       credits: {
-        enabled: false
+        enabled: false,
       },
       title: {
         text: "Fluxo de Produtos",
@@ -89,21 +112,23 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
       accessibility: {
         announceNewData: {
           enabled: true,
-        }
+        },
       },
       plotOptions: {
         series: {
           dataLabels: {
             enabled: true,
-            formatter: function() {
+            formatter: function () {
               let percentage: number = 0;
 
               if (this.y) {
                 percentage = (this.y / workFlowTotal) * 100;
               }
 
-              return `${this.point.name}: ${this.y} (${percentage.toFixed(2)}%)`;
-            }
+              return `${this.point.name}: ${this.y} (${percentage.toFixed(
+                2
+              )}%)`;
+            },
           },
         },
       },
@@ -117,8 +142,9 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
         },
       },
       tooltip: {
-        headerFormat: '<span style="color:{point.color};font-size:13px;">{point.name}</span><br>',
-        pointFormat: '<span><b>{point.y}</b> itens</span><br/>'
+        headerFormat:
+          '<span style="color:{point.color};font-size:13px;">{point.name}</span><br>',
+        pointFormat: "<span><b>{point.y}</b> itens</span><br/>",
       },
       series: [
         {
@@ -129,7 +155,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
             {
               name: "Entrada",
               y: inputTotal,
-              drilldown: "input"
+              drilldown: "input",
             },
             {
               name: "Saída",
@@ -145,15 +171,15 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
             id: "input",
             name: "Entrada",
             type: "pie",
-            data: dataInput
+            data: dataInput,
           },
           {
             id: "output",
             name: "Saída",
             type: "pie",
-            data: dataOutput
-          }
-        ]
+            data: dataOutput,
+          },
+        ],
       },
     };
 
@@ -161,17 +187,16 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private getTotalQuantityWorkflow(workflowData: ProductWorkflowData[]): number {
-    return workflowData
-      .reduce((acc: number, curr: ProductWorkflowData) => acc + curr.quantity, 0);
+    return workflowData.reduce(
+      (acc: number, curr: ProductWorkflowData) => acc + curr.quantity, 0);
   }
 
   private getDataWorkflow(workflowData: ProductWorkflowData[]): any[] {
-    return workflowData
-      .map((p: ProductWorkflowData) => {
-        return {
-          name: p.name,
-          y: p.quantity
-        };
-      });
+    return workflowData.map((p: ProductWorkflowData) => {
+      return {
+        name: p.name,
+        y: p.quantity,
+      };
+    });
   }
 }

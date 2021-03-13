@@ -15,8 +15,7 @@ export class ReportService {
   constructor(private http: HttpClient) {}
 
   public getProductWorkFlow(start?: Date, end?: Date): Observable<ProductWorkflow> {
-    const params = new HttpParams();
-    this.setRangeDateParams(params, start, end);
+    const params = this.getRangeDateParams(start, end);
 
     return this.http.get<ProductWorkflow>(
       endpoints.productWorkflow, 
@@ -25,8 +24,7 @@ export class ReportService {
   }
 
   public getSupplierRating(rating?: number): Observable<BestSupplier[]> {
-    const params = new HttpParams()
-    this.setRatingParam(params, rating);
+    const params = this.getRatingParam(rating);
 
     return this.http.get<BestSupplier[]>(
       endpoints.supplierRating,
@@ -35,8 +33,7 @@ export class ReportService {
   }
 
   public getProductPurchasedBySupplier(start?: Date, end?: Date): Observable<ProductPurchased[]> {
-    const params = new HttpParams()
-    this.setRangeDateParams(params, start, end);
+    const params = this.getRangeDateParams(start, end);
 
     return this.http.get<ProductPurchased[]>(
       endpoints.productPurchasedBySupplier,
@@ -45,8 +42,7 @@ export class ReportService {
   }
 
   public getUserRole(start?: Date, end?: Date): Observable<UserRoleReport> {
-    const params = new HttpParams()
-    this.setRangeDateParams(params, start, end);
+    const params = this.getRangeDateParams(start, end);
 
     return this.http.get<UserRoleReport>(
       endpoints.userRoles,
@@ -54,19 +50,16 @@ export class ReportService {
     );
   }
 
-  private setRangeDateParams(params: HttpParams, start?: Date, end?: Date): void {
-    if (start) {
-      params.set("startDate", start.toISOString());
-    }
+  private getRangeDateParams(start?: Date, end?: Date): HttpParams {
+    const httpParams = new HttpParams()
+      .set("startDate", start?.toISOString())
+      .set("endDate", end?.toISOString());
 
-    if (end) {
-      params.set("endDate", end.toISOString());
-    }
+    return httpParams;
   }
 
-  private setRatingParam(params: HttpParams, rating?: number): void {
-    if (rating) {
-      params.set("userRating", rating.toString());
-    }
+  private getRatingParam(rating?: number): HttpParams {
+    return new HttpParams()
+      .set("userRating", rating?.toString());
   }
 }
