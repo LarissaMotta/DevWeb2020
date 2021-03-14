@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "cb1254b3-83cf-43d7-992f-17369c17a53b",
+		"_postman_id": "dd494435-6e0a-4dbd-8fd2-15ca51d70999",
 		"name": "dev-web",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -136,8 +136,34 @@
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Creme para rosto\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 10,\r\n}",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Creme para rosto",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Creme para rosto",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "face",
+									"type": "text"
+								},
+								{
+									"key": "runnigOutOfStock",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "img",
+									"type": "file",
+									"src": "/C:/Users/Pichau/Desktop/Sem título.png"
+								}
+							],
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,13 +190,44 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"type": "text",
-								"value": "{{bearer}} {{token}}"
+								"value": "{{bearer}} {{token}}",
+								"type": "text"
 							}
 						],
 						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Creme para rosto\",\r\n    \"description\": \"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.\",\r\n    \"category\": \"face\",\r\n    \"runnigOutOfStock\": 50,\r\n    \"status\": \"out_of_stock\"\r\n}",
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Creme para rosto",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Creme para rosto",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "face",
+									"type": "text"
+								},
+								{
+									"key": "runnigOutOfStock",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "img",
+									"type": "file",
+									"src": "/C:/Users/Pichau/Desktop/_MG_6260.JPG"
+								},
+								{
+									"key": "id",
+									"value": "30",
+									"type": "text"
+								}
+							],
 							"options": {
 								"raw": {
 									"language": "json"
@@ -178,14 +235,87 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/products/1",
+							"raw": "{{protocol}}://{{host}}/products/30",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"products",
-								"1"
+								"30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "products/img",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{bearer}} {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/products/30/img",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"products",
+								"30",
+								"img"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "products/img",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}://{{host}}/products/30/img",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"products",
+								"30",
+								"img"
 							]
 						}
 					},
@@ -278,7 +408,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Fornecedor teste\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\",\r\n    \"userRating\": 3\r\n}",
+							"raw": "{\r\n    \"name\": \"Fornecedor 2\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -311,7 +441,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 13,\r\n    \"rating\": 4,\r\n    \"name\": \"Fornecedor com id 13\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
+							"raw": "{\r\n    \"id\": 13,\r\n    \"userRating\": 5,\r\n    \"name\": \"Fornecedor com id 13\",\r\n    \"telephone\": \"27997653492\",\r\n    \"observation\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -506,7 +636,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 7,\r\n    \"name\": \"Joaquina dos Santos\"\r\n}",
+							"raw": "{\r\n    \"id\": 7,\r\n    \"name\": \"Joaquina teste\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -686,6 +816,210 @@
 							"path": [
 								"report",
 								"suppliers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-workflow",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/report/product-workflow?endDate=Wed Mar 03 2021 21:09:52 GMT-0300 (Horário Padrão de Brasília)",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"report",
+								"product-workflow"
+							],
+							"query": [
+								{
+									"key": "endDate",
+									"value": "Wed Mar 03 2021 21:09:52 GMT-0300 (Horário Padrão de Brasília)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product-purchased-by-supplier",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/report/product-purchased-by-supplier?endDate=Wed Mar 03 2021 21:09:52 GMT-0300 (Horário Padrão de Brasília)",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"report",
+								"product-purchased-by-supplier"
+							],
+							"query": [
+								{
+									"key": "endDate",
+									"value": "Wed Mar 03 2021 21:09:52 GMT-0300 (Horário Padrão de Brasília)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users-role",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/report/users-role?endDate=Wed Mar 04 2021 21:40:13 GMT-0300 (Horário Padrão de Brasília)",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"report",
+								"users-role"
+							],
+							"query": [
+								{
+									"key": "endDate",
+									"value": "Wed Mar 04 2021 21:40:13 GMT-0300 (Horário Padrão de Brasília)"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "supplier-rating",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"console.log(pm.response.json());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{bearer}} {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/report/supplier-rating?averageRating=4",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"report",
+								"supplier-rating"
+							],
+							"query": [
+								{
+									"key": "averageRating",
+									"value": "4"
+								}
 							]
 						}
 					},
