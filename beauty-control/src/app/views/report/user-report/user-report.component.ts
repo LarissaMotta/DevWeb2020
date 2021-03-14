@@ -18,6 +18,8 @@ import accessibility from "highcharts/modules/accessibility";
 })
 export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
   userRoles: UserRoleReport;
+  startDate?: Date;
+  endDate?: Date;
   loading: boolean;
 
   private subscriptions: Subscription;
@@ -31,17 +33,7 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.reportService.getUserRole().subscribe({
-        next: (data: UserRoleReport) => {
-          this.userRoles = data;
-          this.buildUserRolesChart();
-        },
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-        complete: () => (this.loading = false),
-      })
-    );
+    this.getUserRole();
   }
 
   ngOnDestroy(): void {
@@ -54,6 +46,28 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
     exporting(Highcharts);
     exportData(Highcharts);
     accessibility(Highcharts);
+  }
+
+  onSelectDateFilter(): void {
+    if (this.startDate && this.endDate && this.startDate > this.endDate) { 
+      return; 
+    }
+    
+    this.getUserRole(this.startDate, this.endDate);
+  }
+
+  private getUserRole(startDate?: Date, endDate?: Date): void {
+    this.subscriptions.add(
+      this.reportService.getUserRole(startDate, endDate).subscribe({
+        next: (data: UserRoleReport) => {
+          this.userRoles = data;
+          this.buildUserRolesChart();
+        },
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+        complete: () => (this.loading = false),
+      })
+    );
   }
 
   private buildUserRolesChart(): void {
