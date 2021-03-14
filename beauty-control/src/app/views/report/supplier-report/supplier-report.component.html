@@ -1,16 +1,34 @@
 <p-panel header="Fornecedores" styleClass="title-reports" [toggleable]="true" [collapsed]="true">
-	<ng-template pTemplate="icons">
-		<p-menu #menu id="config_menu" [popup]="true"></p-menu>
-	</ng-template>
+  <ng-template pTemplate="icons">
+    <p-menu #menu id="config_menu" [popup]="true"></p-menu>
+  </ng-template>
 
-  <div id="supplier-rating-chart" class="report-chart p-mb-5" >
-    <div *ngIf="loading" class="report-loading">
+  <div class="p-fluid p-grid filter-chart">
+    <div class="p-field p-col-12 p-md-2">
+      <p-inputNumber [(ngModel)]="rating" mode="decimal" [showButtons]="true" inputId="rating-supplier"
+        class="browser-default" [min]="0" [max]="5" [useGrouping]="false" (onInput)="onInputRatingFilter()"
+        placeholder="Média de Avaliação">
+      </p-inputNumber>
+    </div>
+  </div>
+  <div id="supplier-rating-chart" class="report-chart p-mb-5">
+    <div *ngIf="loadingSuppliersRatings" class="report-loading">
       <p-progressBar mode="indeterminate" [style]="{'height': '8px'}"></p-progressBar>
     </div>
   </div>
 
-  <div id="product-purchased-chart" class="report-chart" >
-    <div *ngIf="loading" class="report-loading">
+  <div class="p-fluid p-grid filter-chart">
+    <div class="p-field p-col-12 p-md-2">
+      <p-calendar [(ngModel)]="startDate" [showTime]="true" inputId="start-date-supplier" class="browser-default"
+        placeholder="Início" dateFormat="dd/mm/yy" (onClose)="onSelectDateFilter()"></p-calendar>
+    </div>
+    <div class="p-field p-col-12 p-md-2">
+      <p-calendar [(ngModel)]="endDate" [showTime]="true" inputId="end-date-supplier" class="browser-default"
+        placeholder="Término" dateFormat="dd/mm/yy" (onClose)="onSelectDateFilter()"></p-calendar>
+    </div>
+  </div>
+  <div id="product-purchased-chart" class="report-chart">
+    <div *ngIf="loadingProductsPurchased" class="report-loading">
       <p-progressBar mode="indeterminate" [style]="{'height': '8px'}"></p-progressBar>
     </div>
   </div>

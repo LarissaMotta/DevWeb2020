@@ -60,6 +60,6 @@ export class ReportService {
 
   private getRatingParam(rating?: number): HttpParams {
     return new HttpParams()
-      .set("userRating", rating?.toString());
+      .set("averageRating", rating?.toString());
   }
 }

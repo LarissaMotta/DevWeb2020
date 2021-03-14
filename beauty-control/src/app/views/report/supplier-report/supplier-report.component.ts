@@ -20,8 +20,13 @@ import accessibility from "highcharts/modules/accessibility";
 })
 export class SupplierReportComponent implements OnInit, OnDestroy, AfterViewInit {
   suppliersRatings: BestSupplier[];
+  rating?: number;
+  loadingSuppliersRatings: boolean;
+
   productsPurchasedBySuppliers: ProductPurchased[];
-  loading: boolean;
+  startDate?: Date;
+  endDate?: Date;
+  loadingProductsPurchased: boolean;
 
   private subscriptions: Subscription;
 
@@ -30,33 +35,13 @@ export class SupplierReportComponent implements OnInit, OnDestroy, AfterViewInit
     private toastMessageService: ToastMessageService
   ) {
     this.subscriptions = new Subscription();
-    this.loading = true;
+    this.loadingSuppliersRatings = true;
+    this.loadingProductsPurchased = true;
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.reportService.getSupplierRating().subscribe({
-        next: (data: BestSupplier[]) => {
-          this.suppliersRatings = data;
-          this.buildSupplierRatingChart();
-        },
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-        complete: () => (this.loading = false),
-      })
-    );
-
-    this.subscriptions.add(
-      this.reportService.getProductPurchasedBySupplier().subscribe({
-        next: (data: ProductPurchased[]) => {
-          this.productsPurchasedBySuppliers = data;
-          this.buildProductPurchasedChart();
-        },
-        error: (error: HttpErrorResponse) =>
-          this.toastMessageService.showToastError(error.error.message),
-        complete: () => (this.loading = false),
-      })
-    );
+    this.getSupplierRating();
+    this.getProductPurchasedBySupplier();
   }
 
   ngOnDestroy(): void {
@@ -69,6 +54,50 @@ export class SupplierReportComponent implements OnInit, OnDestroy, AfterViewInit
     exporting(Highcharts);
     exportData(Highcharts);
     accessibility(Highcharts);
+  }
+
+  onInputRatingFilter(): void {
+    if (this.rating && this.rating < 0 || this.rating > 5) { 
+      return; 
+    }
+    
+    this.getSupplierRating(this.rating);
+  }
+
+  onSelectDateFilter(): void {
+    if (this.startDate && this.endDate && this.startDate > this.endDate) { 
+      return; 
+    }
+    
+    this.getProductPurchasedBySupplier(this.startDate, this.endDate);
+  }
+
+  private getSupplierRating(rating?: number): void {
+    this.subscriptions.add(
+      this.reportService.getSupplierRating(rating).subscribe({
+        next: (data: BestSupplier[]) => {
+          this.suppliersRatings = data;
+          this.buildSupplierRatingChart();
+        },
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+        complete: () => this.loadingSuppliersRatings = false
+      })
+    );
+  }
+
+  private getProductPurchasedBySupplier(startDate?: Date, endDate?: Date): void {
+    this.subscriptions.add(
+      this.reportService.getProductPurchasedBySupplier(startDate, endDate).subscribe({
+        next: (data: ProductPurchased[]) => {
+          this.productsPurchasedBySuppliers = data;
+          this.buildProductPurchasedChart();
+        },
+        error: (error: HttpErrorResponse) =>
+          this.toastMessageService.showToastError(error.error.message),
+        complete: () => this.loadingProductsPurchased = false
+      })
+    );
   }
 
   private buildSupplierRatingChart(): void {

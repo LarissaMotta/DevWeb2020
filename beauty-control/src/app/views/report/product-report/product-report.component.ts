@@ -1,4 +1,3 @@
-import { normalizeFormLayout } from "src/app/utils/form-normalized.util";
 import { ToastMessageService } from "./../../../services/toast-message.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Subscription } from "rxjs";
@@ -52,11 +51,12 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
     exporting(Highcharts);
     exportData(Highcharts);
     accessibility(Highcharts);
-    normalizeFormLayout();
   }
 
   onSelectDateFilter(): void {
-    if (this.startDate && this.endDate && this.startDate >= this.endDate) { return; }
+    if (this.startDate && this.endDate && this.startDate > this.endDate) { 
+      return; 
+    }
     
     this.getProductWorkFlow(this.startDate, this.endDate);
   }
@@ -125,9 +125,7 @@ export class ProductReportComponent implements OnInit, OnDestroy, AfterViewInit 
                 percentage = (this.y / workFlowTotal) * 100;
               }
 
-              return `${this.point.name}: ${this.y} (${percentage.toFixed(
-                2
-              )}%)`;
+              return `${this.point.name}: ${this.y} (${percentage.toFixed(2)}%)`;
             },
           },
         },

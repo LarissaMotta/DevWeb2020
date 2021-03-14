@@ -3,14 +3,14 @@
     <p-menu #menu id="config_menu" [popup]="true"></p-menu>
   </ng-template>
 
-  <div class="p-fluid p-grid">
+  <div class="p-fluid p-grid filter-chart">
     <div class="p-field p-col-12 p-md-2">
-      <p-calendar [(ngModel)]="startDate" [showTime]="true" inputId="start-date" placeholder="Início"
-        dateFormat="dd/mm/yy" (onClose)="onSelectDateFilter()"></p-calendar>
+      <p-calendar [(ngModel)]="startDate" [showTime]="true" inputId="start-date-product" class="browser-default"
+        placeholder="Início" dateFormat="dd/mm/yy" (onClose)="onSelectDateFilter()"></p-calendar>
     </div>
     <div class="p-field p-col-12 p-md-2">
-      <p-calendar [(ngModel)]="endDate" [showTime]="true" inputId="end-date" placeholder="Término" dateFormat="dd/mm/yy"
-        (onClose)="onSelectDateFilter()"></p-calendar>
+      <p-calendar [(ngModel)]="endDate" [showTime]="true" inputId="end-date-product" placeholder="Término"
+        class="browser-default" dateFormat="dd/mm/yy" (onClose)="onSelectDateFilter()"></p-calendar>
     </div>
   </div>
   <div id="product-workflow-chart" class="report-chart">
