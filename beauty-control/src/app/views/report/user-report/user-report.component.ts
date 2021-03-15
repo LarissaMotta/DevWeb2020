@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { UserRoleReport } from "src/app/models/user-role-report.model";
+import { UserRoleReport, UserRoleReportData } from "src/app/models/user-role-report.model";
 import { ReportService } from "src/app/services/report.service";
 import { ToastMessageService } from "src/app/services/toast-message.service";
 import * as Highcharts from "highcharts";
@@ -18,9 +18,12 @@ import accessibility from "highcharts/modules/accessibility";
 })
 export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
   userRoles: UserRoleReport;
+  usersDataSelected: UserRoleReportData[];
   startDate?: Date;
   endDate?: Date;
   loading: boolean;
+  showUserTable: boolean;
+  headerUserTable: string;
 
   private subscriptions: Subscription;
 
@@ -30,6 +33,7 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {
     this.subscriptions = new Subscription();
     this.loading = true;
+    this.showUserTable = false;
   }
 
   ngOnInit(): void {
@@ -56,6 +60,22 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getUserRole(this.startDate, this.endDate);
   }
 
+  onClickSeriesChart(index: number): void {
+    // Funcionário = 0
+    // Admin = 1
+
+    if (index === 0) {
+      this.headerUserTable = "Tabela de Funcionários";
+      this.usersDataSelected = this.userRoles.employee;
+    }
+    else {
+      this.headerUserTable = "Tabela de Administradores";
+      this.usersDataSelected = this.userRoles.admin;
+    }
+
+    this.showUserTable = true;
+  }
+
   private getUserRole(startDate?: Date, endDate?: Date): void {
     this.subscriptions.add(
       this.reportService.getUserRole(startDate, endDate).subscribe({
@@ -65,12 +85,13 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         error: (error: HttpErrorResponse) =>
           this.toastMessageService.showToastError(error.error.message),
-        complete: () => (this.loading = false),
+        complete: () => this.loading = false
       })
     );
   }
 
   private buildUserRolesChart(): void {
+    const context: UserReportComponent = this;
     const data: any[] = this.getDataUsersRole(this.userRoles);
     const totalUsers: number = data.reduce((acc: number, curr: any[]) => acc + curr[1], 0);
 
@@ -93,6 +114,7 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       plotOptions: {
         series: {
+          cursor: "pointer",
           dataLabels: {
             enabled: true,
             formatter: function () {
@@ -103,6 +125,13 @@ export class UserReportComponent implements OnInit, OnDestroy, AfterViewInit {
               }
 
               return `${this.point.name}: ${this.y} (${percentage.toFixed(2)}%)`;
+            }
+          },
+          point: {
+            events: {
+              click: function() {
+                context.onClickSeriesChart(this.index);
+              }
             }
           }
         },

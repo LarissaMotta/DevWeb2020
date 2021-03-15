@@ -1,6 +1,6 @@
 export class UserRoleReport {
   admin: UserRoleReportData[];
-  employee: UserRoleReport[];
+  employee: UserRoleReportData[];
 }
 
 export class UserRoleReportData {

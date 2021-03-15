@@ -1,7 +1,7 @@
 <p-panel header="Usuários" styleClass="title-reports" [toggleable]="true" [collapsed]="true">
-	<ng-template pTemplate="icons">
-		<p-menu #menu id="config_menu" [popup]="true"></p-menu>
-	</ng-template>
+  <ng-template pTemplate="icons">
+    <p-menu #menu id="config_menu" [popup]="true"></p-menu>
+  </ng-template>
 
   <div class="p-fluid p-grid filter-chart">
     <div class="p-field p-col-12 p-md-2">
@@ -13,9 +13,30 @@
         class="browser-default" dateFormat="dd/mm/yy" (onClose)="onSelectDateFilter()"></p-calendar>
     </div>
   </div>
-  <div id="user-role-chart" class="report-chart" >
+  <div id="user-role-chart" class="report-chart">
     <div *ngIf="loading" class="report-loading">
       <p-progressBar mode="indeterminate" [style]="{'height': '8px'}"></p-progressBar>
     </div>
   </div>
 </p-panel>
+
+<!-- Modal da tabela de usuários -->
+<p-dialog [header]="headerUserTable" [(visible)]="showUserTable" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000"
+  [draggable]="false" [resizable]="true">
+  <p-table [value]="usersDataSelected" [responsive]="true" [resizableColumns]="true" [autoLayout]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Nome<p-sortIcon field="name"></p-sortIcon>
+        <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon>
+        <th pSortableColumn="active">Ativo?<p-sortIcon field="active"></p-sortIcon>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-userData>
+      <tr>
+        <td>{{userData.name}}</td>
+        <td>{{userData.email}}</td>
+        <td>{{userData.active ? 'Sim' : 'Não'}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>
